@@ -1,0 +1,2154 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Appunti NIN — Parte teorica e archivio materiali studio/lavoro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+
+/* ===== Shared app shell (not part of any module) ===== */
+:root{ --app-ink:#1B2533; --app-muted:#5b6472; --app-line:#d8d2c4; --app-focus:#1D6FD1; }
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --app-ink:#EDE7DA; --app-muted:#b3ab9a; --app-line:#3a3527; }
+}
+:root[data-theme="dark"]{ --app-ink:#EDE7DA; --app-muted:#b3ab9a; --app-line:#3a3527; }
+*,*::before,*::after{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;font-family:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color:var(--app-ink);background:#EEF2F4}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) body{background:#181712}}
+:root[data-theme="dark"] body{background:#181712}
+button,input,select,textarea{font:inherit}
+:focus-visible{outline:3px solid var(--app-focus);outline-offset:2px}
+.view{min-height:100vh}
+.view[hidden]{display:none}
+
+.app-footer{
+  text-align:center;color:var(--app-muted);font-size:13px;
+  padding:16px 12px calc(16px + env(safe-area-inset-bottom,0px));
+  border-top:1px solid var(--app-line);
+}
+
+.appbar{
+  position:sticky;top:0;z-index:40;
+  background:rgba(255,255,255,.92);backdrop-filter:blur(6px);
+  border-bottom:1.5px solid var(--app-line);
+  padding:12px 18px 10px 18px;
+  padding-top:calc(12px + env(safe-area-inset-top,0px));
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .appbar{background:rgba(24,23,18,.92)}}
+:root[data-theme="dark"] .appbar{background:rgba(24,23,18,.92)}
+.appbar-inner{max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:space-between}
+.appbar h1{font-family:"Kalam","Segoe Print",cursive;font-weight:700;font-size:clamp(19px,2.6vw,24px);margin:0;white-space:nowrap}
+.apptabs{display:flex;flex-wrap:wrap;gap:8px}
+.apptab{
+  display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:10px;
+  border:1.5px solid var(--app-line);background:transparent;font-weight:700;font-size:14.5px;
+  min-height:42px;color:var(--app-muted);cursor:pointer;
+}
+.apptab .em{font-size:16px}
+.apptab[aria-selected="true"]{background:var(--tab-c,#1B2533);border-color:var(--tab-c,#1B2533);color:#fff}
+.apptab.t-cn{--tab-c:#2C4A73}
+.apptab.t-ap{--tab-c:#8A5A2A}
+.apptab.t-ud{--tab-c:#2B4A3F}
+.apptab:hover{filter:brightness(.97)}
+@media (max-width:640px){
+  .appbar-inner{flex-direction:column;align-items:stretch}
+  .appbar h1{white-space:normal;font-size:17px;line-height:1.25}
+  .apptabs{justify-content:space-between;flex-wrap:nowrap}
+  .apptab{flex:1;justify-content:center;padding:9px 6px;font-size:12.5px;min-width:0}
+  .apptab .em{display:none}
+}
+
+/* ===== Modulo: Concetti da memorizzare ===== */
+:root{
+  --cn-board:#EEF2F4; --cn-grid:rgba(64,108,160,.14); --cn-ink:#1B2533; --cn-muted:#556577;
+  --cn-line:#C5D0DA; --cn-panel:#FFFFFF; --cn-btn:#1F3A5F; --cn-btn-ink:#FFFFFF; --cn-focus:#1D6FD1;
+  --cn-danger:#B3261E; --cn-ok:#2E7D32; --cn-shadow:rgba(20,30,45,.30);
+  --cn-f-body:"Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --cn-f-hand:"Kalam", "Segoe Print", "Bradley Hand", "Comic Sans MS", cursive;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+    --cn-board:#151B23; --cn-grid:rgba(140,180,230,.09); --cn-ink:#E8EDF3; --cn-muted:#9BAABA;
+    --cn-line:#2D3848; --cn-panel:#1F2833; --cn-btn:#8DB7F0; --cn-btn-ink:#0E1620; --cn-focus:#7CB2FF;
+    --cn-danger:#FF8A80; --cn-ok:#7BD17F; --cn-shadow:rgba(0,0,0,.55);
+  }
+}
+:root[data-theme="dark"]{
+  --cn-board:#151B23; --cn-grid:rgba(140,180,230,.09); --cn-ink:#E8EDF3; --cn-muted:#9BAABA;
+  --cn-line:#2D3848; --cn-panel:#1F2833; --cn-btn:#8DB7F0; --cn-btn-ink:#0E1620; --cn-focus:#7CB2FF;
+  --cn-danger:#FF8A80; --cn-ok:#7BD17F; --cn-shadow:rgba(0,0,0,.55);
+}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+*, *::before, *::after{box-sizing:inherit}
+#view-cn body{
+  margin:0;min-height:100%;font-family:var(--cn-f-body);color:var(--cn-ink);font-size:16px;line-height:1.5;
+  background-color:var(--cn-board);
+  background-image:linear-gradient(var(--cn-grid) 1px,transparent 1px),linear-gradient(90deg,var(--cn-grid) 1px,transparent 1px);
+  background-size:24px 24px;
+}
+#view-cn button, #view-cn input, #view-cn select, #view-cn textarea{font:inherit;color:inherit}
+#view-cn button{cursor:pointer}
+:focus-visible{outline:3px solid var(--cn-focus);outline-offset:2px}
+#view-cn .wrap{max-width:1240px;margin:0 auto;padding:22px 18px 60px}
+#view-cn /* Header */
+header.top{display:flex;flex-wrap:wrap;gap:14px 28px;align-items:flex-end;justify-content:space-between;margin-bottom:18px}
+#view-cn h1{font-family:var(--cn-f-hand);font-weight:700;font-size:clamp(30px,5.2vw,46px);line-height:1.05;margin:0}
+#view-cn .sub{margin:6px 0 0;color:var(--cn-muted);max-width:60ch}
+#view-cn .prog{min-width:230px}
+#view-cn .prog b{font-size:22px}
+#view-cn .bar{height:8px;border-radius:99px;background:var(--cn-line);overflow:hidden;margin-top:6px}
+#view-cn .bar>i{display:block;height:100%;background:var(--cn-ok);width:0;transition:width .35s}
+#view-cn /* Toolbar */
+.tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px}
+#view-cn .search{flex:1 1 260px;position:relative}
+#view-cn .search input{width:100%;padding:11px 14px 11px 40px;border-radius:10px;border:1.5px solid var(--cn-line);background:var(--cn-panel)}
+#view-cn .search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--cn-muted)}
+#view-cn .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:10px;border:1.5px solid var(--cn-line);background:var(--cn-panel);font-weight:700;min-height:44px}
+#view-cn .btn.primary{background:var(--cn-btn);color:var(--cn-btn-ink);border-color:var(--cn-btn)}
+#view-cn .btn.danger{color:var(--cn-danger);border-color:var(--cn-danger)}
+#view-cn .btn:hover{filter:brightness(.97)}
+#view-cn .btn svg{width:18px;height:18px}
+#view-cn .btn[disabled]{opacity:.5;cursor:not-allowed}
+#view-cn .filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+#view-cn .chip{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:99px;border:1.5px solid var(--cn-line);background:var(--cn-panel);font-size:14px;min-height:38px}
+#view-cn .chip i{width:13px;height:13px;border-radius:2px;background:var(--nc);box-shadow:0 0 0 1px rgba(0,0,0,.25);flex:none}
+#view-cn .chip small{color:var(--cn-muted);font-size:12px}
+#view-cn .chip[aria-pressed="true"]{background:var(--nc);color:#26221B;border-color:#26221B;font-weight:700}
+#view-cn .chip[aria-pressed="true"] small{color:#3d382f}
+#view-cn .seg{display:inline-flex;border:1.5px solid var(--cn-line);border-radius:10px;overflow:hidden;background:var(--cn-panel)}
+#view-cn .seg button{border:0;background:transparent;padding:8px 13px;font-size:14px;min-height:40px}
+#view-cn .seg button+button{border-left:1.5px solid var(--cn-line)}
+#view-cn .seg button[aria-pressed="true"]{background:var(--cn-btn);color:var(--cn-btn-ink);font-weight:700}
+#view-cn .row2{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;margin-bottom:18px}
+#view-cn .count{color:var(--cn-muted);font-size:14px;margin-left:auto}
+#view-cn /* Areas colors */
+.a-norma{--nc:#FFE79A}
+#view-cn .a-arch{--nc:#BFE0F7}
+#view-cn .a-ped{--nc:#C8EBBF}
+#view-cn .a-uda{--nc:#FFCFA3}
+#view-cn .a-val{--nc:#FFC3D5}
+#view-cn .a-pers{--nc:#DCCBF6}
+#view-cn .a-disc{--nc:#B3EBE2}
+#view-cn .a-chk{--nc:#FFB5A8}
+#view-cn .a-mie{--nc:#F6F5EE}
+#view-cn /* Board */
+.board{display:grid;grid-template-columns:repeat(auto-fill,minmax(262px,1fr));gap:26px 22px;align-items:start;padding:8px 4px}
+#view-cn .note{
+  --rot:0deg;position:relative;background:var(--nc);color:#26221B;padding:14px 15px 12px;
+  border-radius:2px 2px 2px 14px;transform:rotate(var(--rot));
+  box-shadow:0 1px 1px rgba(0,0,0,.15),0 10px 16px -8px var(--cn-shadow);
+  display:flex;flex-direction:column;gap:6px;transition:transform .18s,box-shadow .18s;
+}
+#view-cn .note:hover{transform:rotate(0deg) translateY(-3px);box-shadow:0 1px 1px rgba(0,0,0,.15),0 16px 22px -8px var(--cn-shadow)}
+#view-cn .note.a-chk{outline:2px dashed rgba(122,24,12,.55);outline-offset:-6px}
+#view-cn .note.known{opacity:.72}
+#view-cn .note.known:hover{opacity:1}
+#view-cn .note .top{display:flex;align-items:center;justify-content:space-between;gap:6px}
+#view-cn .note .area{display:flex;align-items:center;gap:6px;font-size:12.5px;color:#4a443a}
+#view-cn .note .area i{width:9px;height:9px;border-radius:50%;background:#26221B;opacity:.55}
+#view-cn .note.a-chk .area i{background:#9c1c0c;opacity:1}
+#view-cn .icon-btn{border:0;background:transparent;padding:6px;border-radius:8px;color:#4a443a;display:inline-flex;min-width:34px;min-height:34px;align-items:center;justify-content:center}
+#view-cn .icon-btn:hover{background:rgba(0,0,0,.08)}
+#view-cn .icon-btn svg{width:18px;height:18px}
+#view-cn .icon-btn[aria-pressed="true"]{color:#B3261E}
+#view-cn .icon-btn[aria-pressed="true"] svg{fill:currentColor}
+#view-cn .note h3{margin:0;font-family:var(--cn-f-hand);font-weight:700;font-size:21px;line-height:1.15}
+#view-cn .note h3 button{all:unset;cursor:pointer;display:block}
+#view-cn .note h3 button:focus-visible{outline:3px solid var(--cn-focus);outline-offset:3px;border-radius:3px}
+#view-cn .note .x{margin:0;font-size:14.5px;display:-webkit-box;-webkit-line-clamp:7;-webkit-box-orient:vertical;overflow:hidden}
+#view-cn .note .foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px;flex-wrap:wrap}
+#view-cn .note .src{font-size:12.5px;color:#4a443a;font-style:italic}
+#view-cn .tags{display:flex;gap:4px;flex-wrap:wrap}
+#view-cn .tag{font-size:11.5px;padding:1px 7px;border-radius:99px;background:rgba(0,0,0,.09);color:#3a352c}
+#view-cn .know{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:99px;border:1.5px solid rgba(0,0,0,.35);background:rgba(255,255,255,.45);font-size:13px;min-height:34px;color:#26221B}
+#view-cn .know svg{width:15px;height:15px}
+#view-cn .know[aria-pressed="true"]{background:#2E7D32;border-color:#2E7D32;color:#fff;font-weight:700}
+#view-cn .badge-rev{font-size:11.5px;font-weight:700;color:#8a3a00}
+#view-cn .empty{grid-column:1/-1;text-align:center;padding:50px 16px;background:var(--cn-panel);border:2px dashed var(--cn-line);border-radius:14px}
+#view-cn .empty h2{font-family:var(--cn-f-hand);margin:0 0 6px;font-size:26px}
+#view-cn .foot-note{margin-top:34px;color:var(--cn-muted);font-size:13.5px;max-width:90ch}
+#view-cn /* Dialogs */
+dialog{border:0;padding:0;background:transparent;color:#26221B;max-width:none;max-height:none;overflow:visible}
+#view-cn dialog::backdrop{background:rgba(10,15,22,.6)}
+#view-cn .sheet{width:min(760px,94vw);max-height:90vh;overflow:auto;background:var(--nc,#fff);padding:22px 24px 18px;border-radius:3px 3px 3px 22px;box-shadow:0 30px 60px -20px rgba(0,0,0,.6);position:relative}
+#view-cn .sheet.plain{background:var(--cn-panel);color:var(--cn-ink)}
+#view-cn .sheet h2{font-family:var(--cn-f-hand);font-size:clamp(24px,4vw,32px);line-height:1.15;margin:4px 40px 10px 0}
+#view-cn .sheet h4{margin:18px 0 6px;font-size:15px}
+#view-cn .sheet .x{font-size:17px;margin:0 0 10px}
+#view-cn .sheet .d{margin:0 0 10px;font-size:15.5px}
+#view-cn .close{position:absolute;right:10px;top:10px}
+#view-cn .refs{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+#view-cn .refs li{display:flex;gap:8px;align-items:flex-start;background:rgba(255,255,255,.55);border-radius:8px;padding:7px 9px;font-size:14.5px}
+#view-cn .refs li span{flex:1;overflow-wrap:anywhere}
+#view-cn .refs a{color:inherit}
+#view-cn .usebox{background:rgba(255,255,255,.55);border-left:5px solid #26221B;border-radius:4px;padding:9px 12px;font-size:15px}
+#view-cn .memo{width:100%;min-height:76px;border-radius:8px;border:1.5px solid rgba(0,0,0,.3);background:rgba(255,255,255,.7);padding:9px 11px;color:#26221B;resize:vertical}
+#view-cn .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;align-items:center}
+#view-cn .actions .sp{flex:1}
+#view-cn .sheet .btn{background:rgba(255,255,255,.65);border-color:rgba(0,0,0,.35);color:#26221B}
+#view-cn .sheet .btn.primary{background:#1F3A5F;color:#fff;border-color:#1F3A5F}
+#view-cn .sheet .btn.danger{color:#9c1c12;border-color:#9c1c12}
+#view-cn .sheet.plain .btn{background:var(--cn-panel);color:var(--cn-ink);border-color:var(--cn-line)}
+#view-cn .sheet.plain .btn.primary{background:var(--cn-btn);color:var(--cn-btn-ink);border-color:var(--cn-btn)}
+#view-cn .sheet.plain .btn.danger{color:var(--cn-danger);border-color:var(--cn-danger)}
+#view-cn .meta{font-size:13.5px;color:#4a443a;font-style:italic;margin:6px 0 0}
+#view-cn .form label{display:block;font-weight:700;margin:12px 0 4px;font-size:14.5px}
+#view-cn .form input[type=text], #view-cn .form select, #view-cn .form textarea, #view-cn .datab textarea{width:100%;padding:9px 11px;border-radius:8px;border:1.5px solid var(--cn-line);background:var(--cn-board);color:var(--cn-ink)}
+#view-cn .form textarea, #view-cn .datab textarea{min-height:90px;resize:vertical}
+#view-cn .checks{display:flex;gap:16px;flex-wrap:wrap}
+#view-cn .checks label{font-weight:400;display:flex;gap:6px;align-items:center;margin:0}
+#view-cn .hint{font-size:13px;color:var(--cn-muted);font-weight:400}
+#view-cn .rv-count{font-size:14px;color:#4a443a}
+#view-cn .rv-card{margin-top:10px;min-height:190px}
+#view-cn .rv-q{font-family:var(--cn-f-hand);font-weight:700;font-size:clamp(26px,5vw,36px);line-height:1.15;margin:12px 0}
+#view-cn .rv-hide{color:#4a443a;font-style:italic}
+#view-cn .pill-rev{display:inline-block;margin-top:2px}
+#view-cn .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,30px);background:#1B2533;color:#fff;padding:10px 16px;border-radius:10px;opacity:0;pointer-events:none;transition:.25s;z-index:9999;max-width:90vw;font-size:14.5px}
+#view-cn .toast.show{opacity:1;transform:translate(-50%,0)}
+#view-cn .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}
+#view-cn .note{transform:none}
+}
+
+@media (max-width:560px){#view-cn .wrap{padding:16px 12px 50px}
+#view-cn .sheet{padding:18px 16px 14px}
+#view-cn .count{margin-left:0;width:100%}
+}
+/* ===== Modulo: Argomenti e punti chiave ===== */
+:root{
+  --ap-board:#EEF2F4;--ap-grid:rgba(64,108,160,.14);--ap-ink:#1B2533;--ap-muted:#556577;--ap-line:#C5D0DA;--ap-panel:#FFFFFF;
+  --ap-btn:#1F3A5F;--ap-btn-ink:#FFFFFF;--ap-focus:#1D6FD1;--ap-danger:#B3261E;--ap-ok:#2E7D32;--ap-shadow:rgba(20,30,45,.30);
+  --ap-f-body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --ap-f-hand:"Kalam","Segoe Print","Bradley Hand","Comic Sans MS",cursive;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--ap-board:#151B23;--ap-grid:rgba(140,180,230,.09);--ap-ink:#E8EDF3;--ap-muted:#9BAABA;--ap-line:#2D3848;--ap-panel:#1F2833;--ap-btn:#8DB7F0;--ap-btn-ink:#0E1620;--ap-focus:#7CB2FF;--ap-danger:#FF8A80;--ap-ok:#7BD17F;--ap-shadow:rgba(0,0,0,.55)}
+}
+:root[data-theme="dark"]{--ap-board:#151B23;--ap-grid:rgba(140,180,230,.09);--ap-ink:#E8EDF3;--ap-muted:#9BAABA;--ap-line:#2D3848;--ap-panel:#1F2833;--ap-btn:#8DB7F0;--ap-btn-ink:#0E1620;--ap-focus:#7CB2FF;--ap-danger:#FF8A80;--ap-ok:#7BD17F;--ap-shadow:rgba(0,0,0,.55)}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+*, *::before, *::after{box-sizing:inherit}
+#view-ap body{margin:0;min-height:100%;font-family:var(--ap-f-body);color:var(--ap-ink);font-size:16px;line-height:1.5;background-color:var(--ap-board);
+  background-image:linear-gradient(var(--ap-grid) 1px,transparent 1px),linear-gradient(90deg,var(--ap-grid) 1px,transparent 1px);background-size:24px 24px}
+#view-ap button, #view-ap input, #view-ap select, #view-ap textarea{font:inherit;color:inherit}
+#view-ap button{cursor:pointer}
+:focus-visible{outline:3px solid var(--ap-focus);outline-offset:2px}
+#view-ap .wrap{max-width:1280px;margin:0 auto;padding:22px 18px 60px}
+#view-ap header.top{display:flex;flex-wrap:wrap;gap:14px 28px;align-items:flex-end;justify-content:space-between;margin-bottom:18px}
+#view-ap h1{font-family:var(--ap-f-hand);font-weight:700;font-size:clamp(28px,5vw,44px);line-height:1.08;margin:0}
+#view-ap .sub{margin:6px 0 0;color:var(--ap-muted);max-width:62ch}
+#view-ap .prog{min-width:240px}
+#view-ap .prog b{font-size:22px}
+#view-ap .bar{height:8px;border-radius:99px;background:var(--ap-line);overflow:hidden;margin-top:6px}
+#view-ap .bar>i{display:block;height:100%;background:var(--ap-ok);width:0;transition:width .35s}
+#view-ap .tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px}
+#view-ap .search{flex:1 1 260px;position:relative}
+#view-ap .search input{width:100%;padding:11px 14px 11px 40px;border-radius:10px;border:1.5px solid var(--ap-line);background:var(--ap-panel)}
+#view-ap .search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--ap-muted)}
+#view-ap .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:10px;border:1.5px solid var(--ap-line);background:var(--ap-panel);font-weight:700;min-height:44px}
+#view-ap .btn.primary{background:var(--ap-btn);color:var(--ap-btn-ink);border-color:var(--ap-btn)}
+#view-ap .btn.danger{color:var(--ap-danger);border-color:var(--ap-danger)}
+#view-ap .btn[aria-pressed="true"]{background:var(--ap-btn);color:var(--ap-btn-ink);border-color:var(--ap-btn)}
+#view-ap .btn svg{width:18px;height:18px}
+#view-ap .filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+#view-ap .chip{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:99px;border:1.5px solid var(--ap-line);background:var(--ap-panel);font-size:14px;min-height:38px}
+#view-ap .chip i{width:13px;height:13px;border-radius:2px;background:var(--nc);box-shadow:0 0 0 1px rgba(0,0,0,.25);flex:none}
+#view-ap .chip small{color:var(--ap-muted);font-size:12px}
+#view-ap .chip[aria-pressed="true"]{background:var(--nc);color:#26221B;border-color:#26221B;font-weight:700}
+#view-ap .chip[aria-pressed="true"] small{color:#3d382f}
+#view-ap .seg{display:inline-flex;border:1.5px solid var(--ap-line);border-radius:10px;overflow:hidden;background:var(--ap-panel)}
+#view-ap .seg button{border:0;background:transparent;padding:8px 13px;font-size:14px;min-height:40px}
+#view-ap .seg button+button{border-left:1.5px solid var(--ap-line)}
+#view-ap .seg button[aria-pressed="true"]{background:var(--ap-btn);color:var(--ap-btn-ink);font-weight:700}
+#view-ap .row2{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;margin-bottom:18px}
+#view-ap .count{color:var(--ap-muted);font-size:14px;margin-left:auto}
+#view-ap .s-of{--nc:#FFE79A}
+#view-ap .s-cv{--nc:#BFE0F7}
+#view-ap .s-pd{--nc:#FFCFA3}
+#view-ap .s-di{--nc:#B3EBE2}
+#view-ap .s-vf{--nc:#FFB5A8}
+#view-ap .s-mie{--nc:#F6F5EE}
+#view-ap .board{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:26px 22px;align-items:start;padding:8px 4px}
+#view-ap .note{--rot:0deg;position:relative;background:var(--nc);color:#26221B;padding:14px 16px 12px;border-radius:2px 2px 2px 16px;transform:rotate(var(--rot));
+  box-shadow:0 1px 1px rgba(0,0,0,.15),0 10px 16px -8px var(--ap-shadow);display:flex;flex-direction:column;gap:6px;transition:transform .18s,box-shadow .18s}
+#view-ap .note:hover, #view-ap .note:focus-within{transform:rotate(0deg) translateY(-2px);box-shadow:0 1px 1px rgba(0,0,0,.15),0 16px 22px -8px var(--ap-shadow)}
+#view-ap .note.s-vf{outline:2px dashed rgba(122,24,12,.55);outline-offset:-6px}
+#view-ap .note.done{opacity:.8}
+#view-ap .top{display:flex;align-items:center;justify-content:space-between;gap:6px}
+#view-ap .area{display:flex;align-items:center;gap:6px;font-size:12.5px;color:#4a443a}
+#view-ap .area i{width:9px;height:9px;border-radius:50%;background:#26221B;opacity:.55}
+#view-ap .s-vf .area i{background:#9c1c0c;opacity:1}
+#view-ap .icon-btn{border:0;background:transparent;padding:6px;border-radius:8px;color:#4a443a;display:inline-flex;min-width:34px;min-height:34px;align-items:center;justify-content:center}
+#view-ap .icon-btn:hover{background:rgba(0,0,0,.08)}
+#view-ap .icon-btn svg{width:18px;height:18px}
+#view-ap .note h3{margin:0;font-family:var(--ap-f-hand);font-weight:700;font-size:22px;line-height:1.15}
+#view-ap .pts{list-style:none;margin:4px 0 2px;padding:0;display:grid;gap:5px}
+#view-ap .pt{display:flex;gap:8px;align-items:flex-start;font-size:15px;line-height:1.4;padding:4px 4px 4px 2px;border-radius:6px}
+#view-ap .pt .tick{flex:none;width:26px;height:26px;margin-top:0;border-radius:50%;border:2px solid rgba(0,0,0,.4);background:rgba(255,255,255,.55);display:inline-flex;align-items:center;justify-content:center;padding:0;color:transparent}
+#view-ap .pt .tick svg{width:14px;height:14px}
+#view-ap .pt .tick[aria-pressed="true"]{background:var(--ap-ok);border-color:var(--ap-ok);color:#fff}
+#view-ap .pt.ok .ptx{text-decoration:line-through;text-decoration-color:rgba(0,0,0,.35);opacity:.72}
+#view-ap .ptx{flex:1;overflow-wrap:anywhere}
+#view-ap .ref{display:block;font-size:12.5px;font-style:italic;color:#4a443a}
+#view-ap .cover{all:unset;flex:1;cursor:pointer;color:#26221B;border-bottom:2px dotted rgba(0,0,0,.5);padding:1px 0;font-style:italic}
+#view-ap .cover:focus-visible{outline:3px solid var(--ap-focus);outline-offset:2px}
+#view-ap .foot{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:6px;padding-top:8px;border-top:1px dashed rgba(0,0,0,.25)}
+#view-ap .foot .meta{font-size:12.5px;color:#4a443a}
+#view-ap .foot .meta b{font-size:14px;color:#26221B}
+#view-ap .mini{border:1.5px solid rgba(0,0,0,.35);background:rgba(255,255,255,.5);border-radius:99px;padding:4px 11px;font-size:13px;min-height:32px;color:#26221B}
+#view-ap .mini:hover{background:rgba(255,255,255,.8)}
+#view-ap .tags{display:flex;gap:4px;flex-wrap:wrap}
+#view-ap .tag{font-size:11.5px;padding:1px 7px;border-radius:99px;background:rgba(0,0,0,.09);color:#3a352c}
+#view-ap .empty{grid-column:1/-1;text-align:center;padding:50px 16px;background:var(--ap-panel);border:2px dashed var(--ap-line);border-radius:14px}
+#view-ap .empty h2{font-family:var(--ap-f-hand);margin:0 0 6px;font-size:26px}
+#view-ap .foot-note{margin-top:34px;color:var(--ap-muted);font-size:13.5px;max-width:90ch}
+#view-ap dialog{border:0;padding:0;background:transparent;color:var(--ap-ink);max-width:none;max-height:none;overflow:visible}
+#view-ap dialog::backdrop{background:rgba(10,15,22,.6)}
+#view-ap .sheet{width:min(640px,94vw);max-height:90vh;overflow:auto;background:var(--ap-panel);padding:22px 24px 18px;border-radius:12px;box-shadow:0 30px 60px -20px rgba(0,0,0,.6);position:relative}
+#view-ap .sheet h2{font-family:var(--ap-f-hand);font-size:28px;line-height:1.15;margin:0 40px 6px 0}
+#view-ap .close{position:absolute;right:10px;top:10px}
+#view-ap .sheet .icon-btn{color:var(--ap-ink)}
+#view-ap .form label{display:block;font-weight:700;margin:12px 0 4px;font-size:14.5px}
+#view-ap .form input[type=text], #view-ap .form select, #view-ap .form textarea{width:100%;padding:9px 11px;border-radius:8px;border:1.5px solid var(--ap-line);background:var(--ap-board);color:var(--ap-ink)}
+#view-ap .form textarea{min-height:130px;resize:vertical}
+#view-ap .hint{font-size:13px;color:var(--ap-muted);font-weight:400}
+#view-ap .checks{display:flex;gap:16px;flex-wrap:wrap}
+#view-ap .checks label{font-weight:400;display:flex;gap:6px;align-items:center;margin:0}
+#view-ap .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;align-items:center}
+#view-ap .actions .sp{flex:1}
+#view-ap .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,30px);background:#1B2533;color:#fff;padding:10px 16px;border-radius:10px;opacity:0;pointer-events:none;transition:.25s;z-index:9999;max-width:90vw;font-size:14.5px}
+#view-ap .toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}
+#view-ap .note{transform:none}
+}
+
+@media (max-width:560px){#view-ap .wrap{padding:16px 12px 50px}
+#view-ap .sheet{padding:18px 16px 14px}
+#view-ap .count{margin-left:0;width:100%}
+}
+/* ===== Modulo: Archivio UDL ===== */
+:root{
+  --ud-bg:#F4F1EA;--ud-grid:rgba(90,80,60,.08);--ud-ink:#26221B;--ud-muted:#6B6152;--ud-line:#DCD3C2;--ud-panel:#FFFFFF;
+  --ud-btn:#2B4A3F;--ud-btn-ink:#FFFFFF;--ud-focus:#1D6FD1;--ud-danger:#A8371F;--ud-ok:#2E7D32;--ud-shadow:rgba(40,30,15,.22);
+  --ud-f-body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--ud-f-hand:"Kalam","Segoe Print",cursive;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--ud-bg:#181712;--ud-grid:rgba(220,210,190,.06);--ud-ink:#EDE7DA;--ud-muted:#B0A793;--ud-line:#3A3527;--ud-panel:#221F18;--ud-btn:#8FBFAA;--ud-btn-ink:#12241C;--ud-focus:#7CB2FF;--ud-danger:#FF8A70;--ud-ok:#7BD17F;--ud-shadow:rgba(0,0,0,.5)}
+}
+:root[data-theme="dark"]{--ud-bg:#181712;--ud-grid:rgba(220,210,190,.06);--ud-ink:#EDE7DA;--ud-muted:#B0A793;--ud-line:#3A3527;--ud-panel:#221F18;--ud-btn:#8FBFAA;--ud-btn-ink:#12241C;--ud-focus:#7CB2FF;--ud-danger:#FF8A70;--ud-ok:#7BD17F;--ud-shadow:rgba(0,0,0,.5)}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+*, *::before, *::after{box-sizing:inherit}
+#view-ud body{margin:0;min-height:100%;font-family:var(--ud-f-body);color:var(--ud-ink);font-size:16px;line-height:1.5;background-color:var(--ud-bg);
+ background-image:radial-gradient(var(--ud-grid) 1px,transparent 1px);background-size:20px 20px}
+#view-ud button, #view-ud input, #view-ud select, #view-ud textarea{font:inherit;color:inherit}
+#view-ud button{cursor:pointer}
+:focus-visible{outline:3px solid var(--ud-focus);outline-offset:2px}
+#view-ud .wrap{max-width:1280px;margin:0 auto;padding:22px 18px 60px}
+#view-ud header.top{display:flex;flex-wrap:wrap;gap:14px 28px;align-items:flex-end;justify-content:space-between;margin-bottom:14px}
+#view-ud h1{font-family:var(--ud-f-hand);font-weight:700;font-size:clamp(26px,4.6vw,40px);line-height:1.1;margin:0}
+#view-ud .sub{margin:6px 0 0;color:var(--ud-muted);max-width:64ch;font-size:15px}
+#view-ud .prog b{font-size:20px}
+#view-ud .bar{height:7px;border-radius:99px;background:var(--ud-line);overflow:hidden;margin-top:5px;width:220px}
+#view-ud .bar>i{display:block;height:100%;background:var(--ud-ok);width:0;transition:width .35s}
+#view-ud .infobox{background:var(--ud-panel);border:1.5px solid var(--ud-line);border-radius:12px;padding:14px 16px;margin-bottom:16px}
+#view-ud .infobox summary{cursor:pointer;font-weight:700;list-style:none;display:flex;align-items:center;gap:8px}
+#view-ud .infobox summary::-webkit-details-marker{display:none}
+#view-ud .infobox summary svg{width:16px;height:16px;transition:transform .2s}
+#view-ud .infobox[open] summary svg{transform:rotate(90deg)}
+#view-ud .infobox .body{margin-top:10px;font-size:14.5px;color:var(--ud-ink)}
+#view-ud .infobox .body p{margin:0 0 8px}
+#view-ud .principi{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin-top:8px}
+#view-ud .principio{border-radius:10px;padding:10px 12px;font-size:13.5px}
+#view-ud .principio b{display:block;font-size:14.5px;margin-bottom:3px}
+#view-ud .pr-rap{background:#E4EEFB}
+#view-ud .pr-az{background:#FDEBD8}
+#view-ud .pr-co{background:#E4F3E1}
+:root[data-theme="dark"] .pr-rap, #view-ud body:has(:root[data-theme="dark"]) .pr-rap{background:#1c2b3d}
+
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .pr-rap{background:#1c2b3d;color:#dce8f7}
+:root:not([data-theme="light"]) .pr-az{background:#3a2c1a;color:#f6e3cc}
+:root:not([data-theme="light"]) .pr-co{background:#1c3320;color:#dcefdc}
+}
+:root[data-theme="dark"] .pr-az{background:#3a2c1a;color:#f6e3cc}
+:root[data-theme="dark"] .pr-co{background:#1c3320;color:#dcefdc}
+#view-ud .tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px}
+#view-ud .search{flex:1 1 240px;position:relative}
+#view-ud .search input{width:100%;padding:11px 14px 11px 40px;border-radius:10px;border:1.5px solid var(--ud-line);background:var(--ud-panel)}
+#view-ud .search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--ud-muted)}
+#view-ud .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:10px;border:1.5px solid var(--ud-line);background:var(--ud-panel);font-weight:700;min-height:44px}
+#view-ud .btn.primary{background:var(--ud-btn);color:var(--ud-btn-ink);border-color:var(--ud-btn)}
+#view-ud .btn.danger{color:var(--ud-danger);border-color:var(--ud-danger)}
+#view-ud .btn:hover{filter:brightness(.97)}
+#view-ud .tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+#view-ud .tab{padding:9px 15px;border-radius:99px;border:1.5px solid var(--ud-line);background:var(--ud-panel);font-weight:700;font-size:14px;min-height:40px;display:inline-flex;align-items:center;gap:7px}
+#view-ud .tab small{font-weight:400;color:var(--ud-muted)}
+#view-ud .tab[aria-pressed="true"]{background:var(--g-c);border-color:var(--g-c);color:#1b1912}
+#view-ud .tab.g-infanzia{--g-c:#FBD98A}
+#view-ud .tab.g-primaria{--g-c:#9FD1E8}
+#view-ud .tab.g-secondaria{--g-c:#C9B6EC}
+#view-ud .tab.g-tutti{--g-c:#DCD3C2}
+#view-ud .count{color:var(--ud-muted);font-size:14px;margin-left:auto}
+#view-ud .board{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:18px;padding:4px 0}
+#view-ud .card{background:var(--ud-panel);border:1.5px solid var(--ud-line);border-radius:14px;padding:15px 16px 13px;box-shadow:0 8px 18px -12px var(--ud-shadow);
+ display:flex;flex-direction:column;gap:8px;border-top:6px solid var(--g-c)}
+#view-ud .card.g-infanzia{--g-c:#FBD98A}
+#view-ud .card.g-primaria{--g-c:#9FD1E8}
+#view-ud .card.g-secondaria{--g-c:#C9B6EC}
+#view-ud .card .top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+#view-ud .badge{font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:99px;background:var(--g-c);color:#1b1912}
+#view-ud .origin{font-size:11px;padding:2px 8px;border-radius:99px;border:1px solid var(--ud-line);color:var(--ud-muted)}
+#view-ud .card h3{margin:0;font-size:18px;line-height:1.25}
+#view-ud .card .disc{font-size:13.5px;color:var(--ud-muted)}
+#view-ud .card .obx{font-size:14.5px;margin:2px 0 0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+#view-ud .card .obx b{font-weight:700}
+#view-ud .card .foot{display:flex;justify-content:space-between;align-items:center;margin-top:6px;gap:8px}
+#view-ud .card .foot button{border:0;background:transparent;color:var(--ud-btn);font-weight:700;padding:8px 4px;min-height:36px}
+#view-ud .card .foot button:hover{text-decoration:underline}
+#view-ud .mini{border:1.5px solid var(--ud-line);background:transparent;border-radius:99px;padding:4px 10px;font-size:12.5px;min-height:30px;color:var(--ud-muted)}
+#view-ud .empty{grid-column:1/-1;text-align:center;padding:48px 16px;background:var(--ud-panel);border:2px dashed var(--ud-line);border-radius:14px}
+#view-ud .empty h2{font-family:var(--ud-f-hand);margin:0 0 6px;font-size:24px}
+#view-ud dialog{border:0;padding:0;background:transparent;color:var(--ud-ink);max-width:none;max-height:none;overflow:visible}
+#view-ud dialog::backdrop{background:rgba(15,12,6,.55)}
+#view-ud .sheet{width:min(760px,94vw);max-height:90vh;overflow:auto;background:var(--ud-panel);padding:22px 24px 18px;border-radius:14px;box-shadow:0 30px 60px -20px rgba(0,0,0,.55);position:relative;border-top:8px solid var(--g-c,#DCD3C2)}
+#view-ud .sheet h2{font-family:var(--ud-f-hand);font-size:clamp(22px,4vw,30px);margin:2px 40px 4px 0;line-height:1.15}
+#view-ud .close{position:absolute;right:10px;top:10px;border:0;background:transparent;padding:8px;border-radius:8px;min-width:38px;min-height:38px}
+#view-ud .close:hover{background:rgba(0,0,0,.06)}
+#view-ud .meta-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px;font-size:13.5px;color:var(--ud-muted)}
+#view-ud .sect{margin-top:14px}
+#view-ud .sect h4{margin:0 0 4px;font-size:14px;display:flex;align-items:center;gap:7px}
+#view-ud .sect h4 i{width:9px;height:9px;border-radius:2px;background:var(--sc,#999)}
+#view-ud .sect p{margin:0;font-size:15px;white-space:pre-wrap}
+#view-ud .s-obiettivo{--sc:#7A6A3B}
+#view-ud .s-barriere{--sc:#A8371F}
+#view-ud .s-rappresentazione{--sc:#2B5B8C}
+#view-ud .s-azione{--sc:#B5651D}
+#view-ud .s-coinvolgimento{--sc:#2E7D32}
+#view-ud .s-attenzioni{--sc:#6B4FA0}
+#view-ud .s-valutazione{--sc:#1B2533}
+#view-ud .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+#view-ud .actions .sp{flex:1}
+#view-ud .form label{display:block;font-weight:700;margin:12px 0 4px;font-size:14.5px}
+#view-ud .form .hint{font-weight:400;color:var(--ud-muted);font-size:13px}
+#view-ud .form input[type=text], #view-ud .form select, #view-ud .form textarea{width:100%;padding:9px 11px;border-radius:8px;border:1.5px solid var(--ud-line);background:var(--ud-bg);color:var(--ud-ink)}
+#view-ud .form textarea{min-height:70px;resize:vertical}
+#view-ud .grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
+
+@media (max-width:560px){#view-ud .grid2{grid-template-columns:1fr}
+}
+#view-ud .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,30px);background:#26221B;color:#fff;padding:10px 16px;border-radius:10px;opacity:0;pointer-events:none;transition:.25s;z-index:9999;max-width:90vw;font-size:14.5px}
+#view-ud .toast.show{opacity:1;transform:translate(-50%,0)}
+#view-ud .foot-note{margin-top:30px;color:var(--ud-muted);font-size:13.5px;max-width:92ch}
+
+@media (prefers-reduced-motion: reduce){*{transition:none!important}
+}
+
+@media (max-width:560px){#view-ud .wrap{padding:16px 12px 50px}
+#view-ud .sheet{padding:18px 16px 14px}
+#view-ud .count{margin-left:0;width:100%}
+}
+</style>
+</head>
+<body>
+<header class="appbar">
+  <div class="appbar-inner">
+    <h1>Appunti NIN — Parte teorica e archivio materiali studio/lavoro</h1>
+    <nav class="apptabs" role="tablist" aria-label="Sezioni">
+      <button class="apptab t-cn" role="tab" data-tab="cn" aria-selected="true"><span class="em">📌</span> Concetti da memorizzare</button>
+      <button class="apptab t-ap" role="tab" data-tab="ap" aria-selected="false"><span class="em">🗂️</span> Argomenti e punti chiave</button>
+      <button class="apptab t-ud" role="tab" data-tab="ud" aria-selected="false"><span class="em">🧩</span> Archivio UDL</button>
+    </nav>
+  </div>
+</header>
+
+<section id="view-cn" class="view">
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>Bacheca del curricolo verticale</h1>
+      <p class="sub">Note da memorizzare per scrivere il curricolo e progettare le UdA, ricavate dai materiali del corso 2025/26 sulle Indicazioni nazionali (D.M. 221/2025).</p>
+    </div>
+    <div class="prog" aria-live="polite">
+      <div><b id="cn-pk">0</b> memorizzate su <span id="cn-pt">0</span></div>
+      <div class="bar"><i id="cn-pbar"></i></div>
+    </div>
+  </header>
+
+  <div class="tools">
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="cn-q" type="search" placeholder="Cerca un concetto, un autore, un decreto…" aria-label="Cerca nelle note" autocomplete="off">
+    </div>
+    <button class="btn primary" data-act="review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h11a3 3 0 013 3v11H7a3 3 0 01-3-3z"/><path d="M8 9h6M8 13h4"/></svg>Ripasso</button>
+    <button class="btn" data-act="new"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Nuova nota</button>
+    <button class="btn" data-act="data">Salva o ripristina</button>
+  </div>
+
+  <div class="filters" id="cn-chips" role="group" aria-label="Filtra per area"></div>
+
+  <div class="row2">
+    <div class="seg" role="group" aria-label="Serve per">
+      <button data-act="uso" data-v="all" aria-pressed="true">Tutto</button>
+      <button data-act="uso" data-v="c" aria-pressed="false">Curricolo verticale</button>
+      <button data-act="uso" data-v="u" aria-pressed="false">UdA e progettazione</button>
+    </div>
+    <div class="seg" role="group" aria-label="Stato">
+      <button data-act="stato" data-v="all" aria-pressed="true">Tutte</button>
+      <button data-act="stato" data-v="todo" aria-pressed="false">Da imparare</button>
+      <button data-act="stato" data-v="known" aria-pressed="false">Memorizzate</button>
+      <button data-act="stato" data-v="pin" aria-pressed="false">Fissate</button>
+    </div>
+    <span class="count" id="cn-count" aria-live="polite"></span>
+  </div>
+
+  <main class="board" id="cn-board"></main>
+
+  <p class="foot-note">I riferimenti provengono dalle dispense e dalle slide caricate. Dove compare «mio rimando» l’indicazione è un’aggiunta non presente nei materiali e va controllata sul testo ufficiale. Le note «Da verificare» segnalano incongruenze rilevate tra i materiali: controllale prima di citare. Nessuna citazione va virgolettata a memoria: confrontala con l’Allegato 1 del D.M. 221/2025.</p>
+</div>
+
+<!-- Dettaglio nota -->
+<dialog id="cn-dNote" aria-labelledby="cn-nTitle"><div class="sheet" id="cn-nSheet"></div></dialog>
+<!-- Ripasso -->
+<dialog id="cn-dRev" aria-label="Ripasso"><div class="sheet" id="cn-rSheet"></div></dialog>
+<!-- Form -->
+<dialog id="cn-dForm" aria-labelledby="cn-fTitle"><div class="sheet plain form" id="cn-fSheet"></div></dialog>
+<!-- Dati -->
+<dialog id="cn-dData" aria-labelledby="cn-dTitle"><div class="sheet plain datab" id="cn-dSheet"></div></dialog>
+<div class="toast" id="cn-toast" role="status"></div>
+</section>
+
+<section id="view-ap" class="view">
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>Argomenti e punti chiave</h1>
+      <p class="sub">Per scrivere il curricolo verticale e progettare le UdA: ogni sticky note è un argomento con i suoi punti chiave da memorizzare uno per uno. Dai materiali del corso 2025/26 e dal testo ufficiale delle Indicazioni nazionali (D.M. 221/2025), con le pagine verificate sul volume MIM di marzo 2026.</p>
+    </div>
+    <div class="prog" aria-live="polite">
+      <div><b id="ap-pk">0</b> punti memorizzati su <span id="ap-pt">0</span></div>
+      <div class="bar"><i id="ap-pbar"></i></div>
+    </div>
+  </header>
+
+  <div class="tools">
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="ap-q" type="search" placeholder="Cerca un argomento o un punto chiave…" aria-label="Cerca" autocomplete="off">
+    </div>
+    <button class="btn primary" id="ap-memBtn" data-act="mem" aria-pressed="false" title="Copre i punti: leggi solo l’inizio e prova a ricordare il resto">Modalità memoria</button>
+    <button class="btn" data-act="new">+ Nuovo argomento</button>
+    <button class="btn" data-act="copyall" title="Copia gli argomenti visibili come elenco di testo">Copia elenco</button>
+  </div>
+
+  <div class="filters" id="ap-chips" role="group" aria-label="Filtra per sezione"></div>
+
+  <div class="row2">
+    <div class="seg" role="group" aria-label="Serve per">
+      <button data-act="uso" data-v="all" aria-pressed="true">Tutto</button>
+      <button data-act="uso" data-v="c" aria-pressed="false">Curricolo verticale</button>
+      <button data-act="uso" data-v="u" aria-pressed="false">UdA e progettazione</button>
+    </div>
+    <div class="seg" role="group" aria-label="Stato">
+      <button data-act="stato" data-v="all" aria-pressed="true">Tutti</button>
+      <button data-act="stato" data-v="todo" aria-pressed="false">Da completare</button>
+      <button data-act="stato" data-v="done" aria-pressed="false">Completati</button>
+    </div>
+    <button class="btn" id="ap-rstB" data-act="reset" style="min-height:40px;padding:6px 12px;font-weight:400">Azzera i progressi</button>
+    <span class="count" id="ap-count" aria-live="polite"></span>
+  </div>
+
+  <main class="board" id="ap-board"></main>
+
+  <p class="foot-note">Spunta il cerchio accanto a ogni punto quando lo sai. Con «Modalità memoria» vedi solo le prime parole di ogni punto: tocca per scoprirlo. I progressi restano in questo browser. «p.» indica la pagina stampata del volume MIM «Indicazioni nazionali per il curricolo della scuola dell’infanzia e del primo ciclo d’istruzione» (marzo 2026), controllata sul PDF: coincide con la pagina del PDF meno uno. Gli autori dei materiali citano altre numerazioni: usa sempre titolo di sezione e pagina del volume. Le note rosse «Da verificare» segnalano incongruenze tra i materiali e con il testo.</p>
+</div>
+
+<dialog id="ap-dForm" aria-labelledby="ap-fTitle"><div class="sheet form" id="ap-fSheet"></div></dialog>
+<div class="toast" id="ap-toast" role="status"></div>
+</section>
+
+<section id="view-ud" class="view">
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>Archivio UDL</h1>
+      <p class="sub">Progettazioni per l’inclusione — infanzia, primaria, secondaria di primo grado. Uno spazio per raccogliere e creare Unità di Apprendimento progettate con i principi dell’UDL.</p>
+    </div>
+    <div class="prog" aria-live="polite">
+      <div><b id="ud-pk">0</b> UDL in archivio</div>
+      <div class="bar"><i id="ud-pbar"></i></div>
+    </div>
+  </header>
+
+  <details class="infobox" id="ud-info">
+    <summary><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg> Che cos’è l’UDL?</summary>
+    <div class="body">
+      <p><b>UDL</b> è la sigla di <i>Universal Design for Learning</i> (Progettazione Universale per l’Apprendimento), il modello elaborato dal CAST (Center for Applied Special Technology, USA) per progettare fin dall’inizio percorsi accessibili alla variabilità reale di una classe, invece di adattarli in un secondo momento per chi resta escluso.</p>
+      <p>Si basa su tre principi, ciascuno legato a una rete del cervello coinvolta nell’apprendimento:</p>
+      <div class="principi">
+        <div class="principio pr-rap"><b>Rappresentazione</b>Il «cosa» dell’apprendimento: più modi per presentare le informazioni e i contenuti.</div>
+        <div class="principio pr-az"><b>Azione ed espressione</b>Il «come»: più modi per agire nell’ambiente e dimostrare ciò che si è appreso.</div>
+        <div class="principio pr-co"><b>Coinvolgimento</b>Il «perché»: più modi per suscitare interesse, sostenere lo sforzo e l’autoregolazione.</div>
+      </div>
+      <p style="margin-top:10px">Nelle schede di questo archivio, prima dei tre principi c’è un passaggio che li prepara — le <b>possibili barriere</b>, cioè gli ostacoli che l’attività così com’è pensata potrebbe creare per qualcuno — e dopo un passaggio che li completa: le <b>attenzioni specifiche</b> per singoli alunni (compreso chi ha PEI o PDP) e le <b>evidenze per la valutazione</b>, coerenti con l’obiettivo di partenza.</p>
+      <p>L’UDL non sostituisce PEI e PDP, che restano individuali: riduce il bisogno di adattamenti eccezionali perché li anticipa nella progettazione comune, per tutta la classe.</p>
+      <p style="margin-bottom:0"><i>Riferimento: CAST, Universal Design for Learning Guidelines, versione 3.0, 2024 — udlguidelines.cast.org</i></p>
+    </div>
+  </details>
+
+  <div class="tools">
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="ud-q" type="search" placeholder="Cerca per disciplina, obiettivo, parola chiave…" aria-label="Cerca nell’archivio" autocomplete="off">
+    </div>
+    <button class="btn primary" data-act="new">+ Progetta una nuova UDL</button>
+    <button class="btn" data-act="template">Modello vuoto da compilare</button>
+    <button class="btn" data-act="data">Salva o ripristina</button>
+  </div>
+
+  <div class="tabs" id="ud-tabs" role="group" aria-label="Filtra per ordine di scuola"></div>
+  <div class="tabs" style="margin-top:-6px"><span class="count" id="ud-count" aria-live="polite"></span></div>
+
+  <main class="board" id="ud-board"></main>
+
+  <p class="foot-note">Le schede segnate «Materiale del corso» riportano gli esempi che mi hai fornito, con le stesse citazioni. Le schede segnate «Esempio redazionale» sono state scritte per completare l’archivio con infanzia e secondaria, in mancanza di esempi del corso per questi ordini: usale come traccia, non come fonte da citare. Le UDL che aggiungi restano solo in questo browser: usa «Salva o ripristina» per conservarle.</p>
+</div>
+
+<dialog id="ud-dCard" aria-labelledby="ud-cTitle"><div class="sheet" id="ud-cSheet"></div></dialog>
+<dialog id="ud-dForm" aria-labelledby="ud-fTitle"><div class="sheet form" id="ud-fSheet"></div></dialog>
+<dialog id="ud-dTpl" aria-labelledby="ud-tTitle"><div class="sheet" id="ud-tSheet"></div></dialog>
+<dialog id="ud-dData" aria-labelledby="ud-dTitle"><div class="sheet form" id="ud-dSheet"></div></dialog>
+<div class="toast" id="ud-toast" role="status"></div>
+</section>
+
+
+<script>
+"use strict";
+(function(){
+  var KEY="sticky-app-tab";
+  var tabs=Array.prototype.slice.call(document.querySelectorAll(".apptab"));
+  var views={cn:document.getElementById("view-cn"),ap:document.getElementById("view-ap"),ud:document.getElementById("view-ud")};
+  function closeAllDialogs(){
+    document.querySelectorAll("dialog[open]").forEach(function(d){try{d.close()}catch(e){}});
+  }
+  function activate(name, persist){
+    Object.keys(views).forEach(function(k){
+      if(k===name){views[k].removeAttribute("hidden")} else {views[k].setAttribute("hidden","")}
+    });
+    tabs.forEach(function(b){b.setAttribute("aria-selected", String(b.getAttribute("data-tab")===name))});
+    closeAllDialogs();
+    window.scrollTo(0,0);
+    if(persist!==false){try{localStorage.setItem(KEY,name)}catch(e){}}
+  }
+  tabs.forEach(function(b){b.addEventListener("click",function(){activate(b.getAttribute("data-tab"))})});
+  var start="cn";
+  try{var saved=localStorage.getItem(KEY);if(saved&&views[saved])start=saved}catch(e){}
+  activate(start, false);
+})();
+</script>
+<script>
+(function(){
+"use strict";
+
+/* ============ DATI ============ */
+var AREAS=[
+ {k:"norma",n:"Quadro normativo"},
+ {k:"arch",n:"Architettura del curricolo"},
+ {k:"ped",n:"Fondamenti pedagogici"},
+ {k:"uda",n:"Progettare l’UdA"},
+ {k:"val",n:"Valutare"},
+ {k:"pers",n:"Persona, famiglia, comunità"},
+ {k:"disc",n:"Discipline e ambiti"},
+ {k:"chk",n:"Da verificare"},
+ {k:"mie",n:"Le mie note"}
+];
+/* u: c = curricolo verticale, u = UdA, cu = entrambi */
+var NOTES=[
+/* ---------- QUADRO NORMATIVO ---------- */
+{id:"n01",a:"norma",u:"cu",t:"D.M. 221/2025: le nuove Indicazioni",
+ x:"Indicazioni nazionali per il curricolo della scuola dell’infanzia e del primo ciclo. Decreto del Ministro 9 dicembre 2025, n. 221, pubblicato in Gazzetta Ufficiale n. 21 del 27 gennaio 2026.",
+ d:"Ultima tappa di un percorso che passa da DPR 275/1999, D.M. 31 luglio 2007 e D.M. 254/2012. Il testo è organizzato in premessa culturale, finalità, profilo dello studente, obiettivi generali del processo formativo, organizzazione del curricolo e sezioni per infanzia e primo ciclo.",
+ r:["D.M. 9 dicembre 2025, n. 221 (GU n. 21 del 27/01/2026): https://www.gazzettaufficiale.it/eli/id/2026/01/27/26G00021/SG","Testo MIM (link dalla dispensa Borgogni): https://www.mim.gov.it/documents/20182/8952594/Indicazioni+nazionali+2025.pdf"],
+ w:"Citalo per esteso nel preambolo del curricolo: D.M. 9 dicembre 2025, n. 221, Allegato 1.",s:"Perla, Cioffi, Balbo, Magni"},
+{id:"n02",a:"norma",u:"c",t:"Dal programma al curricolo: le tappe",
+ x:"1945–90 programmi ministeriali → 1985 (DPR 104) e Brocca 1988–92: primi «obiettivi formativi» → 1999 DPR 275: autonomia, POF poi PTOF → 2007 e 2012: «curricolo verticale» e traguardi → 2013/14 Istituti Comprensivi → 2025 D.M. 221.",
+ d:"Limite dei programmi: concezione enciclopedica e trasmissiva, nessun raccordo organico tra ordini di scuola. Le innovazioni Brocca non ebbero recezione normativa definitiva.",
+ r:["DPR 104/1985","DPR 8 marzo 1999, n. 275","D.M. 31 luglio 2007","D.M. 16 novembre 2012, n. 254"],
+ w:"Una riga per tappa nella premessa storica del curricolo d’istituto.",s:"Perla, § 1"},
+{id:"n03",a:"norma",u:"c",t:"Autonomia e curricolo dell’autonomia",
+ x:"Il DPR 275/1999 introduce l’autonomia didattica, organizzativa e di ricerca: l’unità di progettazione diventa l’istituzione scolastica. Il «curricolo dell’autonomia» è la quota flessibile del monte ore riservata alle scelte della scuola.",
+ d:"Gli obiettivi generali del processo formativo sono «prescritti dal DPR n. 275/1999» (Perla, nota 7).",
+ r:["DPR 8 marzo 1999, n. 275","Mio rimando da verificare: art. 8 (definizione dei curricoli) e art. 3 (POF, oggi PTOF)"],
+ s:"Perla, § 1.2"},
+{id:"n04",a:"norma",u:"c",t:"Il curricolo verticale sta nel PTOF",
+ x:"Ogni istituzione predispone nel PTOF il curricolo verticale «con riferimento al profilo dello studente al termine del primo ciclo di istruzione, agli obiettivi generali del processo formativo, agli obiettivi specifici di apprendimento e alle competenze attese, specificati per ogni disciplina».",
+ r:["D.M. 221/2025 (citato in Perla, § 4.1)","Mio rimando da verificare: L. 107/2015, art. 1, comma 14 (PTOF)"],
+ w:"Struttura minima per ogni disciplina: profilo → obiettivi generali → competenze attese → OSA.",s:"Perla, § 4.1"},
+{id:"n05",a:"norma",u:"cu",t:"Le 8 competenze chiave europee",
+ x:"1 alfabetica funzionale · 2 multilinguistica · 3 matematica, scienze, tecnologie e ingegneria · 4 digitale · 5 personale, sociale e imparare a imparare · 6 cittadinanza · 7 imprenditoriale · 8 consapevolezza ed espressione culturali.",
+ d:"Raccomandazione del Consiglio del 22 maggio 2018, che aggiorna il quadro del 2006. Sono recepite nel Profilo dello studente del D.M. 221/2025.",
+ r:["Raccomandazione del Consiglio UE, 22 maggio 2018, 2018/C 189/01","https://eur-lex.europa.eu/legal-content/IT/TXT/?uri=uriserv:OJ.C_.2018.189.01.0001.01.ITA (link da Magni)"],
+ w:"Ogni UdA aggancia una competenza del Profilo (scheda UdA, sezione 1).",s:"Perla, Magni, Cioffi"},
+{id:"n06",a:"norma",u:"cu",t:"Certificazione delle competenze: D.M. 14/2024",
+ x:"I modelli di certificazione (D.M. 30 gennaio 2024, n. 14) sono un riferimento del Profilo. Nelle Indicazioni la certificazione è «il momento in cui il profilo dello studente trova espressione e sintesi».",
+ d:"Profilo, progettazione e valutazione devono parlare la stessa lingua: il Profilo articolato sulle 8 competenze si collega ai modelli di certificazione di fine primaria e fine secondaria di I grado.",
+ r:["D.M. 30 gennaio 2024, n. 14","D.M. 221/2025, All. 1, p. 24 (come citato da Perla)"],
+ s:"Perla, § 4.1"},
+{id:"n07",a:"norma",u:"c",t:"Educazione civica: la cornice",
+ x:"Legge 92/2019 (insegnamento trasversale) → Linee guida D.M. 35/2020 → Linee guida D.M. 183/2024, in vigore dal 2024/25 e sostitutive di quelle del 2020.",
+ r:["L. 20 agosto 2019, n. 92","D.M. 22 giugno 2020, n. 35","D.M. 7 settembre 2024, n. 183"],
+ w:"Nel curricolo verticale l’educazione civica non è una disciplina aggiunta: si integra nelle discipline e nei gradi.",s:"Costa"},
+{id:"n08",a:"norma",u:"cu",t:"Inclusione: il quadro normativo",
+ x:"L. 104/1992 (artt. 12–17) → D.Lgs. 66/2017 modificato dal D.Lgs. 96/2019: Profilo di funzionamento (ICF) e PEI. Le Indicazioni 2025 estendono la responsabilità a tutta l’area BES e al diritto allo studio degli alunni adottati.",
+ r:["L. 5 febbraio 1992, n. 104","D.Lgs. 13 aprile 2017, n. 66","D.Lgs. 7 agosto 2019, n. 96","Linee di indirizzo per gli alunni adottati, Atto del Ministro prot. n. 5 del 28 marzo 2023","D.M. 221/2025, All. 1, «Scuola che sa essere inclusiva», pp. 26–27"],
+ w:"Nella scheda UdA compila sempre il riquadro BES/DSA/PDP/PEI.",s:"Costa"},
+{id:"n09",a:"norma",u:"cu",t:"Linee guida sull’intelligenza artificiale",
+ x:"L’IA non può sostituire né la funzione docente né la relazione educativa: è un supporto a apprendimento, inclusione e personalizzazione. Criteri: trasparenza, supervisione umana, tutela dei dati, responsabilità.",
+ d:"Nelle Indicazioni entra l’informatica fin dalla primaria: avvio al pensiero computazionale e prima familiarizzazione con l’IA.",
+ r:["D.M. 9 agosto 2025, n. 166, Linee guida IA (come citato da Costa)"],s:"Costa, Vespri"},
+{id:"n10",a:"norma",u:"c",t:"LEL: cosa dice la norma",
+ x:"Art. 2, comma 3, D.M. 221/2025: il latino per l’educazione linguistica può essere avviato, in prima applicazione, dalle classi seconde e terze dell’a.s. 2026/27, negli spazi di autonomia, flessibilità e ampliamento dell’offerta formativa.",
+ d:"È «un’opportunità, non un obbligo». Base normativa: DPR 89/2009 (art. 5, commi 5 e 8, per i quadri orari). La circolare MIM suggerisce un’ora settimanale; le USR chiedono di inserirlo nel PTOF (va deliberato) e di avvisare le famiglie.",
+ r:["D.M. 221/2025, art. 2, comma 3","DPR 20 marzo 2009, n. 89, art. 5, commi 5 e 8"],
+ w:"Se lo attivate: delibera nel PTOF e comunicazione alle famiglie.",s:"Balbo"},
+{id:"n11",a:"norma",u:"cu",t:"Articoli della Costituzione richiamati",
+ x:"Art. 3 (rimuovere gli ostacoli, sviluppo della persona) · art. 9 (patrimonio, paesaggio) · art. 30 (i genitori, primi educatori) · art. 33 (2023: valore educativo dello sport) · art. 34 (scuola aperta a tutti).",
+ d:"Art. 33, ultimo comma: «La Repubblica riconosce il valore educativo, sociale e di promozione del benessere psicofisico dell’attività sportiva in tutte le sue forme».",
+ r:["Magni: artt. 3 e 30","Cioffi: art. 9","Borgogni: art. 33 (modifica 2023)","Costa: artt. 30 e 34"],
+ w:"Nelle finalità di ogni disciplina ancora la materia a un articolo (Geografia e Arte → art. 9).",s:"Magni, Cioffi, Borgogni, Costa"},
+
+/* ---------- ARCHITETTURA ---------- */
+{id:"a01",a:"arch",u:"cu",t:"Il curricolo come dispositivo",
+ x:"«Dispositivo per pensare l’insegnamento». Risponde a quattro domande: quali obiettivi conseguire? quali esperienze allestire? come organizzarle efficacemente? come accertare che gli obiettivi siano raggiunti?",
+ r:["D.M. 221/2025, All. 1, p. 21 (definizione) e p. 22 (quattro domande), come citato da Perla"],
+ w:"Le quattro domande possono diventare i quattro titoli di sezione di ogni scheda disciplinare.",s:"Perla, § 4.1"},
+{id:"a02",a:"arch",u:"cu",t:"I cinque passaggi dell’allineamento",
+ x:"1 Competenze del Profilo → 2 Obiettivi generali del processo formativo → 3 Competenze disciplinari attese → 4 Obiettivi specifici di apprendimento (per nucleo) → 5 Conoscenze. Dal loro allineamento discendono le UdA.",
+ d:"Processo circolare. Nessuna nozione viene insegnata senza un collegamento con le competenze di cittadinanza; serve la collaborazione dei docenti dei diversi gradi.",
+ w:"Verifica finale: ogni riga della tabella ha tutte e cinque le colonne compilate e coerenti?",s:"Perla, § 4.2"},
+{id:"a03",a:"arch",u:"c",t:"Primo criterio: il Profilo dello studente",
+ x:"Descrive in forma essenziale le competenze riferite alle discipline e al pieno esercizio della cittadinanza a fine primo ciclo. Articolato sulle 8 competenze chiave e collegato a D.M. 14/2024, Raccomandazione 2018, QCER e DigComp 2.2.",
+ d:"Favorisce il raccordo tra progettazione a monte e valutazione a valle.",
+ r:["D.M. 221/2025, All. 1, dal p. 13 (Cioffi)"],s:"Perla, Cioffi"},
+{id:"a04",a:"arch",u:"c",t:"Secondo criterio: nuclei fondanti e non multa sed multum",
+ x:"Nuclei fondanti verticalizzati: macro-abilità fondamentali nella progressione dei gradi, che integrano competenze attese e conoscenze. Scegliere conoscenze rilevanti (piano culturale), significative (scientifico), essenziali (formativo).",
+ d:"«Non occorre insegnare tante cose (…) ma poche ed essenziali conoscenze, approfondite in aula con grande accuratezza e dovizia di esperienze di apprendimento».",
+ r:["D.M. 221/2025, All. 1, p. 21","Origine: Quintiliano, Institutio oratoria X, 1, 59; ripreso da Laneve (1998)"],
+ w:"Per ogni disciplina elenca 4–5 nuclei (Geografia: Orientamento e spazio, Linguaggio, Paesaggio e territorio, Relazioni e dinamiche, Organizzazione territoriale).",s:"Perla, Magni"},
+{id:"a05",a:"arch",u:"c",t:"Gli snodi formativi",
+ x:"Le competenze attese sono fissate a tre snodi: fine classe III primaria, fine classe V primaria, fine classe III secondaria di I grado. Tre segmenti: primaria I–III, primaria IV–V, secondaria I–III.",
+ d:"Ogni segmento è un blocco formativo autonomo da cui possono scaturire le UdA.",
+ w:"Intesta le colonne del curricolo ai tre snodi, non alle singole classi.",s:"Perla, § 4.2 e All. 1"},
+{id:"a06",a:"arch",u:"c",t:"Curricolo formale, informale, nascosto",
+ x:"Formale: documento predefinito (obiettivi, insegnamenti, metodi, criteri di valutazione). Informale: esperienze co- ed extra-curricolari. Nascosto: credenze, comportamenti e atteggiamenti non esplicitati, con forte impatto su apprendimento e comportamento.",
+ r:["Longstreet & Shane (1993)"],
+ w:"Nel curricolo d’istituto riserva uno spazio al curricolo informale: progetti, uscite, outdoor.",s:"Perla, § 4"},
+{id:"a07",a:"arch",u:"c",t:"Curricolo d’istituto: raccordo tra formale e reale",
+ x:"Documento interno al PTOF che contestualizza obiettivi e competenze delle Indicazioni sul territorio. Nell’Istituto Comprensivo unisce le progettazioni dei tre ordini in un quadro unitario 3–14 anni. Il docente è un «curriculum maker».",
+ r:["Connelly & Clandinin (1992), Teacher as curriculum maker","UNESCO-IBE (2020), Vertical and horizontal articulation"],s:"Perla, § 4"},
+{id:"a08",a:"arch",u:"c",t:"Esempio di allineamento verticale: Geografia",
+ x:"Profilo: competenza personale, sociale e imparare a imparare → Ob. generale (primaria): «pianificare e organizzare il proprio lavoro» → Competenza attesa cl. V: leggere e interpretare il paesaggio → OSA (Orientamento): utilizzare carte anche digitali, bussole, coordinate.",
+ d:"Ob. generale secondaria: «pianificare e gestire progetti personali e di gruppo». Conoscenze: primaria, carte e orientamento spaziale; secondaria, carte tematiche, scale, fonti diverse.",
+ r:["D.M. 221/2025, All. 1, pp. 19, 60–63"],s:"Perla, Tabella 1"},
+{id:"a09",a:"arch",u:"c",t:"Esempio interdisciplinare: Scienze e Matematica",
+ x:"Profilo STEM: «avere consapevolezza dei limiti delle affermazioni che riguardano situazioni complesse» → Ob. generale: valutare l’attendibilità delle fonti scientifiche (fatti, opinioni, pseudoscienza) → Scienze: diversità ed evoluzione dei viventi; Matematica: probabilità di eventi composti.",
+ r:["D.M. 221/2025, All. 1, pp. 13, 16, 72–74, 78–80"],
+ w:"Un’UdA interdisciplinare nasce da una competenza o da un tema comune, spesso in area STEM.",s:"Perla, Tabella 2"},
+{id:"a10",a:"arch",u:"c",t:"Come è fatto un curricolo disciplinare",
+ x:"A Perché si studia la disciplina (finalità, nuclei, strumenti) · B Competenze del Profilo e contributo specifico · C Struttura verticale: competenze attese agli snodi, OSA per nucleo, conoscenze essenziali.",
+ d:"I contenuti non sono rigidamente sequenziali: si affrontano per temi e problemi in funzione degli OSA.",
+ w:"Usa questa struttura come modello comune per tutti i dipartimenti.",s:"Perla, Allegato 1"},
+{id:"a11",a:"arch",u:"c",t:"Continuità senza uniformità",
+ x:"Il curricolo verticale permette a docenti di gradi diversi di lavorare insieme, garantendo continuità educativa senza sacrificare la specificità delle discipline e dei contesti. Non un documento burocratico, ma uno «strumento vivo» di progettazione professionale condivisa.",
+ s:"Perla, conclusione"},
+{id:"a12",a:"arch",u:"c",t:"Verticalità 3–14: l’esempio di Arte e Musica",
+ x:"Infanzia: campo di esperienza «Immagini, suoni, colori». Primaria: due discipline distinte con strumenti propri. Secondaria: nuclei specifici (musica + competenze digitali; arte + linguaggio audiovisivo). La continuità è epistemica, non solo organizzativa.",
+ r:["D.M. 221/2025, All. 1, p. 56 (campo di esperienza), p. 96 (Musica), p. 101 (Arte)"],s:"Cioffi"},
+
+/* ---------- FONDAMENTI PEDAGOGICI ---------- */
+{id:"p01",a:"ped",u:"c",t:"Comenio: le leggi della gradualità",
+ x:"Dal semplice al complesso, dal concreto all’astratto, dal vicino al lontano. Si apprende con i sensi e l’azione; ogni apprendimento si collega al precedente.",
+ d:"Il curricolo verticale riprende la sua visione di continuità educativa: gradualità, coerenza e unitarietà dall’infanzia al termine del primo ciclo.",
+ r:["Comenio, Didactica magna (ed. it. La Nuova Italia, 1979)"],
+ w:"Criterio per ordinare le conoscenze essenziali dentro un nucleo.",s:"Perla, § 2.1"},
+{id:"p02",a:"ped",u:"cu",t:"Dewey: continuità dell’esperienza",
+ x:"Il curricolo parte dall’esperienza presente del bambino e si proietta verso saperi organizzati sempre più complessi. Ogni apprendimento diventa base per il successivo: è il fondamento teorico più profondo del curricolo verticale.",
+ d:"Critica sia la scuola trasmissiva sia il puerocentrismo radicale. Per Vespri: l’apprendimento nasce dall’esperienza e si consolida con la riflessione su di essa (learning by doing).",
+ r:["Dewey, The Child and the Curriculum (1902)","Dewey, Experience and Education (1938)"],s:"Perla, § 2.2; Vespri"},
+{id:"p03",a:"ped",u:"c",t:"Piaget: stadi e strutture mentali",
+ x:"Il bambino costruisce attivamente la conoscenza (assimilazione e accomodamento). I contenuti si scelgono in funzione degli stadi di sviluppo: si calibrano i percorsi sulle strutture mentali disponibili. Base della progressione dei traguardi.",
+ r:["Piaget, La naissance de l’intelligence chez l’enfant (1936)"],s:"Perla, § 2.3"},
+{id:"p04",a:"ped",u:"cu",t:"Vygotskij: zona di sviluppo prossimale",
+ x:"Distanza tra ciò che l’allievo fa da solo e ciò che fa con la guida di un adulto o dei pari. L’insegnamento efficace anticipa lo sviluppo. Apprendimento come co-costruzione: base di cooperative learning e laboratorio.",
+ r:["Vygotskij, Pensiero e linguaggio (1934; ed. it. Laterza, 1990)"],
+ w:"Nell’UdA: compiti un poco oltre le capacità attuali, con sostegno di docente e pari.",s:"Perla, § 2.4; Vespri"},
+{id:"p05",a:"ped",u:"c",t:"Bruner: il curricolo a spirale",
+ x:"Qualunque idea si può insegnare in forma onesta a qualsiasi età, se la presentazione è adeguata. I nuclei tornano più volte con profondità crescente: non ripetizione, ma ricontestualizzazione progressiva.",
+ r:["Bruner, The Process of Education (1960)"],
+ w:"È la logica dei nuclei fondanti: lo stesso nucleo compare nei tre segmenti con OSA sempre più complessi.",s:"Perla, § 2.5"},
+{id:"p06",a:"ped",u:"cu",t:"Embodied cognition",
+ x:"L’apprendimento nasce dall’interazione corpo–mente–ambiente: azioni, percezioni, emozioni, relazioni vissute. Ambienti attivi, laboratoriali, inclusivi; problem solving, gioco, linguaggi espressivi.",
+ r:["Varela, Lakoff, Johnson, Barsalou (in Perla, § 2.6)"],
+ w:"Collega a movimento e outdoor (Borgogni) e al fare artistico (Cioffi).",s:"Perla, § 2.6"},
+{id:"p07",a:"ped",u:"c",t:"Le competenze non sono generiche",
+ x:"Le competenze non si sviluppano in modo generico o trasversale, ma si costruiscono e si manifestano dentro specifici ambiti di conoscenza. Il curricolo per competenze non è alternativo al sapere disciplinare: è la forma più evoluta con cui le discipline servono la formazione integrale.",
+ w:"Nel curricolo formula ogni competenza sempre dentro un nucleo disciplinare.",s:"Perla, § 3"},
+{id:"p08",a:"ped",u:"c",t:"Falsa dicotomia: competenze o conoscenze?",
+ x:"Contrapporre «scuola delle competenze» e «scuola delle conoscenze» è una falsa alternativa: le conoscenze fondamentali sono la condizione perché maturino le competenze. Piano UE 2025: literacy, mathematics, science, digital skills, citizenship.",
+ r:["Magni, dispensa","European Commission, Action Plan on Basic Skills, COM(2025) 88, 5 marzo 2025"],s:"Magni"},
+{id:"p09",a:"ped",u:"u",t:"Bruner: enattivo, iconico, simbolico",
+ x:"Le conoscenze passano da tre forme di rappresentazione: enattiva (esperienza diretta), iconica (immagini, schemi), simbolica (formalizzazione). In matematica si evita la formalizzazione precoce e si parte da situazioni concrete.",
+ w:"Nell’UdA scandisci le fasi in questo ordine: prima fare, poi rappresentare, poi formalizzare.",s:"Vespri"},
+{id:"p10",a:"ped",u:"c",t:"Perché ripensare: i dati di contesto",
+ x:"INVALSI 2025: dispersione diretta e indiretta. PIAAC: il 35% delle persone tra 16 e 65 anni ha scarse competenze di lettura e comprensione dei testi, contro una media OCSE del 26%.",
+ r:["Magni, dispensa (INVALSI 2025; PIAAC)"],
+ w:"Utili nella premessa del curricolo per motivare la scelta dei fondamentali.",s:"Magni"},
+
+/* ---------- PROGETTARE L'UdA ---------- */
+{id:"u01",a:"uda",u:"u",t:"Che cos’è l’UdA",
+ x:"Strumento con cui il docente concretizza in classe il raccordo tra i piani del curricolo. Non è una somma di attività: mantiene coerenti profilo, obiettivi generali, competenze attese, OSA e conoscenze. Può essere disciplinare o interdisciplinare.",
+ s:"Perla, «Un esempio operativo»"},
+{id:"u02",a:"uda",u:"u",t:"Progettazione a ritroso (backward design)",
+ x:"Si parte dal profilo di competenza atteso → si definiscono le evidenze (compito di realtà e criteri di valutazione) → solo dopo si pianificano esperienze e contenuti. Garantisce coerenza tra cosa far apprendere, come e come valutarlo.",
+ w:"Compila la scheda in questo ordine: competenza, evidenza, poi fasi.",s:"Perla"},
+{id:"u03",a:"uda",u:"u",t:"La domanda stimolo",
+ x:"Elemento strutturale e generativo dell’UdA: aperta, problematizzante, capace di orientare l’intera didattica (bussola del docente). Esempio: «Quali sono le caratteristiche fisiche e antropiche del paesaggio collinare?»",
+ d:"Altro esempio (Vespri, secondaria): «La scienza nasce per conoscere o per risolvere problemi del potere?»",
+ w:"Prova pratica (mio suggerimento): se basta un sì o un no, non è ancora una buona domanda stimolo.",s:"Perla; Vespri"},
+{id:"u04",a:"uda",u:"u",t:"La scheda UdA: campi da compilare",
+ x:"1 Dati (scuola, disciplina, classe, docenti, periodo e ore, competenza del Profilo, competenze attese, OSA, conoscenze, metodologie, valutazione) · 2 Domanda stimolo e fasi · 3 Compito di realtà · Rubriche · Raccordi, BES/DSA/PDP/PEI, osservazioni.",
+ d:"Obbligatori: competenza del Profilo, competenze attese allo snodo, OSA, conoscenze, domanda stimolo, fasi con micro-prodotti, compito di realtà, almeno una rubrica. Le etichette del modello sono fisse; si sostituiscono le celle.",
+ r:["Perla, Allegato 1bis (guida alla compilazione)"],s:"Perla"},
+{id:"u05",a:"uda",u:"u",t:"Le fasi didattiche: esempio in sei tempi",
+ x:"Geografia, cl. III primaria, 12 ore: 1 Aggancio (escape room) → 2 Scoperta dei materiali → 3 Costruzione del sapere (video, circle time, lapbook) → 4 Compito di realtà → 5 Uscita sul territorio → 6 Valutazione (quiz e autovalutazione).",
+ d:"Ogni fase ha una metodologia e un micro-prodotto. Raccordi possibili: Inglese (translanguaging), Arte (pittori naïf), Storia, Italiano (diario di bordo, menù dei prodotti tipici).",
+ s:"Perla, Allegato 1bis"},
+{id:"u06",a:"uda",u:"u",t:"Il compito di realtà",
+ x:"Ha un destinatario autentico (es. le classi parallele), un formato dichiarato (presentazione orale con supporto visivo, poster, pannello) e gruppi eterogenei. Riutilizza i materiali delle fasi precedenti e fonti aggiuntive.",
+ d:"Esempio: «Alla scoperta della collina: crea la tua guida per esploratori!»: quattro gruppi, quattro temi (caratteristiche generali, fauna, flora, attività umane).",
+ s:"Perla, Allegato 1bis"},
+{id:"u07",a:"uda",u:"u",t:"UdA interdisciplinare: «Scienza e potere nel mondo greco»",
+ x:"Cl. II o III secondaria, 15–20 ore: Storia, Scienze, Matematica, Tecnologia, Educazione civica. Sette fasi: introduzione, Pitagora, Archimede e la corona, le armi di guerra, misura della Terra, sintesi di gruppo, riflessione finale.",
+ d:"Metodologie: laboratorio, inquiry-based learning, cooperative learning, problem solving. Valutazione: osservazione in laboratorio, relazioni scientifiche. Attenzione al titolo della fase 5: vedi la nota «Da verificare».",
+ s:"Vespri"},
+{id:"u08",a:"uda",u:"u",t:"Metodologie attive",
+ x:"Laboratorio (non solo spazio fisico: un modo di organizzare l’apprendimento), inquiry-based learning (si parte da una domanda), learning by doing (un fare orientato alla comprensione), problem solving. L’errore è una fase del processo, non un fallimento.",
+ r:["Dewey; Vygotskij; Pólya; Papert (citati da Vespri)"],s:"Vespri"},
+{id:"u09",a:"uda",u:"u",t:"UdA e inclusione: BES, DSA, PDP, PEI",
+ x:"Font ad alta leggibilità, interlinea ampia, testo non giustificato; materiali semplificati con lessico controllato; mappe e schemi guidati; consegne in step brevi; tempi distesi; valutazione formativa sul processo; per il PEI obiettivi personalizzati coerenti con il funzionamento.",
+ s:"Perla, Allegato 1bis"},
+{id:"u10",a:"uda",u:"cu",t:"Personalizzazione e UDL",
+ x:"Nelle Indicazioni la personalizzazione è un principio progettuale: si progetta in modo personalizzante perché la variabilità è la condizione ordinaria dell’apprendimento. Non è individualizzazione tecnica né abbassamento delle attese. «Tutti» = curricolo comune; «ciascuno» = traiettorie, tempi, linguaggi.",
+ r:["D.M. 221/2025, All. 1, «Scuola che sa essere inclusiva», p. 27","CAST, UDL Guidelines 3.0 (2024)"],
+ w:"Offri più vie di accesso, di espressione e di valutazione dello stesso compito.",s:"Costa"},
+{id:"u11",a:"uda",u:"u",t:"Il corpo dentro ogni UdA",
+ x:"Le Indicazioni suggeriscono pause attive in aula, intervalli attivi all’aperto, esperienze di mobilità attiva da e verso scuola, outdoor education in ambiente urbano e naturale. Il movimento accompagna testi, operazioni matematiche, attività espressive.",
+ s:"Borgogni"},
+
+/* ---------- VALUTARE ---------- */
+{id:"v01",a:"val",u:"u",t:"Rubrica di prestazione",
+ x:"Valuta il processo: collaborazione, impegno, utilizzo dei documenti forniti, integrazione di ulteriori fonti. Livelli nell’esempio: Avanzato (9–10), Intermedio (7–8), Base (6), In via di acquisizione (4–5).",
+ w:"Una riga per dimensione, con descrittori osservabili per ogni livello.",s:"Perla, Allegato 1bis"},
+{id:"v02",a:"val",u:"u",t:"Griglia di valutazione del prodotto",
+ x:"Valuta l’artefatto: presentazione grafica, originalità, coerenza dei contenuti, efficacia comunicativa, adeguatezza del registro linguistico al destinatario. Livelli: Ottimo, Distinto, Buono, Sufficiente, Non sufficiente.",
+ s:"Perla, Allegato 1bis"},
+{id:"v03",a:"val",u:"u",t:"Criteri definiti a monte",
+ x:"I criteri di valutazione non si stabiliscono a percorso concluso: sono il punto di arrivo che orienta la progettazione. Rubrica e griglia sono componenti strutturali dell’UdA, non appendici formali.",
+ s:"Perla"},
+{id:"v04",a:"val",u:"u",t:"Valutazione multidimensionale",
+ x:"Nell’esempio: conoscenze (quiz individuale con tablet) + prodotto (griglia) + prestazione (rubrica) + autovalutazione finale. Domande: in quali aspetti devo migliorare? in quali mi sento più sicuro? in quali attività ho avuto più difficoltà?",
+ d:"Secondo Perla la valutazione non è un momento distinto dalla didattica: è uno strumento di regolazione continua, formativo e integrato.",
+ s:"Perla, Allegato 1bis"},
+{id:"v05",a:"val",u:"u",t:"Valutare nelle STEM",
+ x:"Si valutano risultati e processi. Strumenti: osservazione in laboratorio, relazioni scientifiche. La competenza si manifesta nell’affrontare compiti complessi, prendere decisioni e riflettere sui processi.",
+ s:"Vespri"},
+
+/* ---------- PERSONA, FAMIGLIA, COMUNITA' ---------- */
+{id:"c01",a:"pers",u:"c",t:"Persona, scuola, famiglia",
+ x:"Il trinomio del 2012 (cultura, scuola, persona) diventa persona, scuola, famiglia. La persona è unica, dotata di talenti, mai individuo isolato: identità, relazione, partecipazione.",
+ r:["D.M. 221/2025, All. 1, p. 6 (Magni)"],s:"Magni"},
+{id:"c02",a:"pers",u:"c",t:"L’alleanza scuola–famiglia",
+ x:"«Una collaborazione autentica e rispettosa dei ruoli, fatta di incontro sostanziale oltre che di accordo documentale». Scuola e famiglia sono «le due colonne portanti» del percorso di crescita.",
+ d:"Art. 30 Cost.: ai genitori spetta il primario diritto e dovere di istruire ed educare i figli.",
+ r:["D.M. 221/2025, All. 1, p. 6 (Magni); p. 20, «Scuole e famiglie in un nuovo patto di alleanza» (Costa)","Cost. artt. 30 e 34"],
+ w:"Nel PTOF e nel curricolo prevedi occasioni progettate di incontro, non solo comunicazioni.",s:"Magni, Costa"},
+{id:"c03",a:"pers",u:"c",t:"Il Patto di corresponsabilità come processo",
+ x:"Introdotto dal DPR 235/2007 (art. 3, che inserisce l’art. 5-bis nel DPR 249/1998) e integrato dal DPR 134/2025. Nelle Indicazioni non è un modulo da firmare ma un processo permanente di costruzione della comunità educante.",
+ d:"Include l’impegno congiunto su bullismo, cyberbullismo, dipendenze, uso sicuro e consapevole di Internet.",
+ r:["DPR 21 novembre 2007, n. 235, art. 3","Nota MPI prot. 3602/PO del 31 luglio 2008","DPR 8 agosto 2025, n. 134 (come citato da Costa)"],s:"Costa"},
+{id:"c04",a:"pers",u:"cu",t:"Talento e contesto capacitante",
+ x:"«Il talento emerge quando l’alunno è inserito in un contesto capacitante, ossia in un ambiente educativo che riconosce le sue possibilità, ne sostiene l’autonomia e ne stimola lo sviluppo». Non una dote innata né un privilegio di pochi.",
+ r:["D.M. 221/2025, All. 1, p. 7","Margiotta (2018), La formazione dei talenti","Sen, Capability Approach (in Costa)"],s:"Magni, Costa"},
+{id:"c05",a:"pers",u:"c",t:"Il Magister e l’autorità liberatrice",
+ x:"«L’espressione Magister vuole sottolineare l’autorevolezza ritrovata della figura del docente» (da magis, «di più»). Relazione asimmetrica ma fondata sulla fiducia. Per Laberthonnière l’autorità è «liberatrice»: al servizio della libertà dell’allievo.",
+ r:["D.M. 221/2025, All. 1, p. 7","Laberthonnière, Teoria dell’educazione (1901)","Dionigi, Magister (Laterza, 2025)"],s:"Magni"},
+{id:"c06",a:"pers",u:"c",t:"Comunità educante e professionale",
+ x:"«Spazi autentici di collegialità e progettazione comune»: costruzione condivisa di senso e azione pedagogica, fondata sulla formazione continua. Dimensione ad intra (comunità scolastica) e ad extra (territorio).",
+ r:["D.M. 221/2025, All. 1, p. 9 (collegialità) e p. 21 (formazione)"],
+ w:"Il curricolo verticale è per definizione un lavoro collegiale: prevedi tempi e sedi nel PTOF.",s:"Magni, Costa"},
+{id:"c07",a:"pers",u:"cu",t:"La cittadinanza non è una disciplina",
+ x:"Attraversa tutte le aree del curricolo, tutti i gradi, tutte le pratiche educative. Quattro dimensioni: costituzionale, partecipativa, critica, digitale. La democrazia scolastica è pratica di vita comune, non solo contenuto da insegnare.",
+ r:["L. 92/2019; D.M. 183/2024"],s:"Costa"},
+{id:"c08",a:"pers",u:"cu",t:"L’educazione del cuore",
+ x:"«Un’educazione del cuore che crei occasioni didattiche di esperienza di sentimenti basilari come la fiducia, l’empatia, la tenerezza, l’incanto, la gentilezza». Tutte le discipline, dall’educazione motoria alle STEM, dalla musica al teatro, sono alleate.",
+ r:["D.M. 221/2025, All. 1, «Libertà, cura di sé ed etica del rispetto», p. 22; «Scuola che educa alle relazioni, all’empatia e al rispetto della persona», p. 23 (come citato da Costa)"],s:"Costa"},
+{id:"c09",a:"pers",u:"c",t:"Libertà responsabile",
+ x:"L’educazione alla libertà non è sviluppo dello studente nella libertà, ma sviluppo della libertà nello studente. È costruzione collettiva, nel dialogo e nel rispetto delle diversità; il limite è mediazione educativa, non restrizione.",
+ r:["D.M. 221/2025, All. 1, «Libertà, cura di sé ed etica del rispetto», p. 22"],s:"Costa"},
+
+/* ---------- DISCIPLINE E AMBITI ---------- */
+{id:"d01",a:"disc",u:"cu",t:"Lingue e lettura: leggere è interpretare",
+ x:"Saper leggere non è decodificare: è attribuire senso, gerarchizzare le informazioni e cogliere l’intenzione comunicativa. Il lettore non è passivo: costruisce il significato con esperienza, memoria, immaginazione. Il testo sta al centro della formazione linguistica e letteraria.",
+ r:["Indicazioni 2025 (cit. da Valerio): «leggere autonomamente testi complessi, anche in forma integrale, comprendendo ciò che essi vogliono comunicare»"],s:"Valerio"},
+{id:"d02",a:"disc",u:"cu",t:"Limiti dell’interpretazione e formalismo",
+ x:"Non tutte le interpretazioni sono legittime: vanno rispettati struttura, contesto storico-culturale, specificità linguistica. Evitare «eccessi analitici e nomenclatori»: la letteratura serve a comprendere la vita, non i suoi strumenti di analisi. Lettura ad alta voce consigliata.",
+ s:"Valerio"},
+{id:"d03",a:"disc",u:"cu",t:"I fondamentali dell’italiano",
+ x:"Rilancio di corsivo e calligrafia, riassunto per imparare a pensare, poesia per memoria, lessico e linguaggio. Nelle STEM: dalla realtà concreta alla formulazione teorica, con didattica laboratoriale su problemi e contesti reali.",
+ r:["Magni, § «La ripresa dei fondamentali»"],s:"Magni"},
+{id:"d04",a:"disc",u:"c",t:"LEL: le finalità",
+ x:"Il latino per l’educazione linguistica non toglie ore a italiano o alle altre discipline umanistiche: aggiunge competenze. Stretto rapporto con l’italiano; recupero della dimensione diacronica (latino → italiano) e sincronica (confronto con le lingue straniere); si riparte dal lessico.",
+ d:"Secondo Balbo avrà valutazione autonoma e dialogo con educazione civica, storia, geografia, arte, lingue straniere, religione.",
+ s:"Balbo"},
+{id:"d05",a:"disc",u:"c",t:"LEL: orario e docenti",
+ x:"Tempo normale: attività di approfondimento in materie letterarie (la decima ora di italiano, storia, geografia). Tempo prolungato: dentro l’area italiano–storia–geografia. Un’ora a settimana (33 ore annue per due anni). Docenti: abilitazione in latino, oppure A011/A013 formati in rete.",
+ r:["DPR 89/2009, art. 5, commi 5 e 8","Circolari MIM e USR di fine aprile–inizio maggio (citate da Balbo)"],s:"Balbo"},
+{id:"d06",a:"disc",u:"cu",t:"Storia: perché insegnarla",
+ x:"Non accumulare contenuti ma leggere la profondità del presente: ogni istituzione, libertà, confine, identità ha origini, fratture, trasformazioni. La cronologia è necessaria, ma diventa storia quando mostra nessi, problemi, conseguenze. Il metodo emerge dai contenuti.",
+ s:"Scotto Di Luzio"},
+{id:"d07",a:"disc",u:"cu",t:"Storia: la dimensione narrativa",
+ x:"Il racconto non è ornamento: è la forma dell’intelligibilità storica (fonti, sequenza, attori, conflitti, conseguenze). Avvicina il passato e ne rispetta la distanza. Il giudizio arriva attraverso la comprensione, non al suo posto.",
+ s:"Scotto Di Luzio"},
+{id:"d08",a:"disc",u:"cu",t:"Storia: Occidente e colonialismo",
+ x:"«Occidente» è una parola storica, non una parola d’ordine: da storicizzare (Grecia e Persia, Mediterraneo, Islam, Atlantico, 1683 Vienna e 1699 Karlowitz). Il colonialismo è un capitolo necessario: né assoluzione né condanna in blocco, ma processi, strumenti, conseguenze.",
+ s:"Scotto Di Luzio"},
+{id:"d09",a:"disc",u:"cu",t:"Storia: identità italiana e cittadinanza",
+ x:"L’identità non è sostanza immobile ma costruzione storica, civile e sentimentale. La cittadinanza è appartenenza consapevole, non solo un documento. Filo: Risorgimento → Stato liberale → Fascismo → Repubblica (guerra, Resistenza, scelta costituzionale).",
+ s:"Scotto Di Luzio"},
+{id:"d10",a:"disc",u:"cu",t:"Geografia: la carta è un racconto",
+ x:"Ogni carta è approssimata (la Terra è un geoide), ridotta (scala) e simbolica (legenda). «Approssimata» non è sinonimo di approssimativa. Scegliere cosa mostrare significa scegliere cosa nascondere.",
+ s:"Morri"},
+{id:"d11",a:"disc",u:"cu",t:"Geografia: orientamento spaziale e culturale",
+ x:"Oltre bussola e satelliti: l’orientamento culturale guida la creazione delle carte. Cosa rappresentare dipende da quattro fattori: cartografo e committente, messaggio, finalità, destinatari.",
+ s:"Morri"},
+{id:"d12",a:"disc",u:"cu",t:"Geografia: dai cataloghi al discernimento",
+ x:"Ridurre i contenuti libera «spazio mentale» per l’apprendimento attivo: dalle conoscenze di superficie (fattuali) alle conoscenze profonde (applicative). Abitare = relazione affettiva con i luoghi; leggere i codici cartografici è il primo passo di una progettualità territoriale etica.",
+ s:"Morri"},
+{id:"d13",a:"disc",u:"cu",t:"STEM: dall’uso alla comprensione",
+ x:"Formare non semplici utilizzatori ma soggetti attivi: capire i principi dei sistemi tecnologici. L’informatica è disciplina scientifica autonoma (informazione, algoritmi, sistemi), non solo competenza digitale. Le STEM sono linguaggi integrati, non ambiti separati.",
+ s:"Vespri"},
+{id:"d14",a:"disc",u:"u",t:"STEM: problem solving e modellizzazione",
+ x:"Pólya: comprendere il problema, elaborare un piano, attuarlo, verificare i risultati. L’obiettivo è capire il processo, non trovare l’unica risposta. La modellizzazione (rappresentazioni semplificate della realtà) è il punto di convergenza delle competenze STEM.",
+ s:"Vespri"},
+{id:"d15",a:"disc",u:"cu",t:"Tecnologia critica",
+ x:"Le tecnologie non sono neutrali: incorporano valori e scelte. L’IA usa modelli costruiti su dati incompleti o non rappresentativi; i dati sono il risultato di processi di raccolta. Cittadinanza digitale = uso consapevole + comprensione dei sistemi + valutazione delle fonti.",
+ s:"Vespri"},
+{id:"d16",a:"disc",u:"c",t:"Saperi estetici",
+ x:"Formula delle Indicazioni 2025: arte e musica hanno statuto autonomo accanto al sapere scientifico-razionale. Non sono ornamento ma componente strutturale della formazione. Si esprimono per simboli, metafore, allusioni.",
+ r:["D.M. 221/2025, All. 1, sezioni Arte e immagine (p. 101) e Musica (p. 96)"],s:"Cioffi"},
+{id:"d17",a:"disc",u:"cu",t:"La bellezza come intelligenza della relazione",
+ x:"Ordine percepibile che nasce quando le parti trovano corrispondenza armonica. Nozioni operative: ritmo, equilibrio, armonia, proporzioni, colori, chiaroscuro, prospettiva; per la musica monodia, polifonia, ostinato, forme AB e ABA. Senza silenzio non c’è musica.",
+ r:["D.M. 221/2025, All. 1, p. 96 (Musica) e pp. 101 ss. (Arte)"],s:"Cioffi"},
+{id:"d18",a:"disc",u:"cu",t:"Storia dell’arte per opere chiave",
+ x:"«La stessa storia dell’arte non va proposta come semplice sequenza»: stili e periodi attraverso opere chiave e cenni di iconologia. Il patrimonio italiano è il cuore della disciplina.",
+ d:"Esempi citati: rosoni gotici, prospettiva e proporzioni di Leonardo, luce e ombra di Caravaggio, avanguardie del Novecento fino a Duchamp.",
+ r:["D.M. 221/2025, All. 1, p. 104","Cost. art. 9"],s:"Cioffi"},
+{id:"d19",a:"disc",u:"u",t:"Mano, mente, mondo: il fare artistico",
+ x:"Rilanciate le tecniche tradizionali: disegno dal vero, pittura, modellazione, calligrafia; pratica vocale, corale, strumentale. Gioco, creatività e pensiero divergente sono lo scopo, ma vanno governati dalla tecnica (technē). Esempio: laboratorio di ceramica.",
+ r:["D.M. 221/2025, All. 1, p. 102"],s:"Cioffi"},
+{id:"d20",a:"disc",u:"u",t:"Patrimonio locale e opera originale",
+ x:"L’opera non coincide con la sua riproduzione. Si parte dal patrimonio del territorio (chiesa romanica e la sua acustica, artigianato vivo): il museo è aula complementare e i patti scuola–museo–soprintendenza sono dispositivo didattico ordinario.",
+ r:["D.M. 221/2025, All. 1, p. 101: «un patrimonio unico e ricchissimo, da imparare a conoscere e preservare»","Cost. art. 9"],s:"Cioffi"},
+{id:"d21",a:"disc",u:"u",t:"Cultura visiva popolare: il videoclip",
+ x:"Prima si riconosce (cinema, pubblicità, videogiochi, social sono già nella vita degli alunni), poi si dignifica accostando l’arte che ne è parente. Proposta: videoclip sul territorio con riprese, paesaggio sonoro, montaggio digitale, processi generativi come strumenti.",
+ d:"Il digitale prolunga la matita, non la sostituisce (McLuhan). Alunni autori consapevoli, non semplici utenti.",
+ r:["Indicazioni 2025: «il ruolo delle immagini nella cultura popolare, antica e contemporanea» (citato da Cioffi)"],s:"Cioffi"},
+{id:"d22",a:"disc",u:"c",t:"Movimento: le emergenze educative",
+ x:"Bambini e ragazzi tra i più sedentari d’Europa; Italia ultima tra i Paesi OCSE indagati per gli 11–15enni che non raggiungono 60 minuti di attività al giorno; sei scuole su dieci senza impianti sportivi; ore minime di educazione fisica più basse d’Europa; 28,8% di sovrappeso o obesità a 8–9 anni.",
+ r:["OKkio alla SALUTE 2023 (ISS, 2025)","HBSC – WHO Europe (2025)","TEHA, Osservatorio Valore Sport (2025)"],s:"Borgogni"},
+{id:"d23",a:"disc",u:"c",t:"Movimento: cinque leve per il PTOF",
+ x:"1 Norma recente (art. 33 Cost.; Indicazioni 2025) · 2 Almeno due ore settimanali di educazione motoria inclusive in ogni ciclo, con docente specialista in primaria · 3 Didattiche attive in ogni disciplina · 4 Mobilità attiva casa–scuola (pedibus) · 5 Cultura di scuola attiva: formazione, genitori, reti.",
+ r:["Cost. art. 33 (modifica 2023); mio rimando da verificare: L. cost. 26 settembre 2023, n. 1","L. 234/2021 (docente laureato in primaria)","L. 86/2019 (delega per la riforma dello sport)"],s:"Borgogni"},
+
+/* ---------- DA VERIFICARE ---------- */
+{id:"k01",a:"chk",u:"u",t:"Empedocle o Eratostene?",
+ x:"Nell’UdA di Vespri la fase 5 si intitola «Empedocle e la misura della Terra», ma l’attività è la simulazione «stile Eratostene» (ombra e luce). La misura della circonferenza terrestre è di Eratostene; Empedocle è il filosofo dei quattro elementi.",
+ d:"Correggi il titolo prima di riusare il modello, per esempio «Empedocle e gli elementi» e «Eratostene e la misura della Terra».",
+ s:"Vespri, UdA, fase 5"},
+{id:"k02",a:"chk",u:"u",t:"60 o 61 siti UNESCO?",
+ x:"Nella dispensa di Perla l’UdA parla di «i 60 siti Unesco italiani», l’Allegato 1 di «61 siti UNESCO».",
+ d:"Il numero cambia con le nuove iscrizioni: controlla l’elenco aggiornato e indica la data del dato.",
+ s:"Perla, UdA e Allegato 1"},
+{id:"k03",a:"chk",u:"c",t:"Tabella 1: OSA di classe III o di classe V?",
+ x:"Nella Tabella 1 di Perla la colonna degli OSA della primaria è intestata «classe III», ma il testo che segue li attribuisce alla classe V (All. 1, p. 60), come le competenze attese della stessa riga.",
+ d:"Nel tuo curricolo intesta le colonne allo snodo corretto (III primaria, V primaria, III secondaria) e cita la pagina delle Indicazioni.",
+ s:"Perla, Tabella 1 e § 4.3.1"},
+{id:"k04",a:"chk",u:"c",t:"Il modello d’esempio cita ancora il D.M. 254/2012",
+ x:"In calce all’Allegato 1 di Perla: «Documento elaborato sulla base delle Indicazioni Nazionali per il Curricolo (D.M. n. 254/2012 e successivi aggiornamenti)». Il quadro di riferimento del corso è il D.M. 221/2025.",
+ d:"Se riusi il modello, aggiorna la dicitura in intestazione e a piè di pagina.",
+ s:"Perla, Allegato 1"},
+{id:"k05",a:"chk",u:"cu",t:"Citare bene la Raccomandazione 2018",
+ x:"Perla scrive «C 189/11» e, in bibliografia, «Parlamento Europeo e Consiglio»; Magni e Cioffi citano 2018/C 189/01 e Magni scrive «Raccomandazione del Consiglio».",
+ d:"Forma consigliata: Raccomandazione del Consiglio del 22 maggio 2018 relativa alle competenze chiave per l’apprendimento permanente (2018/C 189/01). Quella del 2006 era invece di Parlamento e Consiglio.",
+ r:["Magni, nota 6 (link EUR-Lex)","Cioffi, nota 7"],s:"Perla, Magni, Cioffi"},
+{id:"k06",a:"chk",u:"c",t:"«Dispositivo»: pagina 21, 22 o 49?",
+ x:"La definizione del curricolo come «dispositivo…» è citata da Perla a p. 21–22 dell’Allegato 1 e da Cioffi a p. 49 («Premesse culturali»). Il passaggio «dispositivo per promuovere la maturazione delle competenze attese attraverso i saperi fondamentali» compare in entrambi.",
+ d:"Prima di virgolettare, controlla sul PDF ufficiale pagina ed edizione: la numerazione può variare tra versioni.",
+ s:"Perla; Cioffi"},
+{id:"k07",a:"chk",u:"c",t:"«Indicazioni del 2010» nel primo ciclo?",
+ x:"Valerio scrive che l’indirizzo contro l’eccesso di formalismo «è stato poi affermato nelle Indicazioni Nazionali del 2010» e ribadito nel 2025. Per il primo ciclo le edizioni precedenti sono 2007 e 2012; a quanto mi risulta il 2010 riguarda i licei.",
+ d:"Non ho il testo di riferimento: se lo citi, verifica a quale documento si riferisce.",
+ s:"Valerio"},
+{id:"k08",a:"chk",u:"cu",t:"2025 o 2026?",
+ x:"Morri parla di «Indicazioni Nazionali 2026»; gli altri autori usano D.M. 221/2025 (firmato il 9 dicembre 2025, in GU il 27 gennaio 2026).",
+ d:"Cita sempre il decreto e usa «Indicazioni nazionali 2025» in modo uniforme in tutto il curricolo.",
+ s:"Morri; Cioffi"},
+{id:"k09",a:"chk",u:"c",t:"Piaget e Bruner non dicono la stessa cosa",
+ x:"Perla li pone entrambi a fondamento. Per Piaget non si può insegnare qualsiasi cosa a qualsiasi età (stadi); per Bruner qualunque idea si può insegnare in forma onesta a qualsiasi età.",
+ d:"Puoi tenerli insieme così: calibrare sulle strutture disponibili (Piaget) e riproporre i nuclei a livelli crescenti di formalizzazione (Bruner). Dichiara la tensione nel curricolo invece di nasconderla.",
+ s:"Perla, §§ 2.3 e 2.5"},
+{id:"k10",a:"chk",u:"c",t:"Steiner e il Profilo per competenze",
+ x:"Magni cita Steiner: pensiero critico, metacognizione, growth mindset come «distrattori». Ma il Profilo 2025 include «imparare a imparare» e Vespri dà centralità a pensiero critico e problem solving.",
+ d:"Convergenza possibile: per Perla le competenze non sono generiche ma legate agli ambiti disciplinari. Formula sempre la competenza dentro un nucleo. Ricorda che Steiner parla di scuole americane, come ammette lo stesso Magni.",
+ s:"Magni; Perla; Vespri"},
+{id:"k11",a:"chk",u:"u",t:"Rubrica e griglia usano scale diverse",
+ x:"Nell’UdA di Perla (cl. III primaria) la rubrica usa livelli con voti (Avanzato 9–10 … In via di acquisizione 4–5), la griglia del prodotto usa giudizi (Ottimo … Non sufficiente): due scale nello stesso modello.",
+ d:"Per la primaria controlla la normativa vigente sulla valutazione periodica e finale (a quanto mi risulta L. 150/2024 e la relativa ordinanza sui giudizi sintetici: non è nei materiali) e allinea le scale prima di adottare il modello.",
+ s:"Perla, Allegato 1bis"},
+{id:"k12",a:"chk",u:"c",t:"LEL: norma o opinione dell’autore?",
+ x:"Nei materiali di Balbo sono norma l’art. 2, c. 3 del D.M. 221/2025, il DPR 89/2009 e le circolari. Sono proposte dell’autore: «almeno due esami di latino» (dice «suggerisco io»), la rete di scuole attorno a un liceo, la «valutazione indipendente».",
+ d:"Nel PTOF cita solo le fonti. Per i requisiti dei docenti e per la valutazione controlla le circolari MIM e USR, che non ho tra i materiali.",
+ s:"Balbo"},
+{id:"k13",a:"chk",u:"c",t:"Dewey, Democracy and Education: anno",
+ x:"Costa cita Dewey (1930), Democracy and education, vol. 8, Macmillan. La prima edizione dell’opera è del 1916.",
+ d:"In bibliografia indica la prima edizione e, a parte, la ristampa che hai consultato.",
+ s:"Costa, nota 12"}
+];
+
+/* ============ STATO ============ */
+var KEY="bacheca-curricolo-v1";
+var store={ok:true};
+var state={p:{},c:[]};
+var ui={q:"",areas:{},uso:"all",stato:"all"};
+var cur={id:null,list:[]};
+var rv={deck:[],i:0,shown:false,known:0,again:0,includeKnown:false};
+var editing=null;
+var dl=null;
+var saveT=null;
+
+function loadState(){
+  try{
+    var t="__t";localStorage.setItem(t,"1");localStorage.removeItem(t);
+  }catch(e){store.ok=false}
+  if(!store.ok)return;
+  try{
+    var raw=localStorage.getItem(KEY);
+    if(raw){var s=JSON.parse(raw);if(s&&typeof s==="object"){state.p=s.p||{};state.c=Array.isArray(s.c)?s.c:[]}}
+  }catch(e){}
+}
+function saveState(){
+  if(!store.ok)return;
+  clearTimeout(saveT);
+  saveT=setTimeout(function(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){store.ok=false}},150);
+}
+function P(id){if(!state.p[id])state.p[id]={k:0,pin:0,memo:""};return state.p[id]}
+function all(){return NOTES.concat(state.c.map(function(n){return Object.assign({custom:true},n)}))}
+function byId(id){var a=all();for(var i=0;i<a.length;i++)if(a[i].id===id)return a[i];return null}
+function areaOf(k){for(var i=0;i<AREAS.length;i++)if(AREAS[i].k===k)return AREAS[i];return AREAS[AREAS.length-1]}
+
+/* ============ UTIL ============ */
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function norm(s){return String(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")}
+function linkify(s){return esc(s).replace(/(https?:\/\/[^\s)]+)/g,'<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>')}
+function hash(s){var h=0;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))|0;return Math.abs(h)}
+function rot(id){return (((hash(id)%7)-3)*0.55).toFixed(2)+"deg"}
+function usoLabel(u){var o=[];if(u.indexOf("c")>-1)o.push("Curricolo");if(u.indexOf("u")>-1)o.push("UdA");return o}
+var toastT=null;
+function toast(m){var t=document.getElementById("cn-toast");t.textContent=m;t.classList.add("show");clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove("show")},2200)}
+function copyText(txt){
+  function fb(){var ta=document.createElement("textarea");ta.value=txt;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();var ok=false;try{ok=document.execCommand("copy")}catch(e){}document.body.removeChild(ta);toast(ok?"Copiato":"Copia non disponibile: seleziona il testo a mano")}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(function(){toast("Copiato")},fb)}else fb();
+}
+var IC={
+ pin:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M9 3h6l-1 6 3 3v2H7v-2l3-3z"/><path d="M12 14v7"/></svg>',
+ check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+ x:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+ copy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 012-2h9"/></svg>'
+};
+
+/* ============ FILTRI ============ */
+function matches(n,skipArea){
+  var st=P(n.id);
+  if(!skipArea){var ak=Object.keys(ui.areas).filter(function(k){return ui.areas[k]});if(ak.length&&ak.indexOf(n.a)<0)return false}
+  if(ui.uso!=="all"&&(n.u||"").indexOf(ui.uso)<0)return false;
+  if(ui.stato==="todo"&&st.k===1)return false;
+  if(ui.stato==="known"&&st.k!==1)return false;
+  if(ui.stato==="pin"&&!st.pin)return false;
+  if(ui.q){
+    var hay=norm([n.t,n.x,n.d,(n.r||[]).join(" "),n.w,n.s,areaOf(n.a).n,st.memo].join(" "));
+    var toks=norm(ui.q).split(/\s+/).filter(Boolean);
+    for(var i=0;i<toks.length;i++)if(hay.indexOf(toks[i])<0)return false;
+  }
+  return true;
+}
+function visible(){
+  var v=all().filter(function(n){return matches(n,false)});
+  var idx={};all().forEach(function(n,i){idx[n.id]=i});
+  v.sort(function(a,b){var pa=P(a.id).pin?0:1,pb=P(b.id).pin?0:1;return pa-pb||idx[a.id]-idx[b.id]});
+  return v;
+}
+
+/* ============ RENDER ============ */
+function renderChips(){
+  var a=all(),h="";
+  AREAS.forEach(function(ar){
+    var n=a.filter(function(x){return x.a===ar.k&&matches(x,true)}).length;
+    if(ar.k==="mie"&&!n&&!ui.areas.mie)return;
+    var on=!!ui.areas[ar.k];
+    h+='<button class="chip a-'+ar.k+'" data-act="chip" data-k="'+ar.k+'" aria-pressed="'+on+'"><i></i>'+esc(ar.n)+' <small>'+n+'</small></button>';
+  });
+  document.getElementById("cn-chips").innerHTML=h;
+}
+function noteHtml(n){
+  var st=P(n.id),ar=areaOf(n.a);
+  var nref=(n.r||[]).length,more=[];
+  if(n.d)more.push("dettaglio");
+  if(nref)more.push(nref+(nref>1?" riferimenti":" riferimento"));
+  if(n.w)more.push("come usarla");
+  var tags=usoLabel(n.u||"").map(function(t){return '<span class="tag">'+t+'</span>'}).join("");
+  return '<article class="note a-'+n.a+(st.k===1?" known":"")+'" data-id="'+n.id+'" style="--rot:'+rot(n.id)+'">'+
+   '<div class="top"><span class="area"><i></i>'+esc(ar.n)+'</span>'+
+   '<button class="icon-btn" data-act="pin" data-id="'+n.id+'" aria-pressed="'+(st.pin?"true":"false")+'" aria-label="Fissa in alto: '+esc(n.t)+'" title="Fissa in alto">'+IC.pin+'</button></div>'+
+   '<h3><button data-act="open" data-id="'+n.id+'">'+esc(n.t)+'</button></h3>'+
+   '<p class="x">'+esc(n.x)+'</p>'+
+   (more.length?'<span class="src">+ '+esc(more.join(" · "))+'</span>':'')+
+   '<div class="foot"><div><div class="tags">'+tags+'</div>'+(n.s?'<span class="src">'+esc(n.s)+'</span>':'')+(st.k===2?' <span class="badge-rev">da ripassare</span>':'')+'</div>'+
+   '<button class="know" data-act="know" data-id="'+n.id+'" aria-pressed="'+(st.k===1?"true":"false")+'">'+IC.check+(st.k===1?"Memorizzata":"La so")+'</button></div>'+
+  '</article>';
+}
+function render(){
+  var v=visible(),b=document.getElementById("cn-board");
+  if(!v.length){
+    b.innerHTML='<div class="empty"><h2>Nessuna nota con questi filtri</h2><p>Prova con un’altra parola o togli qualche filtro.</p><button class="btn primary" data-act="clear">Azzera i filtri</button></div>';
+  }else b.innerHTML=v.map(noteHtml).join("");
+  renderChips();
+  var tot=all().length,k=all().filter(function(n){return P(n.id).k===1}).length;
+  document.getElementById("cn-pk").textContent=k;
+  document.getElementById("cn-pt").textContent=tot;
+  document.getElementById("cn-pbar").style.width=(tot?k/tot*100:0)+"%";
+  document.getElementById("cn-count").textContent=v.length+(v.length===1?" nota":" note");
+  ["uso","stato"].forEach(function(g){
+    document.querySelectorAll('[data-act="'+g+'"]').forEach(function(bt){bt.setAttribute("aria-pressed",String(bt.getAttribute("data-v")===ui[g]))});
+  });
+}
+
+/* ============ DETTAGLIO ============ */
+function noteText(n){
+  var t=n.t+"\n"+n.x;if(n.d)t+="\n"+n.d;
+  if((n.r||[]).length)t+="\nRiferimenti:\n- "+n.r.join("\n- ");
+  if(n.s)t+="\nFonte: "+n.s;return t;
+}
+function openNote(id,list){
+  var n=byId(id);if(!n)return;
+  cur.id=id;cur.list=list||visible().map(function(x){return x.id});
+  var st=P(id),d=document.getElementById("cn-dNote"),sh=document.getElementById("cn-nSheet");
+  sh.className="sheet a-"+n.a;
+  var refs=(n.r||[]).map(function(r,i){return '<li><span>'+linkify(r)+'</span><button class="icon-btn" data-act="copyref" data-i="'+i+'" aria-label="Copia il riferimento" title="Copia">'+IC.copy+'</button></li>'}).join("");
+  var pos=cur.list.indexOf(id);
+  sh.innerHTML=
+   '<button class="icon-btn close" data-act="closeN" aria-label="Chiudi">'+IC.x+'</button>'+
+   '<div class="area" style="font-size:13.5px;display:flex;gap:6px;align-items:center"><i style="width:9px;height:9px;border-radius:50%;background:#26221B;opacity:.55"></i>'+esc(areaOf(n.a).n)+' · '+usoLabel(n.u||"").join(" e ")+'</div>'+
+   '<h2 id="cn-nTitle">'+esc(n.t)+'</h2>'+
+   '<p class="x">'+esc(n.x)+'</p>'+
+   (n.d?'<p class="d">'+esc(n.d)+'</p>':'')+
+   (refs?'<h4>Riferimenti e citazioni</h4><ul class="refs">'+refs+'</ul>':'')+
+   (n.w?'<h4>Come usarla nella stesura</h4><div class="usebox">'+esc(n.w)+'</div>':'')+
+   (n.s?'<p class="meta">Fonte: '+esc(n.s)+'</p>':'')+
+   '<h4><label for="cn-memo">La mia annotazione</label></h4><textarea class="memo" id="cn-memo" placeholder="Come la userai nella tua scuola? Un esempio, un dubbio…">'+esc(st.memo)+'</textarea>'+
+   '<div class="actions">'+
+     '<button class="btn" data-act="know" data-id="'+id+'" data-in="1" aria-pressed="'+(st.k===1)+'">'+IC.check+(st.k===1?"Memorizzata":"La so")+'</button>'+
+     '<button class="btn" data-act="pin" data-id="'+id+'" data-in="1" aria-pressed="'+(!!st.pin)+'">'+IC.pin+(st.pin?"Fissata":"Fissa")+'</button>'+
+     '<button class="btn" data-act="copynote">'+IC.copy+'Copia nota</button>'+
+     (n.custom?'<button class="btn" data-act="edit" data-id="'+id+'">Modifica</button><button class="btn danger" data-act="del" data-id="'+id+'">Elimina</button>':'')+
+     '<span class="sp"></span>'+
+     '<button class="btn" data-act="prev" '+(pos<=0?"disabled":"")+' aria-label="Nota precedente">‹</button>'+
+     '<button class="btn" data-act="next" '+(pos>=cur.list.length-1?"disabled":"")+' aria-label="Nota successiva">›</button>'+
+   '</div>';
+  if(!d.open)d.showModal();
+  sh.scrollTop=0;
+}
+function stepNote(dir){
+  var i=cur.list.indexOf(cur.id)+dir;
+  if(i>=0&&i<cur.list.length)openNote(cur.list[i],cur.list);
+}
+
+/* ============ RIPASSO ============ */
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function startReview(includeKnown){
+  rv.includeKnown=!!includeKnown;
+  var v=visible().filter(function(n){return rv.includeKnown||P(n.id).k!==1}).map(function(n){return n.id});
+  rv.deck=shuffle(v);rv.i=0;rv.shown=false;rv.known=0;rv.again=0;
+  var d=document.getElementById("cn-dRev");if(!d.open)d.showModal();
+  renderReview();
+}
+function renderReview(){
+  var sh=document.getElementById("cn-rSheet");
+  if(!rv.deck.length){
+    sh.className="sheet plain";
+    sh.innerHTML='<button class="icon-btn close" data-act="closeR" aria-label="Chiudi">'+IC.x+'</button><h2>Niente da ripassare</h2><p>Con i filtri attuali tutte le note sono già memorizzate. Cambia filtro oppure ripassa anche quelle che sai già.</p><div class="actions"><button class="btn primary" data-act="revall">Ripassa anche le memorizzate</button><button class="btn" data-act="closeR">Chiudi</button></div>';
+    return;
+  }
+  if(rv.i>=rv.deck.length){
+    sh.className="sheet plain";
+    sh.innerHTML='<button class="icon-btn close" data-act="closeR" aria-label="Chiudi">'+IC.x+'</button><h2>Ripasso completato</h2><p><b>'+rv.known+'</b> note segnate come memorizzate, <b>'+rv.again+'</b> da rivedere.</p><div class="actions"><button class="btn primary" data-act="revagain">Ripassa di nuovo</button><button class="btn" data-act="closeR">Torna alla bacheca</button></div>';
+    render();return;
+  }
+  var n=byId(rv.deck[rv.i]);
+  sh.className="sheet a-"+n.a;
+  var refs=(n.r||[]).map(function(r){return '<li><span>'+linkify(r)+'</span></li>'}).join("");
+  sh.innerHTML=
+   '<button class="icon-btn close" data-act="closeR" aria-label="Chiudi">'+IC.x+'</button>'+
+   '<div class="rv-count">Nota '+(rv.i+1)+' di '+rv.deck.length+' · '+esc(areaOf(n.a).n)+'</div>'+
+   '<div class="rv-card"><div class="rv-q">'+esc(n.t)+'</div>'+
+   (rv.shown?
+     '<p class="x">'+esc(n.x)+'</p>'+(n.d?'<p class="d">'+esc(n.d)+'</p>':'')+(refs?'<ul class="refs">'+refs+'</ul>':'')+(n.s?'<p class="meta">Fonte: '+esc(n.s)+'</p>':'')
+     :'<p class="rv-hide">Prova a ricordare cosa dice, poi mostra la nota.</p>')+
+   '</div>'+
+   '<div class="actions">'+
+   (rv.shown?
+     '<button class="btn" data-act="rvagain">Da ripassare <span class="hint">(←)</span></button><button class="btn primary" data-act="rvknow">'+IC.check+'La so <span class="hint" style="color:inherit">(→)</span></button>'
+     :'<button class="btn primary" id="cn-rvShow" data-act="rvshow">Mostra la nota</button>')+
+   '<span class="sp"></span><button class="btn" data-act="rvskip">Salta</button></div>';
+  var b=document.getElementById("cn-rvShow");if(b)b.focus();
+}
+function rvAnswer(known){
+  var id=rv.deck[rv.i],st=P(id);
+  st.k=known?1:2;if(known)rv.known++;else rv.again++;
+  saveState();rv.i++;rv.shown=false;renderReview();
+}
+
+/* ============ FORM ============ */
+function openForm(id){
+  editing=id||null;
+  var n=id?byId(id):null,sh=document.getElementById("cn-fSheet");
+  var opts=AREAS.filter(function(a){return a.k!=="chk"}).map(function(a){return '<option value="'+a.k+'"'+((n?n.a:"mie")===a.k?" selected":"")+'>'+esc(a.n)+'</option>'}).join("");
+  var u=n?n.u:"cu";
+  sh.innerHTML='<button class="icon-btn close" data-act="closeF" aria-label="Chiudi">'+IC.x+'</button>'+
+   '<h2 id="cn-fTitle">'+(n?"Modifica nota":"Nuova nota")+'</h2>'+
+   '<label for="cn-fT">Titolo</label><input type="text" id="cn-fT" maxlength="120" value="'+esc(n?n.t:"")+'">'+
+   '<label for="cn-fX">Testo</label><textarea id="cn-fX" maxlength="1200">'+esc(n?n.x:"")+'</textarea>'+
+   '<label for="cn-fA">Area</label><select id="cn-fA">'+opts+'</select>'+
+   '<label>Serve per</label><div class="checks"><label><input type="checkbox" id="cn-fC"'+(u.indexOf("c")>-1?" checked":"")+'> Curricolo verticale</label><label><input type="checkbox" id="cn-fU"'+(u.indexOf("u")>-1?" checked":"")+'> UdA e progettazione</label></div>'+
+   '<label for="cn-fR">Riferimenti normativi o citazioni <span class="hint">(uno per riga)</span></label><textarea id="cn-fR">'+esc(n?(n.r||[]).join("\n"):"")+'</textarea>'+
+   '<label for="cn-fS">Fonte</label><input type="text" id="cn-fS" maxlength="120" value="'+esc(n?n.s:"")+'">'+
+   '<div class="actions"><button class="btn primary" data-act="saveF">Salva nota</button><button class="btn" data-act="closeF">Annulla</button></div>';
+  var d=document.getElementById("cn-dForm");if(!d.open)d.showModal();
+  document.getElementById("cn-fT").focus();
+}
+function saveForm(){
+  var t=document.getElementById("cn-fT").value.trim(),x=document.getElementById("cn-fX").value.trim();
+  if(!t||!x){toast("Scrivi almeno titolo e testo");return}
+  var u=(document.getElementById("cn-fC").checked?"c":"")+(document.getElementById("cn-fU").checked?"u":"");
+  if(!u)u="cu";
+  var o={id:editing||("u"+Date.now().toString(36)),a:document.getElementById("cn-fA").value,u:u,t:t,x:x,
+    r:document.getElementById("cn-fR").value.split("\n").map(function(s){return s.trim()}).filter(Boolean),
+    s:document.getElementById("cn-fS").value.trim()};
+  if(editing){state.c=state.c.map(function(c){return c.id===editing?o:c})}else state.c.push(o);
+  saveState();document.getElementById("cn-dForm").close();render();toast("Nota salvata");
+  if(document.getElementById("cn-dNote").open)openNote(o.id,cur.list);
+}
+
+/* ============ DATI ============ */
+function exportJson(){return JSON.stringify({v:1,p:state.p,c:state.c},null,1)}
+function openData(){
+  var sh=document.getElementById("cn-dSheet");
+  sh.innerHTML='<button class="icon-btn close" data-act="closeD" aria-label="Chiudi">'+IC.x+'</button>'+
+   '<h2 id="cn-dTitle">Salva o ripristina</h2>'+
+   '<p>I tuoi progressi, le annotazioni e le note aggiunte restano in questo browser'+(store.ok?'.':' — <b>ma qui la memoria del browser non è disponibile</b>, quindi si perdono alla chiusura.')+' Per cambiare dispositivo o non perderli, salva una copia.</p>'+
+   '<div class="actions"><button class="btn primary" data-act="export">Salva una copia</button></div>'+
+   '<div id="cn-expBox"></div>'+
+   '<h4>Ripristina da una copia</h4><input type="file" id="cn-impF" accept=".json,application/json" aria-label="Scegli il file salvato"><p class="hint">Oppure incolla il contenuto qui sotto.</p><textarea id="cn-impT" aria-label="Contenuto della copia"></textarea>'+
+   '<div class="actions"><button class="btn" data-act="import">Ripristina (sostituisce i dati attuali)</button><span class="sp"></span><button class="btn danger" id="cn-rstB" data-act="reset">Azzera i miei progressi</button></div>';
+  var d=document.getElementById("cn-dData");if(!d.open)d.showModal();
+  document.getElementById("cn-impF").addEventListener("change",function(e){
+    var f=e.target.files&&e.target.files[0];if(!f)return;var r=new FileReader();
+    r.onload=function(){document.getElementById("cn-impT").value=String(r.result||"")};r.readAsText(f);
+  });
+}
+function doExport(){
+  var j=exportJson();
+  if(dl){
+    dl.save({filename:"bacheca-curricolo.json",data:j}).then(function(){toast("Copia salvata")},function(e){
+      if(e&&e.code==="declined")return;showExport(j);
+    });
+  }else showExport(j);
+}
+function showExport(j){
+  var b=document.getElementById("cn-expBox");if(!b)return;
+  b.innerHTML='<p class="hint">Copia il testo e conservalo in un file .json.</p><textarea id="cn-expT" readonly aria-label="Copia da salvare"></textarea><div class="actions"><button class="btn" data-act="copyexp">'+IC.copy+'Copia tutto</button></div>';
+  document.getElementById("cn-expT").value=j;
+}
+function doImport(){
+  var raw=document.getElementById("cn-impT").value.trim();
+  if(!raw){toast("Scegli un file o incolla il contenuto");return}
+  try{
+    var s=JSON.parse(raw);
+    if(!s||typeof s!=="object"||typeof s.p!=="object"||!Array.isArray(s.c||[]))throw 0;
+    state.p=s.p||{};state.c=(s.c||[]).filter(function(c){return c&&c.id&&c.t&&c.x});
+    saveState();document.getElementById("cn-dData").close();render();toast("Dati ripristinati");
+  }catch(e){toast("File non valido: usa una copia salvata da questa bacheca")}
+}
+var rstT=null;
+function doReset(){
+  var b=document.getElementById("cn-rstB");
+  if(b.dataset.arm==="1"){
+    state.p={};saveState();clearTimeout(rstT);document.getElementById("cn-dData").close();render();toast("Progressi azzerati (le note aggiunte restano)");return;
+  }
+  b.dataset.arm="1";b.textContent="Conferma: azzera davvero";
+  rstT=setTimeout(function(){b.dataset.arm="0";b.textContent="Azzera i miei progressi"},4000);
+}
+
+/* ============ EVENTI ============ */
+document.addEventListener("click",function(e){if(document.getElementById("view-cn").hasAttribute("hidden"))return;
+  var el=e.target.closest("[data-act]");
+  if(!el){
+    var card=e.target.closest(".note");
+    if(card&&!e.target.closest("a,button"))openNote(card.getAttribute("data-id"));
+    return;
+  }
+  var act=el.getAttribute("data-act"),id=el.getAttribute("data-id");
+  switch(act){
+    case "chip":var k=el.getAttribute("data-k");ui.areas[k]=!ui.areas[k];render();break;
+    case "uso":ui.uso=el.getAttribute("data-v");render();break;
+    case "stato":ui.stato=el.getAttribute("data-v");render();break;
+    case "clear":ui={q:"",areas:{},uso:"all",stato:"all"};document.getElementById("cn-q").value="";render();break;
+    case "open":openNote(id);break;
+    case "pin":P(id).pin=P(id).pin?0:1;saveState();render();if(el.getAttribute("data-in")){openNote(id,cur.list)}break;
+    case "know":var s=P(id);s.k=s.k===1?0:1;saveState();render();if(el.getAttribute("data-in"))openNote(id,cur.list);break;
+    case "closeN":document.getElementById("cn-dNote").close();break;
+    case "prev":stepNote(-1);break;
+    case "next":stepNote(1);break;
+    case "copynote":copyText(noteText(byId(cur.id)));break;
+    case "copyref":copyText((byId(cur.id).r||[])[+el.getAttribute("data-i")]||"");break;
+    case "edit":document.getElementById("cn-dNote").close();openForm(id);break;
+    case "del":
+      if(el.dataset.arm==="1"){state.c=state.c.filter(function(c){return c.id!==id});delete state.p[id];saveState();document.getElementById("cn-dNote").close();render();toast("Nota eliminata")}
+      else{el.dataset.arm="1";el.textContent="Conferma: elimina";setTimeout(function(){el.dataset.arm="0";el.textContent="Elimina"},3500)}
+      break;
+    case "new":openForm(null);break;
+    case "saveF":saveForm();break;
+    case "closeF":document.getElementById("cn-dForm").close();break;
+    case "review":startReview(false);break;
+    case "closeR":document.getElementById("cn-dRev").close();render();break;
+    case "rvshow":rv.shown=true;renderReview();break;
+    case "rvknow":rvAnswer(true);break;
+    case "rvagain":rvAnswer(false);break;
+    case "rvskip":rv.i++;rv.shown=false;renderReview();break;
+    case "revall":startReview(true);break;
+    case "data":openData();break;
+    case "closeD":document.getElementById("cn-dData").close();break;
+    case "export":doExport();break;
+    case "copyexp":copyText(document.getElementById("cn-expT").value);break;
+    case "import":doImport();break;
+    case "reset":doReset();break;
+  }
+});
+document.addEventListener("input",function(e){if(document.getElementById("view-cn").hasAttribute("hidden"))return;
+  if(e.target.id==="cn-q"){ui.q=e.target.value;render()}
+  if(e.target.id==="cn-memo"&&cur.id){P(cur.id).memo=e.target.value;saveState()}
+});
+document.addEventListener("keydown",function(e){if(document.getElementById("view-cn").hasAttribute("hidden"))return;
+  var rvOpen=document.getElementById("cn-dRev").open;
+  if(rvOpen&&rv.shown&&rv.i<rv.deck.length){
+    if(e.key==="ArrowRight"){e.preventDefault();rvAnswer(true)}
+    if(e.key==="ArrowLeft"){e.preventDefault();rvAnswer(false)}
+  }
+  if(document.getElementById("cn-dNote").open&&e.target.tagName!=="TEXTAREA"){
+    if(e.key==="ArrowRight")stepNote(1);
+    if(e.key==="ArrowLeft")stepNote(-1);
+  }
+  if(e.key==="/"&&!/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)&&!document.querySelector("dialog[open]")){e.preventDefault();document.getElementById("cn-q").focus()}
+});
+["cn-dNote","cn-dRev","cn-dForm","cn-dData"].forEach(function(id){
+  var d=document.getElementById(id);
+  d.addEventListener("click",function(e){if(e.target===d)d.close()});
+  d.addEventListener("close",function(){if(id==="cn-dNote"||id==="cn-dRev")render()});
+});
+
+/* ============ AVVIO ============ */
+loadState();
+render();
+if(!store.ok)document.querySelector(".foot-note").insertAdjacentHTML("beforebegin",'<p class="foot-note" style="margin:0 0 12px"><b>Attenzione:</b> in questa finestra il browser non permette di salvare i dati. Usa «Salva o ripristina» per conservare le tue annotazioni.</p>');
+try{
+  if(window.claude&&typeof window.claude.use==="function"){
+    window.claude.use("downloads").then(function(x){dl=x||null},function(){dl=null});
+  }
+}catch(e){}
+
+})();
+</script>
+<script>
+(function(){
+"use strict";
+
+var SECS=[
+ {k:"of",n:"Testo ufficiale"},
+ {k:"cv",n:"Curricolo verticale"},
+ {k:"pd",n:"Progettazione didattica"},
+ {k:"di",n:"Discipline"},
+ {k:"vf",n:"Da verificare"},
+ {k:"mie",n:"I miei argomenti"}
+];
+function p(t,r){return r?[t,r]:[t]}
+var NOTES=[
+/* ===== TESTO UFFICIALE (volume MIM, marzo 2026) ===== */
+{id:"of01",s:"of",u:"c",t:"Decreto 221/2025: applicazione e transizione",src:"Testo ufficiale, decreto, pp. 6–8",pts:[
+ p("Art. 1, c. 1: le Indicazioni allegate sostituiscono quelle del D.M. 254/2012.","p. 6"),
+ p("Art. 1, c. 2: dal 2026/27 si adottano a partire dalle classi prime di primaria e secondaria di I grado, «procedendo in prima attuazione e con gradualità alla rielaborazione del curricolo d’istituto».","p. 6"),
+ p("Art. 2, c. 1: discipline del primo ciclo: italiano, inglese, seconda lingua comunitaria (secondaria), storia, geografia, matematica, tecnologia, scienze, musica, arte e immagine, educazione motoria (primaria) o educazione fisica (secondaria).","p. 6"),
+ p("Art. 2, c. 3: il LEL può essere avviato dalle classi seconde e terze del 2026/27 negli spazi di autonomia, flessibilità e ampliamento dell’offerta formativa.","p. 6"),
+ p("Art. 2, c. 4–6: educazione civica trasversale (L. 92/2019); strumento musicale dalle classi prime nel 2026/27; religione cattolica secondo il DPR 11 febbraio 2010.","pp. 6–7"),
+ p("Art. 3: l’editoria adegua i libri di testo dal 2026/27 per le classi prime; per Storia dalla classe terza primaria nel 2027/28.","p. 7"),
+ p("Art. 5, c. 1: le Indicazioni 2012 restano per le classi intermedie già funzionanti nel 2025/26 fino a fine corso; nel 2027/28 le classi terze di primaria anticipano solo Storia.","p. 7"),
+ p("Art. 5, c. 2: fino alla completa attuazione i collegi dei docenti adattano e rimodulano il curricolo delle discipline con scansione temporale diversa dal 2012.","p. 7"),
+ p("Art. 5, c. 3: il D.M. 254/2012 cessa di avere efficacia dal 2026/27 per l’infanzia, dal 2028/29 per la secondaria di I grado, dal 2030/31 per la primaria.","p. 8")]},
+{id:"of02",s:"of",u:"c",t:"Premesse culturali: persona, scuola, famiglia",src:"Testo ufficiale, pp. 19–21",pts:[
+ p("Persona = identità, relazione, partecipazione; formazione integrale nelle dimensioni cognitive, affettive, relazionali, corporee, estetiche, etiche, spirituali, religiose.","p. 19"),
+ p("Nessuna scuola può svolgere in solitudine il compito formativo: serve l’alleanza con le famiglie. Scuola e famiglia sono «le due colonne portanti» del percorso di crescita.","p. 19"),
+ p("Nuovo patto di alleanza: «collaborazione autentica e rispettosa dei ruoli, fatta di incontro sostanziale oltre che di accordo documentale»; il patto educativo di corresponsabilità serve a progettare occasioni di incontro ad intra e ad extra.","p. 20"),
+ p("Magister: da magis, «di più»; l’espressione sottolinea «l’autorevolezza ritrovata della figura del docente».","pp. 20–21"),
+ p("Scuola e nuovo umanesimo: finalità principale è acquisire conoscenze e abilità fondamentali per sviluppare le competenze culturali di base (umanistico, scientifico, tecnologico) per lo sviluppo integrale della persona e dei suoi talenti.","p. 21"),
+ p("Talento = espressione attiva e situata delle potenzialità; emerge in un contesto capacitante.","p. 21"),
+ p("Art. 3 Cost.: rimuovere gli ostacoli al pieno sviluppo della persona; la scuola promuove inclusione, cittadinanza e contrasto alla dispersione.","p. 21")]},
+{id:"of03",s:"of",u:"cu",t:"Premesse culturali: libertà, relazioni, comunità",src:"Testo ufficiale, pp. 22–24",pts:[
+ p("Lo studente è soggetto attivo del proprio apprendimento e impara a governare il bene della libertà.","p. 22"),
+ p("L’educazione alla libertà è sviluppo della libertà nello studente; le «regole», anche quelle delle discipline (grammatica, giochi in palestra), educano al senso del limite.","p. 22"),
+ p("Rispetto e relazioni: educazione all’empatia, prevenzione della violenza di genere, decostruzione degli stereotipi.","p. 23"),
+ p("Educazione del cuore: fiducia, empatia relazionale ed affettiva, tenerezza, incanto, gentilezza; tutte le discipline sono «alleati» degli insegnanti.","p. 23"),
+ p("Culture educative: «regia pedagogica stabile e condivisa» e «spazi autentici di collegialità e progettazione comune».","pp. 23–24"),
+ p("Nella secondaria diventano fondamentali il docente tutor e il docente orientatore, oltre alle figure di gestione intermedia.","p. 24"),
+ p("Scuole «comunità educanti»: curricoli flessibili aperti a famiglie, enti territoriali, università; aule esterne, orti, laboratori.","p. 24"),
+ p("Cura del pianeta e governo della tecnica: integrare i saperi e costruire patti di solidarietà tra le generazioni.","p. 24")]},
+{id:"of04",s:"of",u:"cu",t:"Premesse culturali: tecnologie, scrittura, inclusione",src:"Testo ufficiale, pp. 24–28",pts:[
+ p("Tecnologie digitali con prudenza e senso critico: prevale la mediazione dell’insegnante; l’uso improprio favorisce sovraccarico cognitivo e deconcentrazione.","pp. 24–25"),
+ p("IA: «strategia abilitante», cioè integrazione critica, consapevole e orientata alla trasformazione, guidata dalla competenza esperta degli insegnanti.","p. 25"),
+ p("Competenze digitali ≠ competenze informatiche: la scuola promuove le une e le altre.","p. 25"),
+ p("Scrivere: carta e penna, lettura ad alta voce e piccole biblioteche d’aula convivono con assistenti virtuali; il corsivo migliora attenzione e percezione.","pp. 25–26"),
+ p("Il riassunto è «un esercizio fondamentale per apprendere a scrivere e a pensare».","p. 26"),
+ p("Inclusione: area BES e diritto allo studio degli alunni adottati; valorizzare ogni lingua e diversità linguistica presente nelle comunità.","pp. 26–27"),
+ p("Personalizzazione come «strategia che governa le scelte educative e didattiche»; l’ICF descrive le capacità dell’alunno e gli ostacoli del contesto.","p. 27"),
+ p("Le attività personalizzate si possono progettare secondo l’UDL, in ambienti di apprendimento flessibili.","p. 27")]},
+{id:"of05",s:"of",u:"c",t:"Finalità della scuola e competenze chiave",src:"Testo ufficiale, pp. 29–30",pts:[
+ p("Istruzione obbligatoria di almeno otto anni (art. 34), «elevati ora a dieci»; collaborazione con la famiglia (art. 30) e con le altre agenzie educative (art. 2).","p. 29"),
+ p("Libertà d’insegnamento (art. 33) e autonomia funzionale (art. 117) si coniugano con l’«obbligo professionale di personalizzare e individualizzare i percorsi formativi».","p. 29"),
+ p("Le scuole elaborano il proprio curricolo esercitando una parte decisiva dell’autonomia.","p. 29"),
+ p("Le Indicazioni fissano Profilo, obiettivi generali, OSA e competenze attese per campo di esperienza e disciplina, «unitamente a suggerimenti riferiti alle conoscenze».","p. 29"),
+ p("Orizzonte di riferimento: le 8 competenze chiave (Raccomandazione del Consiglio, 22 maggio 2018).","p. 29"),
+ p("Raccomandazione del Consiglio UE del 23 novembre 2023: informatica fin dall’inizio dell’istruzione obbligatoria.","p. 30"),
+ p("Il quadro europeo non impone curricoli uniformi: pluralità di modi di sviluppare le stesse competenze.","p. 30")]},
+{id:"of06",s:"of",u:"cu",t:"Profilo e obiettivi generali",src:"Testo ufficiale, pp. 31–41",pts:[
+ p("Il Profilo descrive, in forma essenziale, le competenze riferite alle discipline e al pieno esercizio della cittadinanza al termine del primo ciclo.","p. 31"),
+ p("L’elenco delle competenze deriva dal D.M. 14/2024, con integrazioni da Raccomandazione europea 2018, QCER e DigComp 2.2.","p. 31, nota 6"),
+ p("Nel primo ciclo la competenza «ingegneria» va intesa come competenza tecnologico-informatica.","p. 32, nota 7"),
+ p("Competenza matematica e STEM: «avere consapevolezza dei limiti delle affermazioni che riguardano situazioni complesse».","p. 32"),
+ p("Gli obiettivi generali sono la declinazione operativa delle competenze del Profilo, per area di competenza e per grado.","p. 34"),
+ p("Guidano la progettazione annuale collegiale del consiglio di classe, il giudizio intermedio e finale e la certificazione.","p. 34"),
+ p("Ogni anno, per ciascuna delle otto competenze, il team docente sceglie e adegua gli obiettivi generali più pertinenti alla propria classe.","p. 34"),
+ p("Esempi: primaria «Pianificare e organizzare il proprio lavoro» (p. 40); secondaria «Pianificare e gestire progetti personali e di gruppo» (p. 41); STEM «valutare criticamente l’attendibilità di diverse fonti…» (p. 38).","pp. 38–41")]},
+{id:"of07",s:"of",u:"c",t:"L’organizzazione del curricolo di scuola",src:"Testo ufficiale, pp. 48–49",pts:[
+ p("Titolo: «Un dispositivo per “pensare” l’insegnamento». Cambio di paradigma: rimettere al centro le conoscenze, base per lo sviluppo delle competenze del Profilo.","p. 48"),
+ p("Le scuole progettano, attuano, monitorano e valutano il curricolo «come dispositivo per promuovere la maturazione delle competenze attese attraverso i saperi fondamentali».","p. 48"),
+ p("Collegialità = costruzione condivisa di senso e azione pedagogica; la formazione continua è elemento imprescindibile.","p. 48"),
+ p("«Ogni istituzione scolastica predispone il curricolo verticale di istituto all’interno del PTOF» con riferimento a profilo, obiettivi generali, OSA e competenze attese, specificati per ogni disciplina.","p. 48"),
+ p("Non multa, sed multum: poche ed essenziali conoscenze, approfondite con grande accuratezza; scegliere conoscenze rilevanti, significative, essenziali.","p. 48"),
+ p("Le discipline sono presentate singolarmente, non in aree precostituite (solo per le scientifiche e tecnologiche c’è una premessa comune).","pp. 48–49"),
+ p("Schema n. 1: per ogni disciplina «Perché si studia»; OSA e competenze attese coerenti con le competenze chiave (D.M. 14/2024); conoscenze; nuclei fondanti verticalizzati.","p. 49"),
+ p("Quattro domande-guida: quali obiettivi? quali esperienze? come organizzarle? come accertare?","p. 49"),
+ p("Insegnanti e dirigenti sono «costruttori» e «realizzatori» di un «curricolo reale, vissuto».","p. 49")]},
+{id:"of08",s:"of",u:"c",t:"Che cosa è prescrittivo e che cosa è suggerito",src:"Testo ufficiale, pp. 29, 49–50",pts:[
+ p("Sono prescrittivi competenze attese, obiettivi generali e OSA (come da DPR 275/1999): fondamentali per la verifica periodica e finale e per gli esami di Stato (D.M. 741/2017).","p. 49"),
+ p("Le conoscenze sono «suggerimenti»: il curricolo d’istituto calibra l’offerta sui contesti e sui bisogni degli alunni.","pp. 29, 49"),
+ p("Il curricolo di scuola è «un lavoro pratico, altamente decisionale», espressione del lavoro vivo degli insegnanti.","pp. 49–50"),
+ p("Suggerire le conoscenze discende dalla logica dell’EQF: le competenze non possono sussistere senza le conoscenze.","p. 50"),
+ p("Tre istanze: teorico-semantica (senso di «conoscenze» e «competenze» nelle Raccomandazioni), pratico-progettuale (contenuti non desumibili dai libri di testo), internazionale (allineamento agli altri Paesi europei).","p. 50"),
+ p("Indicazione operativa mia: nel curricolo riporta fedelmente competenze attese, obiettivi generali e OSA; motiva le scelte sulle conoscenze.","deduzione da pp. 49–50")]},
+{id:"of09",s:"of",u:"cu",t:"La valutazione nelle Indicazioni",src:"Testo ufficiale, pp. 50–52",pts:[
+ p("Processo educativo «complesso, dinamico, collegiale e multidimensionale»; documenta lo sviluppo dell’identità personale e promuove l’autovalutazione.","p. 50; D.Lgs. 62/2017, art. 1"),
+ p("Valutazione per l’apprendimento: feedback e valutazione formativa sono tra i fattori più efficaci; la formativa è continua e integrata, distinta dalla sommativa.","p. 50"),
+ p("Articolazioni: diagnostica, iniziale, formativa in itinere, autovalutativa, metacognitiva, finale.","p. 50"),
+ p("Competenza = capacità di impiegare conoscenze, abilità e atteggiamenti per affrontare problemi significativi, nella disciplina e nella vita reale.","p. 51"),
+ p("Gli OSA sono risultati più circoscritti, da valutare in forma formativa e sommativa: vanno tradotti in prove concrete con criteri attesi chiari.","p. 51"),
+ p("Distinguere conoscenze di superficie (fattuali, dichiarative) e conoscenze profonde (applicazioni, integrazioni, riflessioni critiche).","p. 51"),
+ p("Osservazione e documentazione con rubriche, griglie di osservazione, scale: criteri intersoggettivi e condivisi.","p. 51"),
+ p("Valutazione come processo collegiale: criteri comuni e cultura della corresponsabilità, che coinvolge anche studenti e famiglie.","pp. 51–52, nota 9"),
+ p("La certificazione è «il momento in cui il profilo dello studente trova espressione e sintesi»; gli insegnanti sono «veri curriculum makers».","p. 52")]},
+{id:"of10",s:"of",u:"c",t:"LEL nel testo ufficiale",src:"Testo ufficiale, pp. 80–82",pts:[
+ p("Avviato negli ultimi due anni della secondaria di I grado, «in modo opzionale e curricolare».","p. 80"),
+ p("Perché: qualità linguistica, logica e ragionamento, fondamenta grammaticali dell’italiano, valori di una civiltà universale, unità della civiltà europea.","p. 80"),
+ p("Metodo: esame comparativo del lessico, anche quotidiano, con attenzione diacronica; dialogo con le STEM; valori della Costituzione tramite educazione civica.","p. 80"),
+ p("Tre nuclei: educazione linguistica diacronica; consapevolezza della centralità del latino nella tradizione culturale italiana; confronto interlinguistico e interdisciplinare.","p. 81"),
+ p("Competenze attese e OSA fissati al termine della classe terza.","pp. 81–82"),
+ p("Privilegiare l’aspetto semantico su quello morfologico, con insegnamento integrato alle altre lingue; vocabolari digitali per le etimologie.","p. 82"),
+ p("Conoscenze: alfabeto e pronuncia, latinismi, I e II declinazione, forme semplici della coniugazione, aforismi, proverbi, formule epigrafiche.","p. 82"),
+ p("I requisiti dei docenti e la valutazione del LEL non compaiono nel testo delle Indicazioni.","pp. 80–82")]},
+{id:"of11",s:"of",u:"cu",t:"Mappa del volume MIM (marzo 2026)",src:"Sommario del volume, p. 11",pts:[
+ p("Il PDF ha 185 pagine: il numero stampato è la pagina del PDF meno uno.","verificato"),
+ p("Decreto pp. 3–8; Premesse culturali p. 19; Finalità p. 29; Profilo dello studente p. 31; Obiettivi generali p. 34; Organizzazione del curricolo p. 48."),
+ p("Infanzia p. 53: Il sé e l’altro 57; Il corpo e il movimento 59; Immagini, suoni, colori 61; I discorsi e le parole 63; La conoscenza del mondo 64; Dalla infanzia alla primaria 67."),
+ p("Primo ciclo dal p. 68: Italiano 68; LEL 80; Lingua inglese 83; Seconda lingua comunitaria 91."),
+ p("Storia 96; Geografia 105; STEM 113 (Matematica 118, Scienze 130, Tecnologia 140)."),
+ p("Musica 147; Strumento musicale 152; Arte e immagine 158; Educazione motoria e fisica 168."),
+ p("Esempio di struttura, Geografia: competenze attese cl. V (pp. 106–107); OSA cl. III (p. 107); OSA cl. V (p. 108); conoscenze (p. 109); secondaria cl. III (pp. 110–112).")]},
+
+/* ===== CURRICOLO VERTICALE ===== */
+{id:"cv01",s:"cv",u:"c",t:"Dal programma al curricolo",src:"Perla, § 1",pts:[
+ p("1945–1990: programmi ministeriali, elenchi di conoscenze uniformi, sapere enciclopedico e trasmissivo."),
+ p("1985 (DPR 104) e Brocca 1988–92: compaiono gli «obiettivi formativi», ma senza raccordo tra i gradi."),
+ p("1999, DPR 275: autonomia didattica, organizzativa e di ricerca; nascono POF (oggi PTOF) e curricolo dell’autonomia.","DPR 8 marzo 1999, n. 275"),
+ p("2007 e 2012: entra il «curricolo verticale» con i traguardi per lo sviluppo delle competenze, 3–14 anni.","D.M. 31/7/2007; D.M. 254/2012"),
+ p("Dal 2013/14 gli Istituti Comprensivi governano l’intero percorso dall’infanzia alla secondaria di I grado."),
+ p("2025: le Indicazioni parlano del curricolo come «dispositivo per “pensare” l’insegnamento».","p. 48")]},
+{id:"cv02",s:"cv",u:"cu",t:"D.M. 221/2025: la nuova cornice",src:"Perla, Magni, Cioffi",pts:[
+ p("Decreto del Ministro 9 dicembre 2025, n. 221; Gazzetta Ufficiale n. 21 del 27 gennaio 2026."),
+ p("Le Indicazioni allegate sostituiscono quelle del D.M. 254/2012; applicazione graduale dal 2026/27, dalle classi prime.","art. 1, p. 6; art. 5, pp. 7–8"),
+ p("Struttura: premessa culturale, finalità, Profilo dello studente, obiettivi generali, organizzazione del curricolo, sezioni infanzia e primo ciclo."),
+ p("Quattro parole chiave: Profilo dello studente, non multa sed multum, nuclei fondanti, certificazione."),
+ p("Il curricolo verticale si predispone nel PTOF, per ogni disciplina, con riferimento a profilo, obiettivi generali, OSA e competenze attese.","p. 48"),
+ p("Quattro domande guida: quali obiettivi? quali esperienze? come organizzarle? come accertare che siano raggiunti?","p. 49"),
+ p("La certificazione è «il momento in cui il profilo dello studente trova espressione e sintesi».","p. 52; D.M. 14/2024")]},
+{id:"cv03",s:"cv",u:"cu",t:"I cinque passaggi dell’allineamento",src:"Perla, § 4.2",pts:[
+ p("1 – Competenze del Profilo dello studente."),
+ p("2 – Obiettivi generali del processo formativo, distinti per primaria e secondaria."),
+ p("3 – Competenze disciplinari attese agli snodi formativi."),
+ p("4 – Obiettivi specifici di apprendimento (OSA) per nucleo fondante: chiari, osservabili, misurabili."),
+ p("5 – Conoscenze essenziali, scelte con il principio non multa sed multum."),
+ p("Dal loro allineamento coerente discendono le UdA, disciplinari o interdisciplinari."),
+ p("Esempio Geografia: imparare a imparare → «pianificare e organizzare il proprio lavoro» (p. 40) → competenza attesa cl. V: leggere e interpretare il paesaggio → OSA Orientamento cl. III: funzioni e regole degli spazi scolastici, bussola, carte.","pp. 40, 106–107")]},
+{id:"cv04",s:"cv",u:"c",t:"Profilo dello studente e competenze chiave",src:"Perla, Cioffi, Magni",pts:[
+ p("Descrive in forma essenziale le competenze disciplinari e di cittadinanza attese a fine primo ciclo.","p. 31"),
+ p("È articolato sulle 8 competenze chiave europee.","Racc. Consiglio UE 22/5/2018, 2018/C 189/01"),
+ p("Le otto: alfabetica funzionale; multilinguistica; matematica, scienze, tecnologie e ingegneria; digitale; personale, sociale e imparare a imparare; cittadinanza; imprenditoriale; consapevolezza ed espressione culturali."),
+ p("Si collega ai modelli di certificazione, al QCER e a DigComp 2.2.","D.M. 14/2024"),
+ p("Ogni disciplina contribuisce a alcune competenze; ogni UdA ne aggancia una.")]},
+{id:"cv05",s:"cv",u:"c",t:"Nuclei fondanti e non multa sed multum",src:"Perla, Magni",pts:[
+ p("Nuclei fondanti: macro-abilità fondamentali nella progressione dei gradi, che integrano competenze attese e conoscenze."),
+ p("«Non occorre insegnare tante cose (…) ma poche ed essenziali conoscenze, approfondite in aula con grande accuratezza e dovizia di esperienze».","p. 48"),
+ p("Criteri di scelta: conoscenze rilevanti (piano culturale), significative (scientifico), essenziali (formativo)."),
+ p("Origine del motto: Quintiliano, Institutio oratoria X, 1, 59; ripreso da Laneve (1998)."),
+ p("Esempio Geografia, cinque nuclei: Orientamento e spazio; Linguaggio; Paesaggio e territorio; Relazioni e dinamiche; Organizzazione territoriale.")]},
+{id:"cv06",s:"cv",u:"c",t:"Snodi, segmenti e curricolo d’istituto",src:"Perla, § 4 e Allegato 1",pts:[
+ p("Competenze attese fissate a tre snodi: fine classe III primaria, fine classe V primaria, fine classe III secondaria di I grado."),
+ p("Tre segmenti: primaria I–III, primaria IV–V, secondaria I–III; ognuno è un blocco autonomo da cui nascono UdA."),
+ p("Curricolo formale (documento), informale (esperienze co- ed extra-curricolari), nascosto (credenze e atteggiamenti non esplicitati).","Longstreet & Shane, 1993"),
+ p("Il curricolo d’istituto è il raccordo tra formale e reale, dentro il PTOF."),
+ p("Nell’Istituto Comprensivo unisce le progettazioni dei tre ordini in un quadro unitario 3–14 anni."),
+ p("Continuità senza uniformità: uno «strumento vivo», non un documento burocratico.")]},
+{id:"cv07",s:"cv",u:"c",t:"Fondamenti pedagogici",src:"Perla, § 2",pts:[
+ p("Comenio: dal semplice al complesso, dal concreto all’astratto, dal vicino al lontano."),
+ p("Dewey: continuità dell’esperienza; dialettica tra esperienza del bambino e saperi disciplinari.","The Child and the Curriculum, 1902"),
+ p("Piaget: stadi di sviluppo, assimilazione e accomodamento; calibrare i percorsi sulle strutture mentali disponibili."),
+ p("Vygotskij: zona di sviluppo prossimale; apprendimento come co-costruzione; cooperative learning."),
+ p("Bruner: curricolo a spirale; i nuclei tornano con profondità crescente (ricontestualizzazione, non ripetizione).","The Process of Education, 1960"),
+ p("Embodied cognition: l’apprendimento nasce da corpo, mente e ambiente.","Varela, Lakoff, Johnson, Barsalou"),
+ p("Attenzione: Piaget (stadi) e Bruner («a qualsiasi età») sono in tensione: dichiara come li tieni insieme.")]},
+{id:"cv08",s:"cv",u:"c",t:"Competenze e conoscenze",src:"Perla, Magni",pts:[
+ p("Le competenze non sono generiche: si costruiscono dentro specifici ambiti di conoscenza.","Perla, § 3"),
+ p("Contrapporre «scuola delle competenze» e «scuola delle conoscenze» è una falsa alternativa.","Magni"),
+ p("Le conoscenze fondamentali sono la condizione perché maturino le competenze: le Indicazioni «reintegrano pienamente la dimensione delle conoscenze», con la logica dell’European Quality Framework.","pp. 48, 50"),
+ p("Ripresa dei fondamentali: corsivo e calligrafia, riassunto, poesia a memoria; nelle STEM dal concreto all’astratto."),
+ p("Piano UE 2025 sulle competenze di base: literacy, mathematics, science, digital skills, citizenship.","COM(2025) 88, 5 marzo 2025"),
+ p("Dati di contesto: INVALSI 2025 (dispersione); PIAAC, 35% di scarse competenze di lettura contro 26% OCSE.")]},
+{id:"cv09",s:"cv",u:"c",t:"Persona, scuola, famiglia",src:"Magni, Costa",pts:[
+ p("Il trinomio 2012 «cultura, scuola, persona» diventa «persona, scuola, famiglia»: identità, relazione, partecipazione.","p. 19"),
+ p("Alleanza scuola–famiglia: «incontro sostanziale oltre che accordo documentale».","p. 20"),
+ p("Art. 30 Cost.: ai genitori il primario diritto e dovere di istruire ed educare i figli."),
+ p("Patto di corresponsabilità: non un modulo, ma un processo permanente.","DPR 235/2007, art. 3; DPR 134/2025"),
+ p("Talento: espressione attiva e situata, non dote innata; nasce in un contesto capacitante.","p. 21"),
+ p("Magister: «autorevolezza ritrovata» del docente; l’autorità «liberatrice» è la lettura di Magni (Laberthonnière).","pp. 20–21"),
+ p("Comunità educante: «spazi autentici di collegialità e progettazione comune».","pp. 23–24")]},
+{id:"cv10",s:"cv",u:"cu",t:"Cittadinanza ed educazione del cuore",src:"Costa",pts:[
+ p("La cittadinanza non è una disciplina: attraversa tutte le aree, i gradi, le pratiche."),
+ p("Quattro dimensioni: costituzionale, partecipativa, critica, digitale."),
+ p("Educazione civica: legge e linee guida in vigore dal 2024/25.","L. 92/2019; D.M. 183/2024"),
+ p("Educazione del cuore: fiducia, empatia relazionale ed affettiva, tenerezza, incanto, gentilezza.","p. 23"),
+ p("Educazione alla libertà: sviluppo della libertà nello studente; il limite come mediazione educativa (lettura di Costa).","pp. 22–23")]},
+{id:"cv11",s:"cv",u:"cu",t:"Inclusione e personalizzazione",src:"Costa",pts:[
+ p("Quadro normativo: legge quadro sulla disabilità e decreto sull’inclusione, con Profilo di funzionamento, PEI, ICF.","L. 104/1992; D.Lgs. 66/2017 e 96/2019"),
+ p("Le Indicazioni estendono la responsabilità a tutta l’area BES e agli alunni adottati.","pp. 26–27"),
+ p("Personalizzazione = strategia che governa le scelte educative e didattiche; per Costa non è individualizzazione tecnica né abbassamento delle attese.","p. 27"),
+ p("«Tutti» = curricolo comune; «ciascuno» = tempi, linguaggi, traiettorie."),
+ p("UDL 3.0: approccio basato sulle risorse e sulla learner agency.","CAST, 2024"),
+ p("Nella scheda UdA compila sempre BES/DSA/PDP/PEI.")]},
+{id:"cv12",s:"cv",u:"cu",t:"Tecnologie, informatica e intelligenza artificiale",src:"Vespri, Costa",pts:[
+ p("L’informatica entra dalla scuola primaria come prospettiva culturale di una disciplina scientifica (informazione, algoritmi, sistemi), dentro l’area STEM.","pp. 115–116; Racc. Consiglio UE 23/11/2023, p. 30"),
+ p("Competenze digitali (usare dispositivi e strumenti) ≠ competenze informatiche (capire come i dati sono elaborati da «agenti» che eseguono procedimenti ideati da umani): la scuola promuove le une e le altre.","p. 25"),
+ p("Da uso a comprensione: capire i principi delle tecnologie, non solo usarle."),
+ p("Le tecnologie non sono neutrali: incorporano valori e scelte; l’IA dipende da dati incompleti o non rappresentativi (lettura di Vespri)."),
+ p("IA come «strategia abilitante»: integrazione critica, consapevole, guidata dalla competenza esperta degli insegnanti; le dimensioni umane e sociali dell’apprendimento vanno rafforzate, non «sostituite».","pp. 24–25"),
+ p("L’IA non sostituisce né la funzione docente né la relazione educativa: trasparenza, supervisione umana, tutela dei dati.","D.M. 166/2025 (da Costa)"),
+ p("Cittadinanza digitale = uso consapevole + comprensione dei sistemi + valutazione delle fonti.")]},
+
+/* ===== PROGETTAZIONE DIDATTICA ===== */
+{id:"pd01",s:"pd",u:"u",t:"UdA e progettazione a ritroso",src:"Perla",pts:[
+ p("L’UdA è la traduzione operativa del curricolo in classe: non una somma di attività."),
+ p("Può essere disciplinare o interdisciplinare (spesso in area STEM)."),
+ p("Backward design: competenza attesa → evidenze (compito di realtà e criteri) → esperienze e contenuti."),
+ p("I criteri di valutazione si definiscono a monte, non a percorso concluso."),
+ p("Deve restare coerente con profilo, obiettivi generali, competenze attese, OSA e conoscenze.")]},
+{id:"pd02",s:"pd",u:"u",t:"La scheda UdA: i campi",src:"Perla, Allegato 1bis",pts:[
+ p("1 Dati: scuola, disciplina, classe, docenti, periodo e ore, competenza del Profilo, competenze attese, OSA, conoscenze."),
+ p("2 Domanda stimolo e fasi didattiche, con metodologie e micro-prodotti."),
+ p("3 Compito di realtà."),
+ p("Rubriche di valutazione: almeno una obbligatoria."),
+ p("Raccordi interdisciplinari, BES/DSA/PDP/PEI, osservazioni e revisione."),
+ p("Le etichette del modello sono fisse: si sostituiscono solo le celle di esempio.")]},
+{id:"pd03",s:"pd",u:"u",t:"Domanda stimolo e compito di realtà",src:"Perla; Vespri",pts:[
+ p("Domanda stimolo: aperta, problematizzante, bussola dell’intera didattica."),
+ p("Primaria: «Quali sono le caratteristiche fisiche e antropiche del paesaggio collinare?»"),
+ p("Secondaria: «La scienza nasce per conoscere o per risolvere problemi del potere?»"),
+ p("Compito di realtà: destinatario autentico (es. classi parallele), formato dichiarato, gruppi eterogenei."),
+ p("Esempio: «Alla scoperta della collina: crea la tua guida per esploratori!»")]},
+{id:"pd04",s:"pd",u:"u",t:"Fasi e metodologie attive",src:"Perla; Vespri; Borgogni",pts:[
+ p("Esempio in sei fasi (Geografia, cl. III, 12 ore): aggancio, scoperta dei materiali, costruzione del sapere, compito di realtà, uscita sul territorio, valutazione."),
+ p("Ogni fase ha una metodologia e un micro-prodotto."),
+ p("Laboratorio: un modo di organizzare l’apprendimento, non solo uno spazio fisico."),
+ p("Inquiry-based learning: si parte da una domanda; learning by doing orientato alla comprensione."),
+ p("Problem solving secondo Pólya: comprendere, pianificare, attuare, verificare."),
+ p("L’errore è una fase del processo, non un fallimento."),
+ p("Il corpo nell’UdA: pause attive, intervalli attivi, outdoor education.")]},
+{id:"pd05",s:"pd",u:"u",t:"Valutare: rubrica, griglia, criteri",src:"Perla; Vespri",pts:[
+ p("Rubrica di prestazione (processo): collaborazione, impegno, utilizzo dei documenti forniti, integrazione di ulteriori fonti."),
+ p("Griglia del prodotto: presentazione grafica, originalità, coerenza dei contenuti, efficacia comunicativa, registro linguistico."),
+ p("Valutazione multidimensionale: quiz + prodotto + prestazione + autovalutazione."),
+ p("Autovalutazione: in cosa devo migliorare? in cosa mi sento sicuro? dove ho avuto difficoltà?"),
+ p("Nelle STEM si valutano risultati e processi: osservazione in laboratorio, relazioni scientifiche."),
+ p("Rubriche e griglie sono componenti strutturali dell’UdA, non appendici."),
+ p("Le Indicazioni indicano come strumenti osservativi rubriche, griglie di osservazione e scale, per costruire criteri intersoggettivi e condivisi.","p. 51")]},
+{id:"pd06",s:"pd",u:"u",t:"UdA interdisciplinare: scienza e potere nel mondo greco",src:"Vespri",pts:[
+ p("Classi II o III secondaria, 15–20 ore: Storia, Scienze, Matematica, Tecnologia, Educazione civica."),
+ p("Domanda guida: la scienza nasce per conoscere o per risolvere problemi del potere?"),
+ p("Sette fasi: introduzione; Pitagora; Archimede e la corona; armi di guerra; misura della Terra; sintesi di gruppo; riflessione finale."),
+ p("Attività di laboratorio: triangoli e teorema, spinta idrostatica, mini-catapulta, misura «stile Eratostene»."),
+ p("Metodologie: laboratorio, inquiry, cooperative learning, problem solving."),
+ p("Attenzione al titolo della fase 5 («Empedocle» o Eratostene?): vedi «Da verificare».")]},
+
+/* ===== DISCIPLINE ===== */
+{id:"di01",s:"di",u:"cu",t:"Lingue e lettura",src:"Valerio",pts:[
+ p("Ogni lingua è accesso a una civiltà e a una visione del mondo, non solo competenza tecnica."),
+ p("Leggere è interpretare: attribuire senso, gerarchizzare le informazioni, cogliere l’intenzione comunicativa."),
+ p("Il lettore costruisce il significato; il testo è «vivo» quando viene interrogato."),
+ p("Non tutte le interpretazioni sono legittime: contano struttura, contesto storico-culturale, specificità linguistica."),
+ p("No a eccessi analitici e nomenclatori; lettura ad alta voce consigliata dalle Indicazioni."),
+ p("Il docente sceglie testi significativi e guida senza imporre significati."),
+ p("La classe è una comunità interpretante: si impara ad argomentare e a rispettare i punti di vista.")]},
+{id:"di02",s:"di",u:"c",t:"LEL: latino per l’educazione linguistica",src:"Balbo",pts:[
+ p("Può essere avviato dalle classi seconde e terze nel 2026/27, con gli spazi di autonomia e flessibilità.","Art. 2, c. 3, D.M. 221/2025, p. 6"),
+ p("Nel testo delle Indicazioni: avvio negli ultimi due anni della secondaria, «in modo opzionale e curricolare». Base normativa: DPR 89/2009.","p. 80; DPR 89/2009, art. 5, cc. 5 e 8"),
+ p("Non toglie ore a italiano: aggiunge competenze, in stretto rapporto con l’italiano."),
+ p("Dimensione diacronica (latino → italiano) e sincronica (lingue straniere); si riparte dal lessico."),
+ p("Orario: un’ora a settimana; tempo normale = decima ora; tempo prolungato = area italiano, storia, geografia."),
+ p("Va inserito nel PTOF (delibera) e comunicato alle famiglie, come chiedono le USR."),
+ p("Docenti: abilitazione in latino; «due esami di latino» è proposta dell’autore; A011/A013 formati in rete.")]},
+{id:"di03",s:"di",u:"cu",t:"Storia come strumento per pensare",src:"Scotto Di Luzio",pts:[
+ p("Insegnare storia significa leggere la profondità del presente: ogni istituzione ha origini e fratture."),
+ p("La cronologia è necessaria, ma diventa storia quando mostra nessi, problemi, conseguenze."),
+ p("Il racconto è la forma dell’intelligibilità storica: fonti, sequenza, attori, conflitti, conseguenze."),
+ p("Il giudizio arriva attraverso la comprensione, non al suo posto."),
+ p("«Occidente»: parola storica da storicizzare, non parola d’ordine."),
+ p("Colonialismo: capitolo necessario; né assoluzione né condanna in blocco."),
+ p("Identità italiana: costruzione storica; Risorgimento → Stato liberale → Fascismo → Repubblica.")]},
+{id:"di04",s:"di",u:"cu",t:"Geografia e geo-graficità",src:"Morri",pts:[
+ p("La carta è approssimata, ridotta e simbolica."),
+ p("Rappresentare è raccontare: mostrare significa scegliere cosa nascondere."),
+ p("Orientamento spaziale e culturale; la carta dipende da cartografo o committente, messaggio, finalità, destinatari."),
+ p("Dai «cataloghi» al discernimento: meno contenuti, più apprendimento attivo."),
+ p("Dalle conoscenze di superficie (fattuali) alle conoscenze profonde (applicative)."),
+ p("Abitare: relazione affettiva con i luoghi; leggere i codici cartografici come primo passo di cittadinanza attiva.")]},
+{id:"di05",s:"di",u:"cu",t:"STEM e tecnologia critica",src:"Vespri",pts:[
+ p("Le STEM sono linguaggi integrati per interpretare la complessità: un progetto culturale."),
+ p("Matematica: linguaggio della realtà; Bruner, dall’enattivo all’iconico al simbolico."),
+ p("Scienze: osservazione, ipotesi, verifica; il laboratorio è il metodo."),
+ p("Storia della scienza: errori e revisioni mostrano che il sapere non è statico."),
+ p("Problem solving (Pólya) e modellizzazione sono il punto di convergenza."),
+ p("Tecnologia non neutrale; cittadinanza digitale come comprensione dei sistemi.")]},
+{id:"di06",s:"di",u:"cu",t:"Arte e musica: i saperi estetici",src:"Cioffi",pts:[
+ p("«Saperi estetici»: statuto autonomo accanto al sapere scientifico-razionale, non ornamento."),
+ p("Verticalità 3–14: campo «Immagini, suoni, colori» → discipline distinte → nuclei specifici.","p. 61 (campo); Musica p. 147; Arte p. 158"),
+ p("Bellezza come intelligenza della relazione (lettura di Cioffi): le Indicazioni citano ritmo, equilibrio, armonia, colori, chiaroscuro, prospettiva; per la musica monodia, polifonia, ostinato, forme AB e ABA.","Arte pp. 161, 164, 167; Musica p. 149"),
+ p("Storia dell’arte: «non va proposta come semplice sequenza di nozioni ma come un racconto vivo di temi anche universali».","p. 160"),
+ p("Il fare artistico tradizionale (disegno, modellazione) sviluppa manualità fine; nell’antica Grecia l’arte era téchnē, arte e tecnica insieme. Canto e strumenti in musica.","Arte pp. 160, 166; Musica p. 148"),
+ p("Patrimonio e art. 9 Cost.: lo studio dei contesti storici delle opere è passo verso la tutela del patrimonio; visite a musei, botteghe e centri storici collegano il patrimonio locale a quello globale.","Arte pp. 158–159"),
+ p("Cultura visiva popolare: riconoscere, poi dignificare (es. videoclip sul territorio)."),
+ p("Il digitale è un’estensione della mano: alunni autori consapevoli, non semplici utenti.")]},
+{id:"di07",s:"di",u:"c",t:"Movimento e benessere",src:"Borgogni",pts:[
+ p("Emergenza: Italia ultima tra i Paesi OCSE indagati per gli 11–15enni che non raggiungono 60 minuti di attività al giorno."),
+ p("Sei scuole su dieci senza impianti sportivi; ore minime di educazione fisica più basse d’Europa; 28,8% di sovrappeso o obesità a 8–9 anni."),
+ p("Art. 33 Cost. (2023): valore educativo, sociale e di benessere dell’attività sportiva.","Cost. art. 33"),
+ p("Cinque leve per il PTOF: norma recente; due ore settimanali inclusive (specialista in primaria); didattiche attive; mobilità attiva; cultura di scuola attiva."),
+ p("Nelle Indicazioni: pause attive in aula, intervalli attivi all’aperto, mobilità attiva da e verso scuola, outdoor education in ambiente urbano e naturale.","p. 168"),
+ p("Riferimenti: docente laureato in primaria e riforma dello sport.","L. 234/2021; L. 86/2019")]},
+
+/* ===== DA VERIFICARE ===== */
+{id:"vf01",s:"vf",u:"cu",t:"Da verificare: citazioni, pagine, dati",src:"Confronto tra i materiali e il testo ufficiale",pts:[
+ p("Vespri: la fase 5 dell’UdA si chiama «Empedocle e la misura della Terra», ma l’esperimento è di Eratostene."),
+ p("Numerazione delle pagine: Perla, Magni e Cioffi citano pagine diverse da quelle del volume MIM di marzo 2026; Costa coincide (pp. 20, 22–23, 26–27). Cita sempre titolo di sezione e pagina del volume."),
+ p("«Dispositivo per “pensare” l’insegnamento»: nel volume è a p. 48, sezione «L’organizzazione del curricolo di scuola». Perla scrive pp. 21–22; Cioffi p. 49 e «Premesse culturali»."),
+ p("Perla, Tabella 1: l’intestazione «OSA classe III» è corretta (p. 107: OSA al termine della classe terza; competenze attese a fine classe quinta), ma nel testo che segue Perla scrive «classe V»."),
+ p("Siti UNESCO: il testo ufficiale (p. 107) e l’UdA di Perla scrivono 60; l’Allegato 1 di Perla scrive 61."),
+ p("Il modello di Perla cita ancora il D.M. 254/2012. Dal 2026/27 il riferimento è il D.M. 221/2025; il 2012 vale solo per le classi in transizione (art. 5)."),
+ p("Raccomandazione 2018: il testo ufficiale stesso è incoerente: «C 189/11» (p. 31, nota 6), «definite dal Parlamento europeo e dal Consiglio (Raccomandazione del Consiglio…)» (p. 29), «n. 189/01» (premesse del decreto). Forma consigliata: Raccomandazione del Consiglio del 22 maggio 2018, 2018/C 189/01."),
+ p("Vespri presenta l’informatica come «disciplina autonoma»: il testo (pp. 115–116) la introduce dalla primaria come prospettiva di una disciplina scientifica dentro STEM e Tecnologia; l’art. 2, c. 1 non la elenca tra le discipline."),
+ p("Valerio cita «Indicazioni del 2010» per il primo ciclo e Morri «Indicazioni 2026»: nel decreto le precedenti sono quelle del 2012 (D.M. 254/2012) e il testo è il D.M. 221/2025."),
+ p("Costa: Dewey, Democracy and Education è del 1916, non del 1930.")]},
+{id:"vf02",s:"vf",u:"cu",t:"Da verificare: scelte teoriche e di metodo",src:"Confronto tra i materiali e il testo ufficiale",pts:[
+ p("Piaget (stadi) e Bruner («a qualsiasi età») non dicono la stessa cosa: dichiara come li tieni insieme."),
+ p("Steiner (citato da Magni) chiama «distrattori» pensiero critico e metacognizione, ma il Profilo include «imparare a imparare»."),
+ p("Formula sempre la competenza dentro un nucleo disciplinare: è ciò che tiene insieme le due posizioni."),
+ p("Perla: nell’UdA di primaria la rubrica usa livelli con voti, la griglia usa giudizi: controlla la normativa vigente sulla valutazione (non è nei materiali)."),
+ p("Prescrittivo e suggerito: competenze attese, obiettivi generali e OSA sono prescrittivi; le conoscenze sono «suggerimenti» (pp. 29, 49). Non trattare i contenuti come obbligatori né gli OSA come facoltativi."),
+ p("Balbo: requisiti dei docenti, rete di scuole e «valutazione indipendente» del LEL non sono nel testo delle Indicazioni (pp. 80–82): vengono dalle circolari o sono proposte dell’autore.")]}
+];
+
+/* ===== STATO ===== */
+var KEY="argomenti-punti-chiave-v1";
+var store={ok:true},state={c:{},x:[]},ui={q:"",secs:{},uso:"all",stato:"all",mem:false,rev:{}};
+var saveT=null,editing=null;
+try{localStorage.setItem("__t","1");localStorage.removeItem("__t")}catch(e){store.ok=false}
+if(store.ok){try{var raw=localStorage.getItem(KEY);if(raw){var s=JSON.parse(raw);if(s&&typeof s==="object"){state.c=s.c||{};state.x=Array.isArray(s.x)?s.x:[]}}}catch(e){}}
+function save(){if(!store.ok)return;try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){store.ok=false}}
+function all(){return NOTES.concat(state.x)}
+function secOf(k){for(var i=0;i<SECS.length;i++)if(SECS[i].k===k)return SECS[i];return SECS[SECS.length-1]}
+function done(id,i){return !!(state.c[id]&&state.c[id][i])}
+function nDone(n){var c=0;for(var i=0;i<n.pts.length;i++)if(done(n.id,i))c++;return c}
+
+/* ===== UTIL ===== */
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function norm(s){return String(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")}
+function hash(s){var h=0;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))|0;return Math.abs(h)}
+function rot(id){return (((hash(id)%7)-3)*0.5).toFixed(2)+"deg"}
+function cue(t){var w=t.split(/\s+/);return w.slice(0,3).join(" ")+" …"}
+var tT=null;function toast(m){var t=document.getElementById("ap-toast");t.textContent=m;t.classList.add("show");clearTimeout(tT);tT=setTimeout(function(){t.classList.remove("show")},2200)}
+function copyText(txt){
+  function fb(){var ta=document.createElement("textarea");ta.value=txt;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();var ok=false;try{ok=document.execCommand("copy")}catch(e){}document.body.removeChild(ta);toast(ok?"Copiato":"Copia non disponibile")}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(function(){toast("Copiato")},fb)}else fb();
+}
+var CK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+var PEN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>';
+var XI='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+function noteText(n){return n.t+"\n"+n.pts.map(function(q){return "- "+q[0]+(q[1]?" ("+q[1]+")":"")}).join("\n")+(n.src?"\nFonte: "+n.src:"")}
+
+/* ===== FILTRI ===== */
+function matches(n,skipSec){
+  if(!skipSec){var ks=Object.keys(ui.secs).filter(function(k){return ui.secs[k]});if(ks.length&&ks.indexOf(n.s)<0)return false}
+  if(ui.uso!=="all"&&(n.u||"").indexOf(ui.uso)<0)return false;
+  var d=nDone(n),full=d===n.pts.length;
+  if(ui.stato==="todo"&&full)return false;
+  if(ui.stato==="done"&&!full)return false;
+  if(ui.q){
+    var hay=norm(n.t+" "+n.src+" "+secOf(n.s).n+" "+n.pts.map(function(q){return q[0]+" "+(q[1]||"")}).join(" "));
+    var tk=norm(ui.q).split(/\s+/).filter(Boolean);
+    for(var i=0;i<tk.length;i++)if(hay.indexOf(tk[i])<0)return false;
+  }
+  return true;
+}
+function visible(){return all().filter(function(n){return matches(n,false)})}
+
+/* ===== RENDER ===== */
+function renderChips(){
+  var a=all(),h="";
+  SECS.forEach(function(sc){
+    var n=a.filter(function(x){return x.s===sc.k&&matches(x,true)}).length;
+    if(sc.k==="mie"&&!n&&!ui.secs.mie)return;
+    h+='<button class="chip s-'+sc.k+'" data-act="chip" data-k="'+sc.k+'" aria-pressed="'+!!ui.secs[sc.k]+'"><i></i>'+esc(sc.n)+' <small>'+n+'</small></button>';
+  });
+  document.getElementById("ap-chips").innerHTML=h;
+}
+function ptHtml(n,q,i){
+  var ok=done(n.id,i),key=n.id+":"+i;
+  var tick='<button class="tick" data-act="tick" data-id="'+n.id+'" data-i="'+i+'" aria-pressed="'+ok+'" aria-label="Segna come memorizzato: '+esc(q[0].slice(0,60))+'">'+CK+'</button>';
+  var body;
+  if(ui.mem&&!ui.rev[key]&&!ok){
+    body='<button class="cover" data-act="reveal" data-id="'+n.id+'" data-i="'+i+'" aria-label="Scopri il punto '+(i+1)+'">'+esc(cue(q[0]))+'</button>';
+  }else{
+    body='<span class="ptx">'+esc(q[0])+(q[1]?'<span class="ref">'+esc(q[1])+'</span>':'')+'</span>';
+  }
+  return '<li class="pt'+(ok?' ok':'')+'">'+tick+body+'</li>';
+}
+function noteHtml(n){
+  var d=nDone(n),full=d===n.pts.length,sc=secOf(n.s);
+  var tags=[];if((n.u||"").indexOf("c")>-1)tags.push("Curricolo");if((n.u||"").indexOf("u")>-1)tags.push("UdA");
+  return '<article class="note s-'+n.s+(full?' done':'')+'" style="--rot:'+rot(n.id)+'">'+
+   '<div class="top"><span class="area"><i></i>'+esc(sc.n)+'</span>'+(n.custom?'<button class="icon-btn" data-act="edit" data-id="'+n.id+'" aria-label="Modifica '+esc(n.t)+'">'+PEN+'</button>':'')+'</div>'+
+   '<h3>'+esc(n.t)+'</h3>'+
+   '<ul class="pts">'+n.pts.map(function(q,i){return ptHtml(n,q,i)}).join("")+'</ul>'+
+   '<div class="foot"><div><div class="meta"><b>'+d+'/'+n.pts.length+'</b> punti'+(full?' · completo':'')+'</div>'+
+   '<div class="tags">'+tags.map(function(t){return '<span class="tag">'+t+'</span>'}).join("")+'</div>'+(n.src?'<div class="meta"><i>'+esc(n.src)+'</i></div>':'')+'</div>'+
+   '<div class="tags">'+(ui.mem?'<button class="mini" data-act="revall" data-id="'+n.id+'">Scopri tutti</button>':'')+
+   '<button class="mini" data-act="all" data-id="'+n.id+'">'+(full?'Togli spunte':'Li so tutti')+'</button>'+
+   '<button class="mini" data-act="copy" data-id="'+n.id+'">Copia</button></div></div>'+
+  '</article>';
+}
+function render(){
+  var v=visible(),b=document.getElementById("ap-board");
+  b.innerHTML=v.length?v.map(noteHtml).join(""):'<div class="empty"><h2>Nessun argomento con questi filtri</h2><p>Prova con un’altra parola o togli qualche filtro.</p><button class="btn primary" data-act="clear">Azzera i filtri</button></div>';
+  renderChips();
+  var tot=0,k=0;all().forEach(function(n){tot+=n.pts.length;k+=nDone(n)});
+  document.getElementById("ap-pk").textContent=k;document.getElementById("ap-pt").textContent=tot;
+  document.getElementById("ap-pbar").style.width=(tot?k/tot*100:0)+"%";
+  document.getElementById("ap-count").textContent=v.length+(v.length===1?" argomento":" argomenti");
+  document.querySelectorAll('[data-act="uso"],[data-act="stato"]').forEach(function(bt){var g=bt.getAttribute("data-act");bt.setAttribute("aria-pressed",String(bt.getAttribute("data-v")===ui[g]))});
+  document.getElementById("ap-memBtn").setAttribute("aria-pressed",String(ui.mem));
+  document.getElementById("ap-memBtn").textContent=ui.mem?"Modalità memoria attiva":"Modalità memoria";
+}
+function byId(id){var a=all();for(var i=0;i<a.length;i++)if(a[i].id===id)return a[i];return null}
+
+/* ===== FORM ===== */
+function openForm(id){
+  editing=id||null;var n=id?byId(id):null,sh=document.getElementById("ap-fSheet");
+  var u=n?n.u:"cu";
+  sh.innerHTML='<button class="icon-btn close" data-act="closeF" aria-label="Chiudi">'+XI+'</button><h2 id="ap-fTitle">'+(n?"Modifica argomento":"Nuovo argomento")+'</h2>'+
+   '<label for="ap-fT">Argomento</label><input type="text" id="ap-fT" maxlength="120" value="'+esc(n?n.t:"")+'">'+
+   '<label for="ap-fP">Punti chiave <span class="hint">(uno per riga)</span></label><textarea id="ap-fP">'+esc(n?n.pts.map(function(q){return q[0]}).join("\n"):"")+'</textarea>'+
+   '<label for="ap-fS">Fonte <span class="hint">(facoltativa)</span></label><input type="text" id="ap-fS" maxlength="120" value="'+esc(n?n.src:"")+'">'+
+   '<label>Serve per</label><div class="checks"><label><input type="checkbox" id="ap-fC"'+(u.indexOf("c")>-1?" checked":"")+'> Curricolo verticale</label><label><input type="checkbox" id="ap-fU"'+(u.indexOf("u")>-1?" checked":"")+'> UdA e progettazione</label></div>'+
+   '<div class="actions"><button class="btn primary" data-act="saveF">Salva</button><button class="btn" data-act="closeF">Annulla</button>'+(n?'<span class="sp"></span><button class="btn danger" id="ap-delB" data-act="del" data-id="'+n.id+'">Elimina</button>':'')+'</div>';
+  var d=document.getElementById("ap-dForm");if(!d.open)d.showModal();document.getElementById("ap-fT").focus();
+}
+function saveForm(){
+  var t=document.getElementById("ap-fT").value.trim(),pts=document.getElementById("ap-fP").value.split("\n").map(function(s){return s.trim()}).filter(Boolean);
+  if(!t||!pts.length){toast("Scrivi il titolo e almeno un punto chiave");return}
+  var u=(document.getElementById("ap-fC").checked?"c":"")+(document.getElementById("ap-fU").checked?"u":"");if(!u)u="cu";
+  var o={id:editing||("x"+Date.now().toString(36)),s:"mie",u:u,t:t,src:document.getElementById("ap-fS").value.trim(),pts:pts.map(function(x){return [x]}),custom:true};
+  if(editing){state.x=state.x.map(function(c){return c.id===editing?o:c});delete state.c[editing]}else state.x.push(o);
+  save();document.getElementById("ap-dForm").close();render();toast("Argomento salvato");
+}
+
+/* ===== EVENTI ===== */
+var rstT=null;
+document.addEventListener("click",function(e){if(document.getElementById("view-ap").hasAttribute("hidden"))return;
+  var el=e.target.closest("[data-act]");if(!el)return;
+  var act=el.getAttribute("data-act"),id=el.getAttribute("data-id"),i=+el.getAttribute("data-i");
+  switch(act){
+    case "chip":var k=el.getAttribute("data-k");ui.secs[k]=!ui.secs[k];render();break;
+    case "uso":ui.uso=el.getAttribute("data-v");render();break;
+    case "stato":ui.stato=el.getAttribute("data-v");render();break;
+    case "clear":ui.q="";ui.secs={};ui.uso="all";ui.stato="all";document.getElementById("ap-q").value="";render();break;
+    case "tick":state.c[id]=state.c[id]||{};if(state.c[id][i])delete state.c[id][i];else state.c[id][i]=1;save();
+      var f=document.querySelector('[data-act="tick"][data-id="'+id+'"][data-i="'+i+'"]');render();
+      var f2=document.querySelector('[data-act="tick"][data-id="'+id+'"][data-i="'+i+'"]');if(f2)f2.focus();break;
+    case "reveal":ui.rev[id+":"+i]=1;render();var g=document.querySelector('[data-act="tick"][data-id="'+id+'"][data-i="'+i+'"]');if(g)g.focus();break;
+    case "revall":var n=byId(id);n.pts.forEach(function(q,j){ui.rev[id+":"+j]=1});render();break;
+    case "all":var m=byId(id),full=nDone(m)===m.pts.length;state.c[id]={};if(!full)m.pts.forEach(function(q,j){state.c[id][j]=1});save();render();break;
+    case "copy":copyText(noteText(byId(id)));break;
+    case "copyall":var v=visible();if(!v.length){toast("Niente da copiare");break}copyText(v.map(noteText).join("\n\n"));break;
+    case "mem":ui.mem=!ui.mem;ui.rev={};render();toast(ui.mem?"Punti coperti: tocca le prime parole per scoprirli":"Modalità memoria disattivata");break;
+    case "new":openForm(null);break;
+    case "edit":openForm(id);break;
+    case "saveF":saveForm();break;
+    case "closeF":document.getElementById("ap-dForm").close();break;
+    case "del":
+      if(el.dataset.arm==="1"){state.x=state.x.filter(function(c){return c.id!==id});delete state.c[id];save();document.getElementById("ap-dForm").close();render();toast("Argomento eliminato")}
+      else{el.dataset.arm="1";el.textContent="Conferma: elimina";setTimeout(function(){el.dataset.arm="0";el.textContent="Elimina"},3500)}
+      break;
+    case "reset":
+      if(el.dataset.arm==="1"){state.c={};save();ui.rev={};render();clearTimeout(rstT);el.dataset.arm="0";el.textContent="Azzera i progressi";toast("Progressi azzerati")}
+      else{el.dataset.arm="1";el.textContent="Conferma: azzera davvero";rstT=setTimeout(function(){el.dataset.arm="0";el.textContent="Azzera i progressi"},4000)}
+      break;
+  }
+});
+document.addEventListener("input",function(e){if(document.getElementById("view-ap").hasAttribute("hidden"))return;if(e.target.id==="ap-q"){ui.q=e.target.value;render()}});
+document.addEventListener("keydown",function(e){if(document.getElementById("view-ap").hasAttribute("hidden"))return;
+  if(e.key==="/"&&!/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)&&!document.querySelector("dialog[open]")){e.preventDefault();document.getElementById("ap-q").focus()}
+});
+(function(){var d=document.getElementById("ap-dForm");d.addEventListener("click",function(e){if(e.target===d)d.close()})})();
+
+render();
+if(!store.ok)document.querySelector(".foot-note").insertAdjacentHTML("beforebegin",'<p class="foot-note" style="margin:0 0 12px"><b>Attenzione:</b> in questa finestra il browser non permette di salvare i progressi: si perdono alla chiusura.</p>');
+
+})();
+</script>
+<script>
+(function(){
+"use strict";
+
+var GRADI=[
+ {k:"infanzia",n:"Infanzia"},
+ {k:"primaria",n:"Primaria"},
+ {k:"secondaria",n:"Secondaria I grado"}
+];
+var FIELDS=[
+ {k:"obiettivo",l:"Obiettivo",q:"Quale obiettivo specifico di apprendimento vuoi raggiungere? A quale disciplina o campo, nucleo e classe si riferisce?"},
+ {k:"barriere",l:"Possibili barriere",q:"Quali ostacoli potrebbe incontrare qualcuno in questa classe, nello svolgere l’attività così com’è pensata all’inizio?"},
+ {k:"rappresentazione",l:"Rappresentazione",q:"In quanti modi diversi puoi presentare le informazioni e i contenuti? (materiali concreti, immagini, audio, testi semplificati, glossari, sottotitoli…)"},
+ {k:"azione",l:"Azione ed espressione",q:"In quanti modi diversi gli alunni possono agire e dimostrare ciò che sanno? (orale, scritto, grafico, digitale, manipolativo, in gruppo…)"},
+ {k:"coinvolgimento",l:"Coinvolgimento",q:"Come susciti interesse e motivazione? Quali scelte, ruoli, contesti reali o sfide puoi offrire?"},
+ {k:"attenzioni",l:"Attenzioni specifiche",q:"Quali attenzioni servono per singoli alunni (BES, DSA, PEI, PDP)? Quali varianti di tempo, materiali, consegne?"},
+ {k:"valutazione",l:"Evidenze per la valutazione",q:"Come osservi e documenti che l’obiettivo è stato raggiunto? Con quali strumenti, rubriche, criteri?"}
+];
+var SEED=[
+{id:"m01",grado:"infanzia",titolo:"Il gioco del mercato",disc:"La conoscenza del mondo",classe:"5 anni",origin:"red",fonte:"Esempio redazionale, in raccordo con D.M. 221/2025, Infanzia, «La conoscenza del mondo», p. 64",
+ obiettivo:"Raggruppare e contare oggetti fino a dieci, confrontare quantità usando «di più», «di meno», «uguale».",
+ barriere:"Difficoltà di linguaggio orale nei bambini non italofoni; difficoltà di attenzione condivisa; difficoltà nella manipolazione fine per chi ha disabilità motoria.",
+ rappresentazione:"Materiali concreti veri (frutta finta, tappi, monete di cartone) affiancati da immagini e cartellini con i numeri; canzoncina per contare; gesti e segni per accompagnare i numeri.",
+ azione:"Il bambino può contare ad alta voce, indicare con il dito, spostare gli oggetti in un contenitore o usare le dita per mostrare la quantità; chi comunica poco verbalmente può indicare o fotografare il proprio «banco».",
+ coinvolgimento:"Gioco simbolico del mercato con ruoli (chi vende, chi compra); scelta libera del banco (frutta, verdura, pane); un momento di esplorazione libera prima del gioco guidato.",
+ attenzioni:"Quantità ridotte per chi ha bisogno di più tempo; presenza dell’insegnante di sostegno nel piccolo gruppo; oggetti con impugnatura facilitata per chi ha difficoltà motorie.",
+ valutazione:"Osservazione durante il gioco con una checklist: conta fino a 5 o fino a 10; confronta due quantità; usa i termini «di più» e «di meno»."},
+{id:"m02",grado:"primaria",titolo:"La banca della classe",disc:"Matematica",classe:"Classe seconda",origin:"corso",fonte:"Materiale del corso",
+ obiettivo:"Leggere e scrivere i numeri naturali entro il centinaio riconoscendo il valore posizionale di unità e decine (Matematica D1 · 2.1).",
+ barriere:"Il numero come sola sequenza verbale; difficoltà di memoria di lavoro; difficoltà nella lettura dei testi dei problemi.",
+ rappresentazione:"Tre rappresentazioni dello stesso numero affiancate: materiale concreto (cannucce in mazzetti da dieci, BAM), tabella delle decine e unità, simbolo scritto. Linea dei numeri fino a 100 a parete e da banco. Consegne lette ad alta voce e accompagnate da immagini.",
+ azione:"Gli alunni cambiano 10 monete da 1 in una da 10 alla «banca». Rispondono componendo il numero con il materiale, scrivendolo nella tabella o dicendolo. Chi vuole registra la spiegazione del proprio procedimento con il tablet.",
+ coinvolgimento:"Problemi legati alla vita di classe (merenda, uscita didattica, raccolta di tappi). Ruoli nel gruppo: cassiere, contabile, controllore. Sfida finale a coppie con carte-numero.",
+ attenzioni:"Tabella decine-unità e linea dei numeri disponibili a tutti; tempi più lunghi; testo dei problemi con frase-chiave evidenziata. Per chi è pronto: numeri oltre il cento e confronto di strategie.",
+ valutazione:"Prova in tre forme a scelta (concreta, grafica, simbolica) con gli stessi numeri; osservazione del ragionamento verbalizzato (D1 · 2.4). Criteri: riconosce il valore della cifra in base alla posizione; passa da una rappresentazione all’altra."},
+{id:"m03",grado:"primaria",titolo:"Dai graffiti all’alfabeto",disc:"Storia",classe:"Classe terza",origin:"corso",fonte:"Materiale del corso",
+ obiettivo:"Acquisire la consapevolezza della profondità del tempo storico: conoscere le prime forme della cultura umana e la nascita della scrittura (Storia D2 · 3.1; conoscenze del III anno).",
+ barriere:"Il tempo lungo è astratto; testi del libro densi di termini nuovi; difficoltà nell’esposizione orale.",
+ rappresentazione:"Racconto dell’insegnante (la storia come narrazione, D.M. 221/2025 p. 99), con immagini di pitture rupestri, tavolette, geroglifici. Linea del tempo lunga lungo il corridoio, con segni fisici della distanza tra le epoche. Glossario illustrato delle parole nuove (Paleolitico, Neolitico, scrittura cuneiforme).",
+ azione:"Laboratorio: incidere segni su argilla (raccordo con arte), inventare un pittogramma. Mostrare ciò che si è capito con un racconto orale, una striscia a fumetti, una breve didascalia scritta o una mappa. Visita a un museo o a un sito archeologico del territorio, se possibile.",
+ coinvolgimento:"Domanda stimolo: «Come facevano a ricordarsi le cose prima della scrittura?». Gruppi con ruoli (narratore, disegnatore, cronologo). Collegamento con i vari tipi di scrittura presenti in classe (alfabeti diversi delle famiglie).",
+ attenzioni:"Testo di studio semplificato con parole chiave; mappa già avviata da completare. Valorizzazione delle lingue e degli alfabeti d’origine degli alunni con background migratorio.",
+ valutazione:"Racconto orale ordinato (D4 · 3.1) valutato con una breve rubrica: sequenza corretta, uso delle parole del glossario, collegamento causa-effetto (perché nasce la scrittura)."},
+{id:"m04",grado:"primaria",titolo:"Che cosa attira la calamita?",disc:"Scienze",classe:"Classe terza",origin:"corso",fonte:"Materiale del corso",
+ obiettivo:"Osservare e descrivere il comportamento delle calamite su diversi materiali, riconoscendo attrazione, repulsione e orientamento nello spazio (Scienze D3 · 3.3).",
+ barriere:"Difficoltà a registrare per iscritto; manualità fine; lessico scientifico nuovo.",
+ rappresentazione:"Esperienza diretta prima di ogni spiegazione; dimostrazione con materiali grandi e visibili. Tabella delle previsioni con immagini degli oggetti. Parole chiave con simbolo (attrae, respinge, non attrae).",
+ azione:"Previsione, prova, registrazione: con crocette, disegni, foto o frase scritta. Costruzione di una bussola con ago magnetizzato e tappo in acqua (raccordo con geografia: punti cardinali).",
+ coinvolgimento:"Sfida: «Trova in classe tre oggetti che la calamita attira e tre che non attira». Lavoro in coppie miste; ogni coppia presenta una scoperta.",
+ attenzioni:"Calamite grandi e materiali facilmente afferrabili per alunni con difficoltà motorie; ruolo di fotografo-documentatore per chi fatica a scrivere.",
+ valutazione:"Scheda di osservazione: formula una previsione; la verifica; classifica i materiali; usa almeno due parole del lessico scientifico. L’errore nella previsione non è valutato negativamente: è parte del metodo."},
+{id:"m05",grado:"primaria",titolo:"Hello, I’m…",disc:"Inglese",classe:"Classe seconda",origin:"corso",fonte:"Materiale del corso",
+ obiettivo:"Riprodurre e usare semplici formule di saluto e presentazione in scambi guidati e giochi di ruolo (Inglese D2 · 2.2).",
+ barriere:"Timidezza nel parlare davanti alla classe; difficoltà di pronuncia; alunni che imparano l’italiano e l’inglese contemporaneamente.",
+ rappresentazione:"Canzone e video con sottotitoli; flashcard; gesti associati a ogni espressione. Dialogo modello recitato dall’insegnante con un pupazzo.",
+ azione:"Presentarsi in coppia, con il pupazzo, registrando un audio o in un piccolo gruppo. Carta d’identità illustrata da completare con le parole note.",
+ coinvolgimento:"Gioco «Find your friend»: ogni alunno cerca il compagno con la stessa carta. Nessuna esposizione individuale obbligatoria davanti a tutta la classe nelle prime settimane.",
+ attenzioni:"Valorizzare il saluto nelle lingue delle famiglie (competenza attesa: elementi culturali; ed. civica, traguardo 1). Per alunni con DSA privilegiare l’oralità, in linea con le Indicazioni che introducono lettura e scrittura in inglese dalla classe terza (p. 84).",
+ valutazione:"Osservazione durante il gioco con lista di controllo: saluta, dice il nome, chiede il nome, usa un gesto o un’espressione di cortesia."},
+{id:"m06",grado:"primaria",titolo:"Percorso a stazioni",disc:"Educazione motoria",classe:"Classe prima",origin:"corso",fonte:"Materiale del corso",
+ obiettivo:"Acquisire le abilità motorie fondamentali; interagire in maniera collaborativa e rispettosa con tutti i compagni (Motoria D2 · 1.1; D4 · 1.1).",
+ barriere:"Diverse esperienze motorie extrascolastiche; alunni con disabilità motoria; ansia da prestazione; spazi ridotti o palestra non disponibile.",
+ rappresentazione:"Ogni stazione ha un cartello con immagine e un compagno-guida che mostra il movimento. Regole spiegate con dimostrazione, non solo a voce.",
+ azione:"Ogni stazione ha tre livelli di difficoltà (camminare sulla linea, sulla panca bassa, sulla panca con oggetto in mano): l’alunno sceglie da dove partire. Le stesse abilità si possono svolgere in cortile o in un parco vicino (outdoor, p. 168).",
+ coinvolgimento:"Gioco a squadre miste, punteggio sulla collaborazione e non solo sulla velocità. In aula: pausa attiva di tre minuti ogni ora (filastrocche mimate, conta con salti), raccordo con italiano e matematica.",
+ attenzioni:"Alunno con disabilità motoria: stazioni accessibili progettate con l’insegnante di sostegno, stesso gioco e stesso gruppo. Ruoli alternativi solo se scelti dall’alunno (arbitro, cronometrista).",
+ valutazione:"Osservazione dei progressi individuali rispetto al livello di partenza, non confronto con i compagni; rispetto delle regole e del turno."},
+{id:"m07",grado:"secondaria",titolo:"Progettare un parco urbano accessibile a tutti",disc:"Geografia (interdisciplinare con educazione civica)",classe:"Classe seconda",origin:"red",fonte:"Esempio redazionale, in raccordo con Geografia e con l’educazione civica, D.M. 221/2025",
+ obiettivo:"Analizzare uno spazio urbano vicino alla scuola e proporre soluzioni di riqualificazione, tenendo conto di accessibilità, sostenibilità e bisogni della comunità (Geografia, orientamento e organizzazione del territorio).",
+ barriere:"Difficoltà nella lettura di carte e piante tecniche; motivazione bassa su temi percepiti come astratti; alunni con disabilità motoria che vivono in prima persona le barriere architettoniche di cui si parla.",
+ rappresentazione:"Piantina del quartiere in più formati (cartacea, digitale interattiva, plastico a rilievo); brevi video-interviste a chi vive lo spazio (una persona anziana, una persona con disabilità, un genitore con passeggino); glossario illustrato dei termini urbanistici (accessibilità, barriera architettonica, riqualificazione).",
+ azione:"La proposta finale si può presentare con un plastico, una mappa annotata, una presentazione digitale o un breve video. Si può disegnare a mano libera o con un programma di disegno. Gruppi con ruoli (rilevatore, intervistatore, disegnatore, portavoce).",
+ coinvolgimento:"Sopralluogo reale nel quartiere della scuola; scelta del problema da affrontare tra una rosa proposta dalla classe; possibile presentazione della proposta al Comune o all’assemblea di istituto, come compito di realtà con un destinatario autentico.",
+ attenzioni:"Gruppi eterogenei con ruoli assegnati anche in base ai punti di forza di ciascuno; tempi distesi per il sopralluogo; piantina e glossario disponibili anche in versione semplificata o ingrandita.",
+ valutazione:"Rubrica di prestazione (collaborazione, uso delle fonti, rispetto dei tempi) e griglia del prodotto finale (coerenza tra analisi e proposta, chiarezza comunicativa, attenzione all’accessibilità)."}
+];
+
+/* ===== STATO ===== */
+var KEY="archivio-udl-v1";
+var store={ok:true},state={x:[]},ui={q:"",grado:"tutti"};
+var editing=null,cur=null,dl=null;
+try{localStorage.setItem("__t","1");localStorage.removeItem("__t")}catch(e){store.ok=false}
+if(store.ok){try{var raw=localStorage.getItem(KEY);if(raw){var s=JSON.parse(raw);if(s&&Array.isArray(s.x))state.x=s.x}}catch(e){}}
+function save(){if(!store.ok)return;try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){store.ok=false}}
+function all(){return SEED.concat(state.x)}
+function byId(id){var a=all();for(var i=0;i<a.length;i++)if(a[i].id===id)return a[i];return null}
+function gradoOf(k){for(var i=0;i<GRADI.length;i++)if(GRADI[i].k===k)return GRADI[i];return {k:k,n:k}}
+
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function norm(s){return String(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")}
+var tT=null;function toast(m){var t=document.getElementById("ud-toast");t.textContent=m;t.classList.add("show");clearTimeout(tT);tT=setTimeout(function(){t.classList.remove("show")},2200)}
+function copyText(txt){
+ function fb(){var ta=document.createElement("textarea");ta.value=txt;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();var ok=false;try{ok=document.execCommand("copy")}catch(e){}document.body.removeChild(ta);toast(ok?"Copiato":"Copia non disponibile")}
+ if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(function(){toast("Copiato")},fb)}else fb();
+}
+var XI='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+function cardText(n){return n.titolo+" · "+n.disc+" · "+n.classe+"\n\n"+FIELDS.map(function(f){return f.l+": "+(n[f.k]||"—")}).join("\n\n")+"\n\nFonte: "+n.fonte}
+function templateText(){
+ return "MODELLO UDL — PROGETTAZIONE UNIVERSALE PER L’APPRENDIMENTO (UDL)\n"+
+  "Titolo: ______________________\nOrdine di scuola (infanzia / primaria / secondaria I grado): ______________________\n"+
+  "Disciplina o campo di esperienza: ______________________\nClasse o età: ______________________\n\n"+
+  FIELDS.map(function(f){return f.l.toUpperCase()+"\n"+f.q+"\n______________________________________________\n______________________________________________"}).join("\n\n")+
+  "\n\nFonte / a cura di: ______________________";
+}
+function openTemplate(){
+ var sh=document.getElementById("ud-tSheet");
+ sh.style.removeProperty("--g-c");
+ sh.innerHTML='<button class="icon-btn close" data-act="closeT" aria-label="Chiudi">'+XI+'</button>'+
+  '<h2 id="ud-tTitle">Modello vuoto UDL</h2>'+
+  '<div class="meta-row">Compila i campi qui sotto, oppure copia il modello come testo per lavorarci su carta o su un altro documento.</div>'+
+  '<div class="sect"><h4><i></i>Titolo · Ordine di scuola · Disciplina · Classe o età</h4><p style="color:var(--ud-muted)">Da compilare</p></div>'+
+  FIELDS.map(function(f){return '<div class="sect s-'+f.k+'"><h4><i></i>'+f.l+'</h4><p style="font-style:italic;color:var(--ud-muted)">'+esc(f.q)+'</p></div>'}).join("")+
+  '<div class="actions">'+
+   '<button class="btn primary" data-act="tplfill">Compila online e salva nell’archivio</button>'+
+   '<button class="btn" data-act="tplcopy">Copia il modello vuoto</button>'+
+   '<span class="sp"></span><button class="btn" data-act="closeT">Chiudi</button>'+
+  '</div>';
+ var d=document.getElementById("ud-dTpl");if(!d.open)d.showModal();sh.scrollTop=0;
+}
+
+/* ===== FILTRI ===== */
+function matches(n){
+ if(ui.grado!=="tutti"&&n.grado!==ui.grado)return false;
+ if(ui.q){
+   var hay=norm([n.titolo,n.disc,n.classe,n.fonte].concat(FIELDS.map(function(f){return n[f.k]})).join(" "));
+   var tk=norm(ui.q).split(/\s+/).filter(Boolean);
+   for(var i=0;i<tk.length;i++)if(hay.indexOf(tk[i])<0)return false;
+ }
+ return true;
+}
+function visible(){return all().filter(matches)}
+
+/* ===== RENDER ===== */
+function renderTabs(){
+ var a=all(),h="";
+ var tutti=a.filter(function(n){return ui.q?matches(Object.assign({},n,{grado:n.grado})):true;});
+ function cnt(g){return a.filter(function(n){return (g==="tutti"||n.grado===g)&&(!ui.q||matches(n))}).length}
+ h+='<button class="tab g-tutti" data-act="grado" data-v="tutti" aria-pressed="'+(ui.grado==="tutti")+'">Tutti <small>'+cnt("tutti")+'</small></button>';
+ GRADI.forEach(function(g){h+='<button class="tab g-'+g.k+'" data-act="grado" data-v="'+g.k+'" aria-pressed="'+(ui.grado===g.k)+'">'+esc(g.n)+' <small>'+cnt(g.k)+'</small></button>'});
+ document.getElementById("ud-tabs").innerHTML=h;
+}
+function cardHtml(n){
+ var g=gradoOf(n.grado);
+ return '<article class="card g-'+n.grado+'" data-id="'+n.id+'">'+
+  '<div class="top"><span class="badge">'+esc(g.n)+'</span><span class="origin">'+(n.origin==="corso"?"Materiale del corso":"Esempio redazionale")+'</span></div>'+
+  '<h3>'+esc(n.titolo)+'</h3>'+
+  '<div class="disc">'+esc(n.disc)+' · '+esc(n.classe)+'</div>'+
+  '<p class="obx"><b>Obiettivo.</b> '+esc(n.obiettivo)+'</p>'+
+  '<div class="foot"><button data-act="open" data-id="'+n.id+'">Apri scheda completa</button>'+
+  (n.custom?'<button class="mini" data-act="edit" data-id="'+n.id+'">Modifica</button>':'<span></span>')+
+  '</div></article>';
+}
+function render(){
+ var v=visible(),b=document.getElementById("ud-board");
+ b.innerHTML=v.length?v.map(cardHtml).join(""):'<div class="empty"><h2>Nessuna UDL trovata</h2><p>Prova con un’altra parola o cambia ordine di scuola.</p><button class="btn primary" data-act="clear">Azzera i filtri</button></div>';
+ renderTabs();
+ document.getElementById("ud-pk").textContent=all().length;
+ document.getElementById("ud-pbar").style.width=Math.min(100,all().length*6)+"%";
+ document.getElementById("ud-count").textContent=v.length+(v.length===1?" scheda":" schede");
+}
+
+/* ===== DETTAGLIO ===== */
+function openCard(id){
+ var n=byId(id);if(!n)return;cur=id;
+ var g=gradoOf(n.grado),sh=document.getElementById("ud-cSheet");
+ sh.style.setProperty("--g-c",{infanzia:"#FBD98A",primaria:"#9FD1E8",secondaria:"#C9B6EC"}[n.grado]||"#DCD3C2");
+ sh.innerHTML='<button class="icon-btn close" data-act="closeC" aria-label="Chiudi">'+XI+'</button>'+
+  '<div class="meta-row"><span class="badge">'+esc(g.n)+'</span><span>'+esc(n.disc)+'</span><span>·</span><span>'+esc(n.classe)+'</span></div>'+
+  '<h2 id="ud-cTitle">'+esc(n.titolo)+'</h2>'+
+  FIELDS.map(function(f){return '<div class="sect s-'+f.k+'"><h4><i></i>'+f.l+'</h4><p>'+esc(n[f.k]||"—")+'</p></div>'}).join("")+
+  '<p class="sect" style="margin-top:16px;font-style:italic;color:var(--ud-muted)">Fonte: '+esc(n.fonte)+'</p>'+
+  '<div class="actions">'+
+   '<button class="btn" data-act="copy" data-id="'+id+'">Copia scheda</button>'+
+   (n.custom?'<button class="btn" data-act="edit" data-id="'+id+'">Modifica</button><button class="btn danger" data-act="del" data-id="'+id+'">Elimina</button>':'')+
+   '<span class="sp"></span><button class="btn" data-act="closeC">Chiudi</button>'+
+  '</div>';
+ var d=document.getElementById("ud-dCard");if(!d.open)d.showModal();sh.scrollTop=0;
+}
+
+/* ===== FORM ===== */
+function openForm(id){
+ editing=id||null;var n=id?byId(id):null,sh=document.getElementById("ud-fSheet");
+ var gopts=GRADI.map(function(g){return '<option value="'+g.k+'"'+((n?n.grado:"primaria")===g.k?" selected":"")+'>'+esc(g.n)+'</option>'}).join("");
+ sh.innerHTML='<button class="icon-btn close" data-act="closeF" aria-label="Chiudi">'+XI+'</button>'+
+  '<h2 id="ud-fTitle">'+(n?"Modifica UDL":"Progetta una nuova UDL")+'</h2>'+
+  '<div class="grid2">'+
+   '<div><label for="ud-fT">Titolo</label><input type="text" id="ud-fT" maxlength="100" value="'+esc(n?n.titolo:"")+'"></div>'+
+   '<div><label for="ud-fG">Ordine di scuola</label><select id="ud-fG">'+gopts+'</select></div>'+
+   '<div><label for="ud-fD">Disciplina o campo di esperienza</label><input type="text" id="ud-fD" maxlength="100" value="'+esc(n?n.disc:"")+'"></div>'+
+   '<div><label for="ud-fC">Classe o età</label><input type="text" id="ud-fC" maxlength="60" value="'+esc(n?n.classe:"")+'"></div>'+
+  '</div>'+
+  FIELDS.map(function(f){return '<label for="f_'+f.k+'">'+f.l+' <span class="hint">— '+esc(f.q)+'</span></label><textarea id="f_'+f.k+'" placeholder="'+esc(f.q)+'">'+esc(n?n[f.k]:"")+'</textarea>'}).join("")+
+  '<label for="ud-fS">Fonte <span class="hint">(facoltativa: da dove viene questa UDL)</span></label><input type="text" id="ud-fS" maxlength="160" value="'+esc(n?n.fonte:"")+'">'+
+  '<div class="actions"><button class="btn primary" data-act="saveF">Salva nell’archivio</button><button class="btn" data-act="closeF">Annulla</button>'+(n?'<span class="sp"></span><button class="btn danger" id="ud-delB" data-act="del" data-id="'+n.id+'">Elimina</button>':'')+'</div>';
+ var d=document.getElementById("ud-dForm");if(!d.open)d.showModal();document.getElementById("ud-fT").focus();
+}
+function saveForm(){
+ var t=document.getElementById("ud-fT").value.trim(),ob=document.getElementById("f_obiettivo").value.trim();
+ if(!t||!ob){toast("Scrivi almeno il titolo e l’obiettivo");return}
+ var o={id:editing||("u"+Date.now().toString(36)),custom:true,origin:"mia",
+  titolo:t,grado:document.getElementById("ud-fG").value,disc:document.getElementById("ud-fD").value.trim(),classe:document.getElementById("ud-fC").value.trim(),
+  fonte:document.getElementById("ud-fS").value.trim()||"Aggiunta dall’utente"};
+ FIELDS.forEach(function(f){o[f.k]=document.getElementById("f_"+f.k).value.trim()});
+ if(editing){state.x=state.x.map(function(c){return c.id===editing?o:c})}else state.x.push(o);
+ save();document.getElementById("ud-dForm").close();render();toast("UDL salvata nell’archivio");
+ if(document.getElementById("ud-dCard").open)openCard(o.id);
+}
+
+/* ===== DATI ===== */
+function exportJson(){return JSON.stringify({v:1,x:state.x},null,1)}
+function openData(){
+ var sh=document.getElementById("ud-dSheet");
+ sh.innerHTML='<button class="icon-btn close" data-act="closeD" aria-label="Chiudi">'+XI+'</button>'+
+  '<h2 id="ud-dTitle">Salva o ripristina</h2>'+
+  '<p>Le UDL che aggiungi restano in questo browser'+(store.ok?'.':' — <b>qui il browser non permette di salvare</b>: si perdono alla chiusura.')+' Per cambiare dispositivo o non perderle, salva una copia.</p>'+
+  '<div class="actions"><button class="btn primary" data-act="export">Salva una copia</button></div><div id="ud-expBox"></div>'+
+  '<h4 style="margin-top:20px">Ripristina da una copia</h4><input type="file" id="ud-impF" accept=".json,application/json"><p class="hint" style="margin:8px 0">Oppure incolla il contenuto qui sotto.</p><textarea id="ud-impT" style="min-height:110px"></textarea>'+
+  '<div class="actions"><button class="btn" data-act="import">Ripristina (sostituisce le UDL aggiunte)</button></div>';
+ var d=document.getElementById("ud-dData");if(!d.open)d.showModal();
+ document.getElementById("ud-impF").addEventListener("change",function(e){var f=e.target.files&&e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(){document.getElementById("ud-impT").value=String(r.result||"")};r.readAsText(f)});
+}
+function doExport(){
+ var j=exportJson();
+ if(dl){dl.save({filename:"archivio-udl.json",data:j}).then(function(){toast("Copia salvata")},function(e){if(e&&e.code==="declined")return;showExport(j)})}
+ else showExport(j);
+}
+function showExport(j){var b=document.getElementById("ud-expBox");if(!b)return;b.innerHTML='<p class="hint">Copia il testo e conservalo in un file .json.</p><textarea id="ud-expT" readonly style="min-height:110px"></textarea><div class="actions"><button class="btn" data-act="copyexp">Copia tutto</button></div>';document.getElementById("ud-expT").value=j}
+function doImport(){
+ var raw=document.getElementById("ud-impT").value.trim();if(!raw){toast("Scegli un file o incolla il contenuto");return}
+ try{var s=JSON.parse(raw);if(!s||!Array.isArray(s.x))throw 0;state.x=s.x.filter(function(c){return c&&c.id&&c.titolo});save();document.getElementById("ud-dData").close();render();toast("Archivio ripristinato")}
+ catch(e){toast("File non valido")}
+}
+
+/* ===== EVENTI ===== */
+document.addEventListener("click",function(e){if(document.getElementById("view-ud").hasAttribute("hidden"))return;
+ var el=e.target.closest("[data-act]");
+ if(!el){var card=e.target.closest(".card");if(card&&!e.target.closest("button"))openCard(card.getAttribute("data-id"));return}
+ var act=el.getAttribute("data-act"),id=el.getAttribute("data-id");
+ switch(act){
+  case "grado":ui.grado=el.getAttribute("data-v");render();break;
+  case "clear":ui.q="";ui.grado="tutti";document.getElementById("ud-q").value="";render();break;
+  case "open":openCard(id);break;
+  case "closeC":document.getElementById("ud-dCard").close();break;
+  case "copy":copyText(cardText(byId(id)));break;
+  case "new":openForm(null);break;
+  case "template":openTemplate();break;
+  case "closeT":document.getElementById("ud-dTpl").close();break;
+  case "tplcopy":copyText(templateText());break;
+  case "tplfill":document.getElementById("ud-dTpl").close();openForm(null);break;
+  case "edit":document.getElementById("ud-dCard").close();openForm(id);break;
+  case "saveF":saveForm();break;
+  case "closeF":document.getElementById("ud-dForm").close();break;
+  case "del":
+   if(el.dataset.arm==="1"){state.x=state.x.filter(function(c){return c.id!==id});save();document.getElementById("ud-dCard").close();document.getElementById("ud-dForm").close();render();toast("UDL eliminata")}
+   else{el.dataset.arm="1";el.textContent="Conferma: elimina";setTimeout(function(){el.dataset.arm="0";el.textContent="Elimina"},3500)}
+   break;
+  case "data":openData();break;
+  case "closeD":document.getElementById("ud-dData").close();break;
+  case "export":doExport();break;
+  case "copyexp":copyText(document.getElementById("ud-expT").value);break;
+  case "import":doImport();break;
+ }
+});
+document.addEventListener("input",function(e){if(document.getElementById("view-ud").hasAttribute("hidden"))return;if(e.target.id==="ud-q"){ui.q=e.target.value;render()}});
+["ud-dCard","ud-dForm","ud-dData","ud-dTpl"].forEach(function(id){var d=document.getElementById(id);d.addEventListener("click",function(e){if(e.target===d)d.close()})});
+document.addEventListener("keydown",function(e){if(document.getElementById("view-ud").hasAttribute("hidden"))return;if(e.key==="/"&&!/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)&&!document.querySelector("dialog[open]")){e.preventDefault();document.getElementById("ud-q").focus()}});
+
+render();
+if(!store.ok)document.querySelector(".foot-note").insertAdjacentHTML("beforebegin",'<p class="foot-note" style="margin:0 0 12px"><b>Attenzione:</b> in questa finestra il browser non permette di salvare i dati: le UDL aggiunte si perdono alla chiusura.</p>');
+try{if(window.claude&&typeof window.claude.use==="function"){window.claude.use("downloads").then(function(x){dl=x||null},function(){dl=null})}}catch(e){}
+
+})();
+</script>
+<footer class="app-footer">IC Orbassano 2 — realizzato da Ins. Sonia Cercelletta</footer>
+</body>
+</html>
